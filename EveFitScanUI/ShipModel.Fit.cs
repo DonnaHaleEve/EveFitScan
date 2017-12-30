@@ -111,7 +111,7 @@ namespace EveFitScanUI
         public void SetShip(int ShipTypeID)
         {
             Debug.Assert(ShipTypeID < 0 || ShipTypeIDToIndex.ContainsKey(ShipTypeID));
-            m_ShipTypeID = (ShipTypeID < 0) ? -1 : ShipTypeID;
+            SetShipTypeID(ShipTypeID);
             CheckFitValid();
             EventFitChanged();
 
@@ -173,7 +173,7 @@ namespace EveFitScanUI
             }
         }
 
-        private void CleanFit(int ShipTypeID)
+        private void SetShipTypeID(int ShipTypeID)
         {
             int Index = -1;
             if (ShipTypeIDToIndex.TryGetValue(ShipTypeID, out Index))
@@ -194,6 +194,11 @@ namespace EveFitScanUI
                 m_Slots[SLOT.LOW] = 8;
                 m_Slots[SLOT.RIG] = 3;
             }
+        }
+
+        private void CleanFit(int ShipTypeID)
+        {
+            SetShipTypeID(ShipTypeID);
             m_Fit[SLOT.HIGH] = new Dictionary<int, int>();
             m_Fit[SLOT.MEDIUM] = new Dictionary<int, int>();
             m_Fit[SLOT.LOW] = new Dictionary<int, int>();
