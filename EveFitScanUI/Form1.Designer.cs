@@ -277,7 +277,7 @@
             this.m_TextBoxShieldResistsCold.ReadOnly = true;
             this.m_TextBoxShieldResistsCold.Size = new System.Drawing.Size(232, 24);
             this.m_TextBoxShieldResistsCold.TabIndex = 13;
-            this.m_TextBoxShieldResistsCold.Text = "99.9% / 99.9% / 99.9% / 99.9%";
+            this.m_TextBoxShieldResistsCold.Text = "";
             // 
             // m_TextBoxShieldResistsHot
             // 
@@ -288,7 +288,7 @@
             this.m_TextBoxShieldResistsHot.ReadOnly = true;
             this.m_TextBoxShieldResistsHot.Size = new System.Drawing.Size(232, 24);
             this.m_TextBoxShieldResistsHot.TabIndex = 14;
-            this.m_TextBoxShieldResistsHot.Text = "99.9% / 99.9% / 99.9% / 99.9%";
+            this.m_TextBoxShieldResistsHot.Text = "";
             // 
             // m_TextBoxArmorResistsCold
             // 
@@ -299,7 +299,7 @@
             this.m_TextBoxArmorResistsCold.ReadOnly = true;
             this.m_TextBoxArmorResistsCold.Size = new System.Drawing.Size(232, 24);
             this.m_TextBoxArmorResistsCold.TabIndex = 15;
-            this.m_TextBoxArmorResistsCold.Text = "99.9% / 99.9% / 99.9% / 99.9%";
+            this.m_TextBoxArmorResistsCold.Text = "";
             // 
             // m_TextBoxArmorResistsHot
             // 
@@ -310,7 +310,7 @@
             this.m_TextBoxArmorResistsHot.ReadOnly = true;
             this.m_TextBoxArmorResistsHot.Size = new System.Drawing.Size(232, 24);
             this.m_TextBoxArmorResistsHot.TabIndex = 16;
-            this.m_TextBoxArmorResistsHot.Text = "99.9% / 99.9% / 99.9% / 99.9%";
+            this.m_TextBoxArmorResistsHot.Text = "";
             // 
             // m_TextBoxHullResistsCold
             // 
@@ -321,7 +321,7 @@
             this.m_TextBoxHullResistsCold.ReadOnly = true;
             this.m_TextBoxHullResistsCold.Size = new System.Drawing.Size(232, 24);
             this.m_TextBoxHullResistsCold.TabIndex = 17;
-            this.m_TextBoxHullResistsCold.Text = "99.9% / 99.9% / 99.9% / 99.9%";
+            this.m_TextBoxHullResistsCold.Text = "";
             // 
             // m_TextBoxHullResistsHot
             // 
@@ -332,7 +332,7 @@
             this.m_TextBoxHullResistsHot.ReadOnly = true;
             this.m_TextBoxHullResistsHot.Size = new System.Drawing.Size(232, 24);
             this.m_TextBoxHullResistsHot.TabIndex = 18;
-            this.m_TextBoxHullResistsHot.Text = "99.9% / 99.9% / 99.9% / 99.9%";
+            this.m_TextBoxHullResistsHot.Text = "";
             // 
             // label4
             // 
@@ -361,7 +361,7 @@
             this.m_TextBoxEHPMjolnirCold.ReadOnly = true;
             this.m_TextBoxEHPMjolnirCold.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPMjolnirCold.TabIndex = 21;
-            this.m_TextBoxEHPMjolnirCold.Text = "12345678";
+            this.m_TextBoxEHPMjolnirCold.Text = "";
             // 
             // m_TextBoxEHPMjolnirHot
             // 
@@ -372,7 +372,7 @@
             this.m_TextBoxEHPMjolnirHot.ReadOnly = true;
             this.m_TextBoxEHPMjolnirHot.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPMjolnirHot.TabIndex = 22;
-            this.m_TextBoxEHPMjolnirHot.Text = "12345678";
+            this.m_TextBoxEHPMjolnirHot.Text = "";
             // 
             // label6
             // 
@@ -403,7 +403,7 @@
             this.m_TextBoxEHPNovaHot.ReadOnly = true;
             this.m_TextBoxEHPNovaHot.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPNovaHot.TabIndex = 25;
-            this.m_TextBoxEHPNovaHot.Text = "12345678";
+            this.m_TextBoxEHPNovaHot.Text = "";
             // 
             // m_TextBoxEHPNovaCold
             // 
@@ -414,7 +414,7 @@
             this.m_TextBoxEHPNovaCold.ReadOnly = true;
             this.m_TextBoxEHPNovaCold.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPNovaCold.TabIndex = 24;
-            this.m_TextBoxEHPNovaCold.Text = "12345678";
+            this.m_TextBoxEHPNovaCold.Text = "";
             // 
             // label8
             // 
@@ -435,7 +435,7 @@
             this.m_TextBoxEHPAntimatterHot.ReadOnly = true;
             this.m_TextBoxEHPAntimatterHot.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPAntimatterHot.TabIndex = 28;
-            this.m_TextBoxEHPAntimatterHot.Text = "12345678";
+            this.m_TextBoxEHPAntimatterHot.Text = "";
             // 
             // m_TextBoxEHPAntimatterCold
             // 
@@ -446,7 +446,7 @@
             this.m_TextBoxEHPAntimatterCold.ReadOnly = true;
             this.m_TextBoxEHPAntimatterCold.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPAntimatterCold.TabIndex = 27;
-            this.m_TextBoxEHPAntimatterCold.Text = "12345678";
+            this.m_TextBoxEHPAntimatterCold.Text = "";
             // 
             // label9
             // 
@@ -467,7 +467,7 @@
             this.m_TextBoxEHPVoidHot.ReadOnly = true;
             this.m_TextBoxEHPVoidHot.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPVoidHot.TabIndex = 31;
-            this.m_TextBoxEHPVoidHot.Text = "12345678";
+            this.m_TextBoxEHPVoidHot.Text = "";
             // 
             // m_TextBoxEHPVoidCold
             // 
@@ -478,7 +478,7 @@
             this.m_TextBoxEHPVoidCold.ReadOnly = true;
             this.m_TextBoxEHPVoidCold.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPVoidCold.TabIndex = 30;
-            this.m_TextBoxEHPVoidCold.Text = "12345678";
+            this.m_TextBoxEHPVoidCold.Text = "";
             // 
             // label10
             // 
@@ -499,7 +499,7 @@
             this.m_TextBoxEHPMultifreqHot.ReadOnly = true;
             this.m_TextBoxEHPMultifreqHot.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPMultifreqHot.TabIndex = 34;
-            this.m_TextBoxEHPMultifreqHot.Text = "12345678";
+            this.m_TextBoxEHPMultifreqHot.Text = "";
             // 
             // m_TextBoxEHPMultifreqCold
             // 
@@ -510,7 +510,7 @@
             this.m_TextBoxEHPMultifreqCold.ReadOnly = true;
             this.m_TextBoxEHPMultifreqCold.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPMultifreqCold.TabIndex = 33;
-            this.m_TextBoxEHPMultifreqCold.Text = "12345678";
+            this.m_TextBoxEHPMultifreqCold.Text = "";
             // 
             // label11
             // 
@@ -531,7 +531,7 @@
             this.m_TextBoxEHPEMPHot.ReadOnly = true;
             this.m_TextBoxEHPEMPHot.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPEMPHot.TabIndex = 37;
-            this.m_TextBoxEHPEMPHot.Text = "12345678";
+            this.m_TextBoxEHPEMPHot.Text = "";
             // 
             // m_TextBoxEHPEMPCold
             // 
@@ -542,7 +542,7 @@
             this.m_TextBoxEHPEMPCold.ReadOnly = true;
             this.m_TextBoxEHPEMPCold.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPEMPCold.TabIndex = 36;
-            this.m_TextBoxEHPEMPCold.Text = "12345678";
+            this.m_TextBoxEHPEMPCold.Text = "";
             // 
             // label12
             // 
@@ -563,7 +563,7 @@
             this.m_TextBoxEHPFusionHot.ReadOnly = true;
             this.m_TextBoxEHPFusionHot.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPFusionHot.TabIndex = 40;
-            this.m_TextBoxEHPFusionHot.Text = "12345678";
+            this.m_TextBoxEHPFusionHot.Text = "";
             // 
             // m_TextBoxEHPFusionCold
             // 
@@ -574,7 +574,7 @@
             this.m_TextBoxEHPFusionCold.ReadOnly = true;
             this.m_TextBoxEHPFusionCold.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPFusionCold.TabIndex = 39;
-            this.m_TextBoxEHPFusionCold.Text = "12345678";
+            this.m_TextBoxEHPFusionCold.Text = "";
             // 
             // label13
             // 
@@ -595,7 +595,7 @@
             this.m_TextBoxEHPPhasedPlasmaHot.ReadOnly = true;
             this.m_TextBoxEHPPhasedPlasmaHot.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPPhasedPlasmaHot.TabIndex = 43;
-            this.m_TextBoxEHPPhasedPlasmaHot.Text = "12345678";
+            this.m_TextBoxEHPPhasedPlasmaHot.Text = "";
             // 
             // m_TextBoxEHPPhasedPlasmaCold
             // 
@@ -606,7 +606,7 @@
             this.m_TextBoxEHPPhasedPlasmaCold.ReadOnly = true;
             this.m_TextBoxEHPPhasedPlasmaCold.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPPhasedPlasmaCold.TabIndex = 42;
-            this.m_TextBoxEHPPhasedPlasmaCold.Text = "12345678";
+            this.m_TextBoxEHPPhasedPlasmaCold.Text = "";
             // 
             // label14
             // 
@@ -627,7 +627,7 @@
             this.m_TextBoxEHPHailHot.ReadOnly = true;
             this.m_TextBoxEHPHailHot.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPHailHot.TabIndex = 46;
-            this.m_TextBoxEHPHailHot.Text = "12345678";
+            this.m_TextBoxEHPHailHot.Text = "";
             // 
             // m_TextBoxEHPHailCold
             // 
@@ -638,7 +638,7 @@
             this.m_TextBoxEHPHailCold.ReadOnly = true;
             this.m_TextBoxEHPHailCold.Size = new System.Drawing.Size(120, 24);
             this.m_TextBoxEHPHailCold.TabIndex = 45;
-            this.m_TextBoxEHPHailCold.Text = "12345678";
+            this.m_TextBoxEHPHailCold.Text = "";
             // 
             // m_FitText
             // 
