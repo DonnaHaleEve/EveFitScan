@@ -111,9 +111,12 @@ namespace EveFitScanUI
         }
 
         private void GenerateEFTFit() {
-            m_EFTFit = ("[" + m_ShipName + "]" + System.Environment.NewLine);
+            m_EFTFit = ("[" + m_ShipName + "]" + System.Environment.NewLine + System.Environment.NewLine);
 
-            m_EFTFit += System.Environment.NewLine;
+            if (m_HighPowerModules.Count > 0)
+            {
+                m_EFTFit += System.Environment.NewLine;
+            }
             foreach (string Name in m_HighPowerModules)
             {
                 m_EFTFit += (Name + System.Environment.NewLine);
@@ -123,7 +126,10 @@ namespace EveFitScanUI
                 m_EFTFit += ("[empty high slot]" + System.Environment.NewLine);
             }
 
-            m_EFTFit += System.Environment.NewLine;
+            if (m_MediumPowerModules.Count > 0)
+            {
+                m_EFTFit += System.Environment.NewLine;
+            }
             foreach (string Name in m_MediumPowerModules)
             {
                 m_EFTFit += (Name + System.Environment.NewLine);
@@ -133,7 +139,10 @@ namespace EveFitScanUI
                 m_EFTFit += ("[empty mid slot]" + System.Environment.NewLine);
             }
 
-            m_EFTFit += System.Environment.NewLine;
+            if (m_LowPowerModules.Count > 0)
+            {
+                m_EFTFit += System.Environment.NewLine;
+            }
             foreach (string Name in m_LowPowerModules)
             {
                 m_EFTFit += (Name + System.Environment.NewLine);
@@ -143,7 +152,10 @@ namespace EveFitScanUI
                 m_EFTFit += ("[empty low slot]" + System.Environment.NewLine);
             }
 
-            m_EFTFit += System.Environment.NewLine;
+            if (m_Rigs.Count > 0)
+            {
+                m_EFTFit += System.Environment.NewLine;
+            }
             foreach (string Name in m_Rigs)
             {
                 m_EFTFit += (Name + System.Environment.NewLine);

@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 
 namespace EveFitScanUI
@@ -31,6 +26,8 @@ namespace EveFitScanUI
             InitializeComponent();
         }
 
+        private bool m_bCaptureClipboard = true;
+
         /// <summary>
         /// This processes window messages such as clipboard events.
         /// </summary>
@@ -41,6 +38,10 @@ namespace EveFitScanUI
             if (m.Msg == WMDRAWCLIPBOARD) {
                 if (m_bFirstFire) {
                     m_bFirstFire = false;
+                    return;
+                }
+
+                if (!m_bCaptureClipboard) {
                     return;
                 }
 
@@ -104,17 +105,25 @@ namespace EveFitScanUI
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            string message = "EveFitScan Version " + System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString() + @"
+2017 Donna Hale <donna.hale.eve@gmail.com>
 
+Comments/Suggestions/Complaints can be posted in the appropriate 
+thread on the Goonfleet Forums or sent to me via Jabber.";
+
+            MessageBox.Show(message, "About", MessageBoxButtons.OK, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, (MessageBoxOptions)0);
         }
 
         private void licenseToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            string message = File.ReadAllText("license.txt");
 
+            MessageBox.Show(message, "License", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, (MessageBoxOptions)0);
         }
 
         private void sourceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            System.Diagnostics.Process.Start("https://bitbucket.org/Donna_Hale_Eve/fitscan_eve/overview");
         }
 
         private void m_ButtonResetFit_Click(object sender, EventArgs e)
@@ -161,7 +170,29 @@ namespace EveFitScanUI
 
         private void m_ButtonCopyCODE_Click(object sender, EventArgs e)
         {
+            bool prevClipboard = m_bCaptureClipboard;
 
+            m_bCaptureClipboard = false;
+
+            Clipboard.SetText(m_FitScanProcessor.CODEToolURL);
+
+            m_bCaptureClipboard = prevClipboard;
+        }
+
+        private void m_ButtonCopyEFT_Click(object sender, EventArgs e)
+        {
+            bool prevClipboard = m_bCaptureClipboard;
+
+            m_bCaptureClipboard = false;
+
+            Clipboard.SetText(m_FitScanProcessor.EFTFit);
+
+            m_bCaptureClipboard = prevClipboard;
+        }
+
+        private void toggleAlwaysOnTopToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            this.TopMost = toggleAlwaysOnTopToolStripMenuItem.Checked;
         }
     }
 }

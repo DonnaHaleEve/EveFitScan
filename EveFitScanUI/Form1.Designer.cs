@@ -127,6 +127,7 @@
             this.toggleAlwaysOnTopToolStripMenuItem.Name = "toggleAlwaysOnTopToolStripMenuItem";
             this.toggleAlwaysOnTopToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.toggleAlwaysOnTopToolStripMenuItem.Text = "Toggle Always On Top";
+            this.toggleAlwaysOnTopToolStripMenuItem.CheckedChanged += new System.EventHandler(this.toggleAlwaysOnTopToolStripMenuItem_CheckedChanged);
             // 
             // helpToolStripMenuItem
             // 
@@ -142,14 +143,14 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // licenseToolStripMenuItem
             // 
             this.licenseToolStripMenuItem.Name = "licenseToolStripMenuItem";
-            this.licenseToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.licenseToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.licenseToolStripMenuItem.Text = "License";
             this.licenseToolStripMenuItem.Click += new System.EventHandler(this.licenseToolStripMenuItem_Click);
             // 
@@ -201,6 +202,7 @@
             this.m_ButtonCopyEFT.TabIndex = 6;
             this.m_ButtonCopyEFT.Text = "Copy EFT fit";
             this.m_ButtonCopyEFT.UseVisualStyleBackColor = true;
+            this.m_ButtonCopyEFT.Click += new System.EventHandler(this.m_ButtonCopyEFT_Click);
             // 
             // m_TextBoxShieldHP
             // 

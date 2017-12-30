@@ -9,7 +9,6 @@ namespace EveFitScanUI
     {
         private void OnShipFitChanged()
         {
-            //this.m_FitText.Text = m_FitScanProcessor.EFTFit;
             m_FitText.Clear();
             if (!m_FitScanProcessor.StateOk) {
                 m_FitText.AppendText("INVALID FIT" + System.Environment.NewLine + System.Environment.NewLine);
@@ -20,9 +19,9 @@ namespace EveFitScanUI
             }
             m_FitText.AppendText(m_FitScanProcessor.EFTFit);
 
-            m_FitText.AppendText(System.Environment.NewLine);
-            m_FitText.AppendText(System.Environment.NewLine);
-            m_FitText.AppendText(m_FitScanProcessor.CODEToolURL);
+            //m_FitText.AppendText(System.Environment.NewLine);
+            //m_FitText.AppendText(System.Environment.NewLine);
+            //m_FitText.AppendText(m_FitScanProcessor.CODEToolURL);
         }
 
         private void OnShipTankChanged()

@@ -1,0 +1,37 @@
+EveFitScan (C) 2017 Donna Hale <donna.hale.eve@gmail.com>
+
+EVE Online and the EVE logo are the registered trademarks of CCP hf.
+All rights are reserved worldwide. All other trademarks are the
+property of their respective owners. EVE Online, the EVE logo, EVE
+and all associated logos and designs are the intellectual property
+of CCP hf. All artwork, screenshots, characters, vehicles,
+storylines, world facts or other recognizable features of the
+intellectual property relating to these trademarks are likewise the
+intellectual property of CCP hf. CCP hf. does not endorse, and is
+not in any way affiliated with, this software. CCP is in no way
+responsible for the content or functioning of this software, nor
+can it be liable for any damage arising from the use of this software.
+
+A non-exclusive, non-transferrable, limited time license to use this
+software and associated source code, has been granted to you as a 
+member of one of the following organizations or its allies:
+
+* Goonswarm
+* Miniluv
+
+This license exists only for as long as you continue to be a member
+of one of these groups or its allies, and will terminate at the time
+you are no longer a member of those entities and/or its allies.
+
+This license may also be terminated at any time for any and/or no
+reason by any or all of the copyright holders.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR  OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
