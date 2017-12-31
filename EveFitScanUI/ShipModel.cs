@@ -118,7 +118,7 @@ namespace EveFitScanUI
 
 
         // ==============================================================================================================
-        #region "ship name suggection"
+        #region "ship name suggestion"
 
         private List<Tuple<string,int>> m_ShipNamesSorted = null;
         private List<Tuple<string, int>> ShipNamesSorted

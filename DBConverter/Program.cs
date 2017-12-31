@@ -66,9 +66,9 @@ namespace DBConverter
 #if true
                     IReadOnlyCollection<Tuple<string,int>> shipNames = GetShips(conn);
                     
-                    foreach (Tuple<string, int> ship in shipNames) {
-                        Console.WriteLine("{0}: {1}", ship.Item2, ship.Item1);
-                    }
+                    //foreach (Tuple<string, int> ship in shipNames) {
+                    //    Console.WriteLine("{0}: {1}", ship.Item2, ship.Item1);
+                    //}
 #else
 
                     List<Tuple<string, int>> shipNames = new List<Tuple<string, int>>();
@@ -128,7 +128,8 @@ namespace DBConverter
             fileShips.WriteLine("      public ShipDescription( string Name, int TypeID, int HighSlots, int MedSlots, int LowSlots, int RigSlots,");
             fileShips.WriteLine("        float ShieldHP, float ShieldHPMultiplier, float ShieldResistEM, float ShieldResistThermal, float ShieldResistKinetic, float ShieldResistExplosive,");
             fileShips.WriteLine("        float ArmorHP, float ArmorHPMultiplier, float ArmorResistEM, float ArmorResistThermal, float ArmorResistKinetic, float ArmorResistExplosive,");
-            fileShips.WriteLine("        float HullHP, float HullHPMultiplier, float HullResistEM, float HullResistThermal, float HullResistKinetic, float HullResistExplosive");
+            fileShips.WriteLine("        float HullHP, float HullHPMultiplier, float HullResistEM, float HullResistThermal, float HullResistKinetic, float HullResistExplosive,");
+            fileShips.WriteLine("        float OverheatingBonus");
             fileShips.WriteLine("      ) {");
             fileShips.WriteLine("        m_Name = Name;");
             fileShips.WriteLine("        m_TypeID = TypeID;");
@@ -154,6 +155,7 @@ namespace DBConverter
             fileShips.WriteLine("        m_HullResistThermal = HullResistThermal;");
             fileShips.WriteLine("        m_HullResistKinetic = HullResistKinetic;");
             fileShips.WriteLine("        m_HullResistExplosive = HullResistExplosive;");
+            fileShips.WriteLine("        m_OverheatingBonus = OverheatingBonus;");
             fileShips.WriteLine("      }");
             fileShips.WriteLine("      public string m_Name;");
             fileShips.WriteLine("      public int m_TypeID;");
@@ -179,6 +181,7 @@ namespace DBConverter
             fileShips.WriteLine("      public float m_HullResistThermal;");
             fileShips.WriteLine("      public float m_HullResistKinetic;");
             fileShips.WriteLine("      public float m_HullResistExplosive;");
+            fileShips.WriteLine("      public float m_OverheatingBonus;");
             fileShips.WriteLine("    }");
             fileShips.WriteLine("");
             fileShips.WriteLine("    private List<ShipDescription> m_ShipDescriptions = null;");
@@ -216,22 +219,20 @@ namespace DBConverter
             fileModules.WriteLine("    public enum LAYER { SHIELD, ARMOR, HULL };");
             fileModules.WriteLine("    public enum EFFECT { EM, THERMAL, KINETIC, EXPLOSIVE, ADD, MULTIPLY };");
             fileModules.WriteLine("    public class ModuleDescription {");
-            fileModules.WriteLine("      public ModuleDescription(string Name, int TypeID, SLOT Slot) {");
-            fileModules.WriteLine("        m_Name = Name; m_TypeID = TypeID; m_Slot = Slot;");
+            fileModules.WriteLine("      public ModuleDescription(string Name, int TypeID, SLOT Slot, float OverloadBonus) {");
+            fileModules.WriteLine("        m_Name = Name; m_TypeID = TypeID; m_Slot = Slot; m_OverloadBonus = OverloadBonus;");
             fileModules.WriteLine("      }");
-            fileModules.WriteLine("      public ModuleDescription AddEffect(LAYER Layer, EFFECT Effect, bool Heated, float Value, int StackGroup) {");
+            fileModules.WriteLine("      public ModuleDescription AddEffect(LAYER Layer, EFFECT Effect, float Value, int StackGroup) {");
             fileModules.WriteLine("        if(!m_Effects.ContainsKey(Layer))");
-            fileModules.WriteLine("          m_Effects.Add(Layer, new Dictionary<EFFECT, Dictionary<bool, Tuple<float, int>>>());");
-            fileModules.WriteLine("        if (!m_Effects[Layer].ContainsKey(Effect))");
-            fileModules.WriteLine("          m_Effects[Layer].Add(Effect, new Dictionary<bool, Tuple<float, int>>());");
-            fileModules.WriteLine("        Tuple<float, int> datum = Tuple.Create<float, int>(Value, StackGroup);");
-            fileModules.WriteLine("        m_Effects[Layer][Effect][Heated] = datum;");
+            fileModules.WriteLine("          m_Effects.Add(Layer, new Dictionary<EFFECT, Tuple<float, int>>());");
+            fileModules.WriteLine("        m_Effects[Layer][Effect] = new Tuple<float,int>(Value, StackGroup);");
             fileModules.WriteLine("        return this;");
             fileModules.WriteLine("      }");
             fileModules.WriteLine("      public string m_Name;");
             fileModules.WriteLine("      public int m_TypeID;");
             fileModules.WriteLine("      public SLOT m_Slot;");
-            fileModules.WriteLine("      public Dictionary<LAYER, Dictionary<EFFECT, Dictionary<bool, Tuple<float, int>>>> m_Effects = new Dictionary<LAYER, Dictionary<EFFECT, Dictionary<bool, Tuple<float, int>>>>();");
+            fileModules.WriteLine("      public float m_OverloadBonus;");
+            fileModules.WriteLine("      public Dictionary<LAYER, Dictionary<EFFECT, Tuple<float, int>>> m_Effects = new Dictionary<LAYER, Dictionary<EFFECT, Tuple<float, int>>>();");
             fileModules.WriteLine("    }");
             fileModules.WriteLine("    private List<ModuleDescription> m_ModuleDescriptions = null;");
             fileModules.WriteLine("    public IReadOnlyList<ModuleDescription> ModuleDescriptions {");
@@ -300,6 +301,13 @@ namespace DBConverter
             }
             float traitHullHPMultiplier = 1.0f + traitHullHP * 5.0f * 0.01f; // 5 levels, percent value
 
+            float traitOverheatingBonusPercent = 0.0f;
+            if (!shipTraits.TryGetValue(SHIP_TRAITS.SHIP_TRAIT_OVERHEATING_BONUS_PERCENT, out traitOverheatingBonusPercent))
+            {
+                traitOverheatingBonusPercent = 0.0f;
+            }
+            float traitOverheatingBonus = traitOverheatingBonusPercent * 0.01f; // percent value
+
             return new ShipDescription(
                 shipName,
                 typeID,
@@ -324,7 +332,8 @@ namespace DBConverter
                 1.0f - shipAttributes[SHIP_ATTRIBUTES.SHIP_ATTR_HULL_EM_RESONANCE],
                 1.0f - shipAttributes[SHIP_ATTRIBUTES.SHIP_ATTR_HULL_THERM_RESONANCE],
                 1.0f - shipAttributes[SHIP_ATTRIBUTES.SHIP_ATTR_HULL_KIN_RESONANCE],
-                1.0f - shipAttributes[SHIP_ATTRIBUTES.SHIP_ATTR_HULL_EXPL_RESONANCE]
+                1.0f - shipAttributes[SHIP_ATTRIBUTES.SHIP_ATTR_HULL_EXPL_RESONANCE],
+                traitOverheatingBonus
             );
         }
 
@@ -346,6 +355,8 @@ namespace DBConverter
 
             // Tuple is : value + stacking group
             Dictionary<MODULE_ATTRIBUTES, Tuple<float, int>> attributes = new Dictionary<MODULE_ATTRIBUTES, Tuple<float, int>>();
+
+            float OverloadBonus = 0.0f;
 
             foreach (MODULE_ATTRIBUTES_DB attrDB in moduleAttributesDB.Keys)
             {
@@ -398,32 +409,32 @@ namespace DBConverter
                             if (groupID == 77 || groupID == 1700)
                             {
                                 // active shield resist modules: Invulnerability Fields, Ward Fields, Flex Hardeners
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST);
                             }
                             else if (groupID == 328 || groupID == 1699)
                             {
                                 // active armor resist modules
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST);
                             }
                             else if (groupID == 295)
                             {
                                 // passive shield resist modules
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST);
                             }
                             else if (groupID == 98 || groupID == 326)
                             {
                                 // passive armor resist modules
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST);
                             }
                             else if (groupID == 774)
                             {
                                 // shield rigs
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST);
                             }
                             else if (groupID == 773)
                             {
                                 // armor rigs
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST);
                             }
                             else
                             {
@@ -438,32 +449,32 @@ namespace DBConverter
                             if (groupID == 77 || groupID == 1700)
                             {
                                 // active shield resist modules: Invulnerability Fields, Ward Fields, Flex Hardeners
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST);
                             }
                             else if (groupID == 328 || groupID == 1699)
                             {
                                 // active armor resist modules
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST);
                             }
                             else if (groupID == 295)
                             {
                                 // passive shield resist modules
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST);
                             }
                             else if (groupID == 98 || groupID == 326)
                             {
                                 // passive armor resist modules
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST);
                             }
                             else if (groupID == 774)
                             {
                                 // shield rigs
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST);
                             }
                             else if (groupID == 773)
                             {
                                 // armor rigs
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST);
                             }
                             else
                             {
@@ -478,32 +489,32 @@ namespace DBConverter
                             if (groupID == 77 || groupID == 1700)
                             {
                                 // active shield resist modules: Invulnerability Fields, Ward Fields, Flex Hardeners
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST);
                             }
                             else if (groupID == 328 || groupID == 1699)
                             {
                                 // active armor resist modules
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST);
                             }
                             else if (groupID == 295)
                             {
                                 // passive shield resist modules
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST);
                             }
                             else if (groupID == 98 || groupID == 326)
                             {
                                 // passive armor resist modules
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST);
                             }
                             else if (groupID == 774)
                             {
                                 // shield rigs
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST);
                             }
                             else if (groupID == 773)
                             {
                                 // armor rigs
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST);
                             }
                             else
                             {
@@ -518,32 +529,32 @@ namespace DBConverter
                             if (groupID == 77 || groupID == 1700)
                             {
                                 // active shield resist modules: Invulnerability Fields, Ward Fields, Flex Hardeners
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST);
                             }
                             else if (groupID == 328 || groupID == 1699)
                             {
                                 // active armor resist modules
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST);
                             }
                             else if (groupID == 295)
                             {
                                 // passive shield resist modules
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST);
                             }
                             else if (groupID == 98 || groupID == 326)
                             {
                                 // passive armor resist modules
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST);
                             }
                             else if (groupID == 774)
                             {
                                 // shield rigs
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST);
                             }
                             else if (groupID == 773)
                             {
                                 // armor rigs
-                                AddResitAttributesWithHeat(ref attributes, ref moduleAttributesDB, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST_HEATED);
+                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST);
                             }
                             else
                             {
@@ -553,7 +564,12 @@ namespace DBConverter
                         break;
                     //
                     case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_OVERLOAD_HARDENING_BONUS:
-                        // do nothing here
+                        {
+                            if (attrDBValue > 1.0f)
+                            {
+                                OverloadBonus = attrDBValue * 0.01f;
+                            }
+                        }
                         break;
                     //
                     case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_SHIELD_CAPACITY_MULTIPLIER:
@@ -690,13 +706,13 @@ namespace DBConverter
             return new ModuleDescription(
                 moduleName,
                 typeID,
-                groupID,
                 slot,
-                attributes
+                attributes,
+                OverloadBonus
             );
         }
 
-        static void AddResitAttributesWithHeat(ref Dictionary<MODULE_ATTRIBUTES, Tuple<float, int>> attributes, ref IReadOnlyDictionary<MODULE_ATTRIBUTES_DB, Tuple<bool, int, bool, float>> moduleAttributesDB, float resistValueDB, bool bActiveModule, bool bRig, MODULE_ATTRIBUTES attribute, MODULE_ATTRIBUTES attributeHeated)
+        static void AddResitAttributesWithHeat(ref Dictionary<MODULE_ATTRIBUTES, Tuple<float, int>> attributes, float resistValueDB, bool bActiveModule, bool bRig, MODULE_ATTRIBUTES attribute)
         {
             Debug.Assert(!(bActiveModule && bRig));
             Debug.Assert(resistValueDB < 0.0f);
@@ -707,18 +723,6 @@ namespace DBConverter
                 resistCold *= 1.25f; // compensation skill bonus
             }
             attributes.Add(attribute, new Tuple<float, int>(resistCold, 1));
-
-            if (bActiveModule)
-            {
-                Tuple<bool, int, bool, float> overheatBonus;
-                if (moduleAttributesDB.TryGetValue(MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_OVERLOAD_HARDENING_BONUS, out overheatBonus))
-                {
-                    float overheatBonusPercent = GetValue(overheatBonus);
-                    float overheatBonusFloat = 1.0f + 0.01f * overheatBonusPercent;
-                    float resistHot = -(0.01f * resistValueDB * overheatBonusFloat);
-                    attributes.Add(attributeHeated, new Tuple<float, int>(resistHot, 1));
-                }
-            }
         }
 
         #region --------------------- aux methods --------------------

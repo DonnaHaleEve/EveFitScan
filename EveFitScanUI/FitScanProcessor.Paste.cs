@@ -56,7 +56,10 @@ namespace EveFitScanUI
                 bool ModulesOK = true;
                 ModuleTypeIDs.Clear();
                 for (int i = 1; i < Lines.Length; ++i) {
-                    string LineLowcase = Lines[i].ToLower();
+                    string LineLowcase = Lines[i].Trim().ToLower();
+                    if (LineLowcase.Length == 0)
+                        continue;
+
                     if (LineLowcase.Length >= 16) { // "[empty XXX slot]"
                         if (LineLowcase.StartsWith("[empty ") && LineLowcase.EndsWith("slot]")) {
                             continue;

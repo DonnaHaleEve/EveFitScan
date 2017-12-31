@@ -28,12 +28,12 @@ namespace DBConverter
             {
                 dr.Read();
                 rootShipsMarketGroupID = Int32.Parse(dr["marketGroupID"].ToString());
-                Console.WriteLine("root ships market group ID = {0}", rootShipsMarketGroupID);
+                //Console.WriteLine("root ships market group ID = {0}", rootShipsMarketGroupID);
             }
 
             List<int> shipMarketGroups = new List<int>();
             GetShipMarketGroupsRecursive(ref shipMarketGroups, rootShipsMarketGroupID, conn);
-            Console.WriteLine("got {0} ship market groups", shipMarketGroups.Count);
+            //Console.WriteLine("got {0} ship market groups", shipMarketGroups.Count);
 
             List<Tuple<string, int>> ships = new List<Tuple<string, int>>();
             foreach (int groupID in shipMarketGroups) {
@@ -46,7 +46,7 @@ namespace DBConverter
                     }
                 }
             }
-            Console.WriteLine("got {0} ships", ships.Count);
+            //Console.WriteLine("got {0} ships", ships.Count);
             return ships;
         }
 
@@ -147,6 +147,10 @@ namespace DBConverter
                     else if (String.Compare(bonusText, "bonus to all armor resistances", true) == 0)
                     {
                         shipTraits[SHIP_TRAITS.SHIP_TRAIT_ARMOR_RESISTS_PER_LEVEL] = bonus;
+                    }
+                    else if (bonusText.StartsWith("bonus to the benefits of overheating "))
+                    {
+                        shipTraits[SHIP_TRAITS.SHIP_TRAIT_OVERHEATING_BONUS_PERCENT] = bonus;
                     }
                 }
             }

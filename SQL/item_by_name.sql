@@ -8,5 +8,6 @@ WHERE
 	--"typeName" = 'Damage Control II'
     --"typeName" = 'Reactive Armor Hardener'
 	--"typeName" = 'Pithum B-Type Adaptive Invulnerability Field'
-    "typeName" = 'Brynn''s Modified 500MN Microwarpdrive'
+    --"typeName" = 'Brynn''s Modified 500MN Microwarpdrive'
+    "typeName" = 'Bustard'
 ;

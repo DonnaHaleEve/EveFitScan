@@ -51,16 +51,16 @@ namespace EveFitScanUI
                     AllModules.Add(new Tuple<ModuleDescription, int>(ModuleDescriptions[Index], kvp.Value));
                 }
 
-                m_Tank[LAYER.SHIELD] = GetLayerTank(SD.m_ShieldHP, SD.m_ShieldHPMultiplier, SD.m_ShieldResistEM, SD.m_ShieldResistThermal, SD.m_ShieldResistKinetic, SD.m_ShieldResistExplosive, LAYER.SHIELD, AllModules);
-                m_Tank[LAYER.ARMOR] = GetLayerTank(SD.m_ArmorHP, SD.m_ArmorHPMultiplier, SD.m_ArmorResistEM, SD.m_ArmorResistThermal, SD.m_ArmorResistKinetic, SD.m_ArmorResistExplosive, LAYER.ARMOR, AllModules);
-                m_Tank[LAYER.HULL] = GetLayerTank(SD.m_HullHP, SD.m_HullHPMultiplier, SD.m_HullResistEM, SD.m_HullResistThermal, SD.m_HullResistKinetic, SD.m_HullResistExplosive, LAYER.HULL, AllModules);
+                m_Tank[LAYER.SHIELD] = GetLayerTank(SD.m_ShieldHP, SD.m_ShieldHPMultiplier, SD.m_ShieldResistEM, SD.m_ShieldResistThermal, SD.m_ShieldResistKinetic, SD.m_ShieldResistExplosive, LAYER.SHIELD, AllModules, SD.m_OverheatingBonus);
+                m_Tank[LAYER.ARMOR] = GetLayerTank(SD.m_ArmorHP, SD.m_ArmorHPMultiplier, SD.m_ArmorResistEM, SD.m_ArmorResistThermal, SD.m_ArmorResistKinetic, SD.m_ArmorResistExplosive, LAYER.ARMOR, AllModules, SD.m_OverheatingBonus);
+                m_Tank[LAYER.HULL] = GetLayerTank(SD.m_HullHP, SD.m_HullHPMultiplier, SD.m_HullResistEM, SD.m_HullResistThermal, SD.m_HullResistKinetic, SD.m_HullResistExplosive, LAYER.HULL, AllModules, SD.m_OverheatingBonus);
             }
 
             EventTankChanged();
         }
 
         private Tuple<float, Dictionary<RESIST, float>, Dictionary<RESIST, float>>
-            GetLayerTank(float BaseHP, float LayerMultiplier, float ResistEM, float ResistThermal, float ResistKinetic, float ResistExplosive, LAYER Layer, IReadOnlyCollection<Tuple<ModuleDescription, int>> Modules)
+            GetLayerTank(float BaseHP, float LayerMultiplier, float ResistEM, float ResistThermal, float ResistKinetic, float ResistExplosive, LAYER Layer, IReadOnlyCollection<Tuple<ModuleDescription, int>> Modules, float ShipOverheatingBonus)
         {
             float FlatHPBonus = 0.0f;
             float HPMultiplier = LayerMultiplier;
@@ -72,35 +72,29 @@ namespace EveFitScanUI
                 int Count = ModuleAndCount.Item2;
                 if (ModuleAndCount.Item1.m_Effects.ContainsKey(Layer)) {
                     foreach (EFFECT Effect in ModuleAndCount.Item1.m_Effects[Layer].Keys) {
-                        Dictionary<bool, Tuple<float, int>> EffectParams = ModuleAndCount.Item1.m_Effects[Layer][Effect];
+                        Tuple<float, int> EffectParams = ModuleAndCount.Item1.m_Effects[Layer][Effect];
                         switch (Effect) {
                             case EFFECT.ADD:
-                                Debug.Assert(EffectParams.ContainsKey(false)); // "Cold" effect present
-                                Debug.Assert(!EffectParams.ContainsKey(true)); // "Overheated" effect doesn't
-                                Debug.Assert(EffectParams[false].Item2 == 1); // all flat shield/armor/hull bonuses have stacking group 1
-                                FlatHPBonus += (EffectParams[false].Item1 * Count);
+                                Debug.Assert(EffectParams.Item2 == 1); // all flat shield/armor/hull bonuses have stacking group 1
+                                FlatHPBonus += (EffectParams.Item1 * Count);
                                 break;
                             case EFFECT.MULTIPLY:
-                                Debug.Assert(EffectParams.ContainsKey(false)); // "Cold" effect present
-                                Debug.Assert(!EffectParams.ContainsKey(true)); // "Overheated" effect doesn't
-                                Debug.Assert(EffectParams[false].Item2 == 1); // all multiplicative shield/armor/hull bonuses have stacking group 1
-                                HPMultiplier *= (float)Math.Pow(EffectParams[false].Item1, Count);
+                                Debug.Assert(EffectParams.Item2 == 1); // all multiplicative shield/armor/hull bonuses have stacking group 1
+                                HPMultiplier *= (float)Math.Pow(EffectParams.Item1, Count);
                                 break;
                             case EFFECT.EM:
                             case EFFECT.THERMAL:
                             case EFFECT.KINETIC:
                             case EFFECT.EXPLOSIVE:
                                 RESIST Resist = EffectToResist(Effect);
-                                bool HasColdEffect = EffectParams.ContainsKey(false);
-                                bool HasHotEffect = EffectParams.ContainsKey(true);
-                                Debug.Assert(HasColdEffect);
-                                AddTo(ref ResistBonuses, Resist, false, EffectParams[false].Item2, EffectParams[false].Item1, Count);
-                                if (HasHotEffect) {
-                                    Debug.Assert(EffectParams[false].Item2 == EffectParams[true].Item2); // cold and hot effects have the same stacking group
-                                    AddTo(ref ResistBonuses, Resist, true, EffectParams[false].Item2, EffectParams[true].Item1, Count);
+                                AddTo(ref ResistBonuses, Resist, false, EffectParams.Item2, EffectParams.Item1, Count);
+                                float OverloadBonus = ModuleAndCount.Item1.m_OverloadBonus;
+                                if (OverloadBonus > 0.01f) {
+                                    float OverloadedResist = EffectParams.Item1 * (1.0f + OverloadBonus * (1.0f + ShipOverheatingBonus));
+                                    AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, OverloadedResist, Count);
                                 }
                                 else {
-                                    AddTo(ref ResistBonuses, Resist, true, EffectParams[false].Item2, EffectParams[false].Item1, Count);
+                                    AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, EffectParams.Item1, Count);
                                 }
                                 break;
                         }
