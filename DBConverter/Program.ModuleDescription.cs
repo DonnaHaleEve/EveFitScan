@@ -14,7 +14,8 @@ namespace DBConverter
                 int TypeID,
                 MODULE_SLOT Slot,
                 IReadOnlyDictionary<MODULE_ATTRIBUTES,Tuple<float,int>> Attributes,
-                float OverloadBonus
+                float OverloadBonus,
+                int ShipTypeID
             )
             {
                 m_Name = Name;
@@ -22,16 +23,18 @@ namespace DBConverter
                 m_Slot = Slot;
                 m_Attributes = (Dictionary<MODULE_ATTRIBUTES, Tuple<float, int>>)Attributes;
                 m_OverloadBonus = OverloadBonus;
+                m_ShipTypeID = ShipTypeID;
             }
             private string m_Name;
             private int m_TypeID;
             private MODULE_SLOT m_Slot;
             private Dictionary<MODULE_ATTRIBUTES, Tuple<float, int>> m_Attributes;
             private float m_OverloadBonus;
+            private int m_ShipTypeID;
 
             public void Print(StreamWriter file)
             {
-                file.WriteLine("          m_ModuleDescriptions.Add((new ModuleDescription(\"{0}\",{1},{2},{3:f1}f)){4});", Escape(m_Name), m_TypeID, GetSlotName(m_Slot), m_OverloadBonus, StringifyAttributes());
+                file.WriteLine("          m_ModuleDescriptions.Add((new ModuleDescription(\"{0}\",{1},{2},{3:f1}f,{4})){5});", Escape(m_Name), m_TypeID, GetSlotName(m_Slot, m_Name), m_OverloadBonus, m_ShipTypeID, StringifyAttributes());
             }
 
             private string StringifyAttributes() {
@@ -98,6 +101,10 @@ namespace DBConverter
                 {
                     Result = Result + String.Format(".AddEffect(LAYER.ARMOR,EFFECT.ADD,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
                 }
+                if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_BONUS_ADD, out AttrValue))
+                {
+                    Result = Result + String.Format(".AddEffect(LAYER.HULL,EFFECT.ADD,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                }
 
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_BONUS_MULTIPLY, out AttrValue))
                 {
@@ -112,6 +119,28 @@ namespace DBConverter
                     Result = Result + String.Format(".AddEffect(LAYER.HULL,EFFECT.MULTIPLY,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
                 }
 
+                if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HIGH_SLOTS, out AttrValue))
+                {
+                    Result = Result + String.Format(".AddEffect(LAYER.NONE,EFFECT.HIGH_SLOTS,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                }
+                if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_MEDIUM_SLOTS, out AttrValue))
+                {
+                    Result = Result + String.Format(".AddEffect(LAYER.NONE,EFFECT.MEDIUM_SLOTS,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                }
+                if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_LOW_SLOTS, out AttrValue))
+                {
+                    Result = Result + String.Format(".AddEffect(LAYER.NONE,EFFECT.LOW_SLOTS,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                }
+
+                if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_HARDENERS_OVERLOAD_BONUS, out AttrValue))
+                {
+                    Result = Result + String.Format(".AddEffect(LAYER.SHIELD,EFFECT.OVERHEATING,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                }
+                if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_HARDENERS_OVERLOAD_BONUS, out AttrValue))
+                {
+                    Result = Result + String.Format(".AddEffect(LAYER.ARMOR,EFFECT.OVERHEATING,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                }
+
                 return Result;
             }
 
@@ -119,7 +148,7 @@ namespace DBConverter
                 return S.Replace("\'", "\\\'");
             }
 
-            private string GetSlotName(MODULE_SLOT Slot) {
+            private string GetSlotName(MODULE_SLOT Slot, string ModuleName) {
                 if (Slot == MODULE_SLOT.HIGH_POWER) {
                     return "SLOT.HIGH";
                 }
@@ -134,7 +163,24 @@ namespace DBConverter
                 {
                     return "SLOT.RIG";
                 }
-                Debug.Assert(false,"unknown slot");
+                else if (Slot == MODULE_SLOT.SUBSYSTEM)
+                {
+                    if (ModuleName.Contains(" Core - ")) {
+                        return "SLOT.SUB_CORE";
+                    }
+                    else if (ModuleName.Contains(" Defensive - ")) {
+                        return "SLOT.SUB_DEFENSIVE";
+                    }
+                    else if (ModuleName.Contains(" Offensive - "))
+                    {
+                        return "SLOT.SUB_OFFENSIVE";
+                    }
+                    else if (ModuleName.Contains(" Propulsion - "))
+                    {
+                        return "SLOT.SUB_PROPULSION";
+                    }
+                }
+                Debug.Assert(false, "unknown slot");
                 return "";
             }
         };

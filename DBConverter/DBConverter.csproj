@@ -54,6 +54,7 @@
     <Compile Include="Program.ModuleAttributesDB.cs" />
     <Compile Include="Program.ModuleDescription.cs" />
     <Compile Include="Program.ModuleSlot.cs" />
+    <Compile Include="Program.ModuleTraits.cs" />
     <Compile Include="Program.ShipAttributes.cs" />
     <Compile Include="Program.ShipDescription.cs" />
     <Compile Include="Program.ShipTraits.cs" />

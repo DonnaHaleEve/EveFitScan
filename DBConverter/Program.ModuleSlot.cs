@@ -10,7 +10,7 @@ namespace DBConverter
             MEDIUM_POWER = 13,
             LOW_POWER    = 11,
             RIG          = 2663,
-            //SUBSYSTEM = 3772,
+            SUBSYSTEM    = 3772,
         };
     }
 }

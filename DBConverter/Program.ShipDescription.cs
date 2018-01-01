@@ -14,6 +14,7 @@ namespace DBConverter
                 int MedSlots,
                 int LowSlots,
                 int RigSlots,
+                int SubsystemSlots,
                 float ShieldHP,
                 float ShieldHPMultiplier,
                 float ShieldResistEM,
@@ -41,6 +42,7 @@ namespace DBConverter
                 m_MedSlots = MedSlots;
                 m_LowSlots = LowSlots;
                 m_RigSlots = RigSlots;
+                m_SubsystemSlots = SubsystemSlots;
 
                 m_ShieldHP = ShieldHP;
                 m_ShieldHPMultiplier = ShieldHPMultiplier;
@@ -72,6 +74,7 @@ namespace DBConverter
             public int m_MedSlots;
             public int m_LowSlots;
             public int m_RigSlots;
+            public int m_SubsystemSlots;
 
             public float m_ShieldHP;
             public float m_ShieldHPMultiplier;
@@ -98,8 +101,8 @@ namespace DBConverter
 
             public void Print(StreamWriter file)
             {
-                file.WriteLine("          m_ShipDescriptions.Add(new ShipDescription(\"{0}\",{1},{2},{3},{4},{5},{6:f4}f,{7:f4}f,{8:f4}f,{9:f4}f,{10:f4}f,{11:f4}f,{12:f4}f,{13:f4}f,{14:f4}f,{15:f4}f,{16:f4}f,{17:f4}f,{18:f4}f,{19:f4}f,{20:f4}f,{21:f4}f,{22:f4}f,{23:f4}f,{24:f4}f));",
-                    m_Name, m_TypeID, m_HighSlots, m_MedSlots, m_LowSlots, m_RigSlots,
+                file.WriteLine("          m_ShipDescriptions.Add(new ShipDescription(\"{0}\",{1},{2},{3},{4},{5},{6},{7:f4}f,{8:f4}f,{9:f4}f,{10:f4}f,{11:f4}f,{12:f4}f,{13:f4}f,{14:f4}f,{15:f4}f,{16:f4}f,{17:f4}f,{18:f4}f,{19:f4}f,{20:f4}f,{21:f4}f,{22:f4}f,{23:f4}f,{24:f4}f,{25:f4}f));",
+                    m_Name, m_TypeID, m_HighSlots, m_MedSlots, m_LowSlots, m_RigSlots, m_SubsystemSlots,
                     m_ShieldHP, m_ShieldHPMultiplier, m_ShieldResistEM, m_ShieldResistThermal, m_ShieldResistKinetic, m_ShieldResistExplosive,
                     m_ArmorHP, m_ArmorHPMultiplier, m_ArmorResistEM, m_ArmorResistThermal, m_ArmorResistKinetic, m_ArmorResistExplosive,
                     m_HullHP, m_HullHPMultiplier, m_HullResistEM, m_HullResistThermal, m_HullResistKinetic, m_HullResistExplosive,

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace EveFitScanUI
 {
@@ -45,6 +46,27 @@ namespace EveFitScanUI
         public string ShipName {
             get {
                 return m_ShipName;
+            }
+        }
+
+        // -----------------------------------------------------------------------------------------------------------------------
+
+        public int SubsystemSlots
+        {
+            get
+            {
+                int SSSlots = Model.CoreSlots + Model.DefensiveSlots + Model.OffensiveSlots + Model.PropulsionSlots;
+                Debug.Assert(SSSlots == 0 || SSSlots == 4);
+                return SSSlots;
+            }
+        }
+
+        private List<string> m_SubsystemModules = new List<string>();
+        public IReadOnlyList<string> SubsystemModules
+        {
+            get
+            {
+                return m_SubsystemModules;
             }
         }
 

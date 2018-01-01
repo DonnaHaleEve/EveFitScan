@@ -42,6 +42,51 @@ namespace EveFitScanUI
 
             IReadOnlyDictionary<ShipModel.SLOT, Dictionary<int, int>> ShipFit = Model.Fit;
 
+            m_SubsystemModules.Clear();
+            if (ShipFit.ContainsKey(ShipModel.SLOT.SUB_CORE)) {
+                foreach (KeyValuePair<int, int> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.SUB_CORE])
+                {
+                    string ModuleName = Model.GetModuleName(ModuleTypeIDAndCount.Key);
+                    for (int i = 0; i < ModuleTypeIDAndCount.Value; ++i)
+                    {
+                        m_SubsystemModules.Add(ModuleName);
+                    }
+                }
+            }
+            if (ShipFit.ContainsKey(ShipModel.SLOT.SUB_DEFENSIVE))
+            {
+                foreach (KeyValuePair<int, int> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.SUB_DEFENSIVE])
+                {
+                    string ModuleName = Model.GetModuleName(ModuleTypeIDAndCount.Key);
+                    for (int i = 0; i < ModuleTypeIDAndCount.Value; ++i)
+                    {
+                        m_SubsystemModules.Add(ModuleName);
+                    }
+                }
+            }
+            if (ShipFit.ContainsKey(ShipModel.SLOT.SUB_OFFENSIVE))
+            {
+                foreach (KeyValuePair<int, int> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.SUB_OFFENSIVE])
+                {
+                    string ModuleName = Model.GetModuleName(ModuleTypeIDAndCount.Key);
+                    for (int i = 0; i < ModuleTypeIDAndCount.Value; ++i)
+                    {
+                        m_SubsystemModules.Add(ModuleName);
+                    }
+                }
+            }
+            if (ShipFit.ContainsKey(ShipModel.SLOT.SUB_PROPULSION))
+            {
+                foreach (KeyValuePair<int, int> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.SUB_PROPULSION])
+                {
+                    string ModuleName = Model.GetModuleName(ModuleTypeIDAndCount.Key);
+                    for (int i = 0; i < ModuleTypeIDAndCount.Value; ++i)
+                    {
+                        m_SubsystemModules.Add(ModuleName);
+                    }
+                }
+            }
+
             m_HighPowerModules.Clear();
             if (ShipFit.ContainsKey(ShipModel.SLOT.HIGH))
             {
@@ -111,9 +156,22 @@ namespace EveFitScanUI
         }
 
         private void GenerateEFTFit() {
-            m_EFTFit = ("[" + m_ShipName + "]" + System.Environment.NewLine + System.Environment.NewLine);
+            m_EFTFit = ("[" + m_ShipName + ", scanned fit]" + System.Environment.NewLine);
 
-            if (m_HighPowerModules.Count > 0)
+            if (SubsystemSlots > 0)
+            {
+                m_EFTFit += System.Environment.NewLine;
+            }
+            foreach (string Name in m_SubsystemModules)
+            {
+                m_EFTFit += (Name + System.Environment.NewLine);
+            }
+            for (int i = m_SubsystemModules.Count; i < SubsystemSlots; ++i)
+            {
+                m_EFTFit += ("[empty subsystem slot]" + System.Environment.NewLine);
+            }
+
+            if (HighSlots > 0)
             {
                 m_EFTFit += System.Environment.NewLine;
             }
@@ -126,7 +184,7 @@ namespace EveFitScanUI
                 m_EFTFit += ("[empty high slot]" + System.Environment.NewLine);
             }
 
-            if (m_MediumPowerModules.Count > 0)
+            if (MediumSlots > 0)
             {
                 m_EFTFit += System.Environment.NewLine;
             }
@@ -139,7 +197,7 @@ namespace EveFitScanUI
                 m_EFTFit += ("[empty mid slot]" + System.Environment.NewLine);
             }
 
-            if (m_LowPowerModules.Count > 0)
+            if (LowSlots > 0)
             {
                 m_EFTFit += System.Environment.NewLine;
             }
@@ -152,7 +210,7 @@ namespace EveFitScanUI
                 m_EFTFit += ("[empty low slot]" + System.Environment.NewLine);
             }
 
-            if (m_Rigs.Count > 0)
+            if (RigSlots > 0)
             {
                 m_EFTFit += System.Environment.NewLine;
             }

@@ -72,6 +72,54 @@ namespace EveFitScanUI
             }
         }
 
+        public int CoreSlots {
+            get
+            {
+                int Slots = 0;
+                if (m_Slots.TryGetValue(SLOT.SUB_CORE, out Slots))
+                {
+                    return Slots;
+                }
+                return 0;
+            }
+        }
+        public int DefensiveSlots
+        {
+            get
+            {
+                int Slots = 0;
+                if (m_Slots.TryGetValue(SLOT.SUB_DEFENSIVE, out Slots))
+                {
+                    return Slots;
+                }
+                return 0;
+            }
+        }
+        public int OffensiveSlots
+        {
+            get
+            {
+                int Slots = 0;
+                if (m_Slots.TryGetValue(SLOT.SUB_OFFENSIVE, out Slots))
+                {
+                    return Slots;
+                }
+                return 0;
+            }
+        }
+        public int PropulsionSlots
+        {
+            get
+            {
+                int Slots = 0;
+                if (m_Slots.TryGetValue(SLOT.SUB_PROPULSION, out Slots))
+                {
+                    return Slots;
+                }
+                return 0;
+            }
+        }
+
         // slot => { ModuleTypeID => count }
         private Dictionary<SLOT, Dictionary<int, int>> m_Fit = new Dictionary<SLOT, Dictionary<int, int>>();
         public IReadOnlyDictionary<SLOT, Dictionary<int, int>> Fit {
@@ -154,6 +202,56 @@ namespace EveFitScanUI
                     m_Fit[MD.m_Slot][ModuleTypeID] = ModuleCount;
                 }
             }
+
+            if (m_ShipTypeID > 0) {
+                int Index = -1;
+                if (ShipTypeIDToIndex.TryGetValue(ShipTypeID, out Index)) {
+                    ShipDescription SD = ShipDescriptions[Index];
+                    if (SD.m_SubsystemSlots > 0) {
+                        // recalc slot layout for t3 cruisers
+
+                        int HS = SD.m_HighSlots;
+                        int MS = SD.m_MedSlots;
+                        int LS = SD.m_LowSlots;
+
+                        foreach (SLOT Slot in new SLOT[] { SLOT.SUB_CORE, SLOT.SUB_DEFENSIVE, SLOT.SUB_OFFENSIVE, SLOT.SUB_PROPULSION })
+                        {
+                            foreach (KeyValuePair<int, int> kvp in m_Fit[Slot])
+                            {
+                                int ModuleTypeID = kvp.Key;
+                                Index = -1;
+                                bool Ok = ModuleTypeIDToIndex.TryGetValue(ModuleTypeID, out Index);
+                                Debug.Assert(Ok && Index > 0);
+                                ModuleDescription MD = ModuleDescriptions[Index];
+                                if (MD.m_ShipTypeID == m_ShipTypeID) {
+                                    if (MD.m_Effects.ContainsKey(LAYER.NONE)) {
+                                        foreach (KeyValuePair<EFFECT, Tuple<float, int>> effect in MD.m_Effects[LAYER.NONE]) {
+                                            switch (effect.Key) {
+                                                case EFFECT.HIGH_SLOTS:
+                                                    HS += (int)effect.Value.Item1;
+                                                    break;
+                                                case EFFECT.MEDIUM_SLOTS:
+                                                    MS += (int)effect.Value.Item1;
+                                                    break;
+                                                case EFFECT.LOW_SLOTS:
+                                                    LS += (int)effect.Value.Item1;
+                                                    break;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                break; // only process first module. If there is more than one, fit is invalid anyway.
+                            }
+                        }
+                        m_Slots[SLOT.HIGH] = HS;
+                        m_Slots[SLOT.MEDIUM] = MS;
+                        m_Slots[SLOT.LOW] = LS;
+                    }
+                }
+                
+            }
+        
         }
 
         private void CheckFitValid()
@@ -171,6 +269,30 @@ namespace EveFitScanUI
                     break;
                 }
             }
+            if (m_ValidFit) {
+                if (m_ShipTypeID > 0) {
+                    int Index = -1;
+                    if (ShipTypeIDToIndex.TryGetValue(ShipTypeID, out Index)) {
+                        ShipDescription SD = ShipDescriptions[Index];
+                        if (SD.m_SubsystemSlots > 0) {
+                            //TODO: check that subsystems belong to current t3 hull
+                            //TODO: check that all 4 subsystems are filled
+
+                            foreach (SLOT Slot in new SLOT[] { SLOT.SUB_CORE, SLOT.SUB_DEFENSIVE, SLOT.SUB_OFFENSIVE, SLOT.SUB_PROPULSION }) {
+                                if (m_Fit[Slot].Count != 1) {
+                                    m_ValidFit = false;
+                                    break;
+                                }
+                                foreach (KeyValuePair<int, int> kvp in m_Fit[Slot])
+                                {
+                                }
+                            }
+                        
+                        
+                        }
+                    }
+                }
+            }
         }
 
         private void SetShipTypeID(int ShipTypeID)
@@ -185,6 +307,19 @@ namespace EveFitScanUI
                 m_Slots[SLOT.MEDIUM] = SD.m_MedSlots;
                 m_Slots[SLOT.LOW] = SD.m_LowSlots;
                 m_Slots[SLOT.RIG] = SD.m_RigSlots;
+                if (SD.m_SubsystemSlots > 0) {
+                    Debug.Assert(SD.m_SubsystemSlots == 4);
+                    m_Slots[SLOT.SUB_CORE] = 1;
+                    m_Slots[SLOT.SUB_DEFENSIVE] = 1;
+                    m_Slots[SLOT.SUB_OFFENSIVE] = 1;
+                    m_Slots[SLOT.SUB_PROPULSION] = 1;
+                }
+                else {
+                    m_Slots[SLOT.SUB_CORE] = 0;
+                    m_Slots[SLOT.SUB_DEFENSIVE] = 0;
+                    m_Slots[SLOT.SUB_OFFENSIVE] = 0;
+                    m_Slots[SLOT.SUB_PROPULSION] = 0;
+                }
             }
             else
             {
@@ -193,6 +328,10 @@ namespace EveFitScanUI
                 m_Slots[SLOT.MEDIUM] = 8;
                 m_Slots[SLOT.LOW] = 8;
                 m_Slots[SLOT.RIG] = 3;
+                m_Slots[SLOT.SUB_CORE] = 1;
+                m_Slots[SLOT.SUB_DEFENSIVE] = 1;
+                m_Slots[SLOT.SUB_OFFENSIVE] = 1;
+                m_Slots[SLOT.SUB_PROPULSION] = 1;
             }
         }
 
@@ -203,6 +342,10 @@ namespace EveFitScanUI
             m_Fit[SLOT.MEDIUM] = new Dictionary<int, int>();
             m_Fit[SLOT.LOW] = new Dictionary<int, int>();
             m_Fit[SLOT.RIG] = new Dictionary<int, int>();
+            m_Fit[SLOT.SUB_CORE] = new Dictionary<int, int>();
+            m_Fit[SLOT.SUB_DEFENSIVE] = new Dictionary<int, int>();
+            m_Fit[SLOT.SUB_OFFENSIVE] = new Dictionary<int, int>();
+            m_Fit[SLOT.SUB_PROPULSION] = new Dictionary<int, int>();
         }
 
     }

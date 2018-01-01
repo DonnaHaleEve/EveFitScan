@@ -32,6 +32,8 @@ namespace EveFitScanUI
             ModuleTypeIDs.Clear();
             foreach (string Line in Lines) {
                 string TrimmedLine = Line.Trim();
+                if (TrimmedLine.Length == 0)
+                    continue;
                 if (!Model.ModuleNameToIndex.ContainsKey(TrimmedLine))
                     return false;
                 int ModuleTypeID = Model.ModuleDescriptions[Model.ModuleNameToIndex[TrimmedLine]].m_TypeID;

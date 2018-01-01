@@ -34,12 +34,19 @@ namespace DBConverter
 
             MODULE_ATTR_DB_ARMOR_HP_BONUS_ADD = 1159, // armor HP
             MODULE_ATTR_DB_CAPACITY_BONUS = 72, // shield HP
+            MODULE_ATTR_DB_SHIELD_CAPACITY = 263, // shield HP, on t3 subsystems
+            MODULE_ATTR_DB_STRUCTURE_HP_BONUS_ADD = 2688, // hull HP, on t3 subsystems
 
             MODULE_ATTR_DB_SHIELD_CAPACITY_BONUS = 337, // shield %, rigs
             MODULE_ATTR_DB_ARMOR_HP_BONUS = 335, // armor %, rigs
             MODULE_ATTR_DB_HULL_HP_BONUS = 327, // hull %, rigs
 
             MODULE_ATTR_DB_DRAWBACK = 1138, // rigs
+
+            MODULE_ATTR_DB_SHIP_TYPE = 1380, // on t3 subsystems, tells what ship this sub is for
+            MODULE_ATTR_DB_HIGH_SLOTS = 1374, // on t3 subsystems
+            MODULE_ATTR_DB_MEDIUM_SLOTS = 1375, // on t3 subsystems
+            MODULE_ATTR_DB_LOW_SLOTS = 1376, // on t3 subsystems
         };
     }
 }

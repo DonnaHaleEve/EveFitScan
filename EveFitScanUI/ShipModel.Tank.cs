@@ -68,6 +68,20 @@ namespace EveFitScanUI
             // resist => cold/hot => stacking_group => list of resist bonuses
             Dictionary<RESIST, Dictionary<bool, Dictionary<int, List<float>>>> ResistBonuses = new Dictionary<RESIST, Dictionary<bool, Dictionary<int, List<float>>>>();
 
+            float SubsystemOverheatingBonus = 0.0f;
+            foreach (Tuple<ModuleDescription, int> ModuleAndCount in Modules)
+            {
+                int Count = ModuleAndCount.Item2;
+                if (ModuleAndCount.Item1.m_Effects.ContainsKey(Layer)) {
+                    if (ModuleAndCount.Item1.m_Effects[Layer].ContainsKey(EFFECT.OVERHEATING)) {
+                        Debug.Assert(Count == 1);
+                        Debug.Assert(SubsystemOverheatingBonus <= 0.0f);
+                        SubsystemOverheatingBonus = ModuleAndCount.Item1.m_Effects[Layer][EFFECT.OVERHEATING].Item1;
+                        Debug.Assert(SubsystemOverheatingBonus > 0.0f);
+                    }
+                }
+            }
+
             foreach (Tuple<ModuleDescription, int> ModuleAndCount in Modules) {
                 int Count = ModuleAndCount.Item2;
                 if (ModuleAndCount.Item1.m_Effects.ContainsKey(Layer)) {
@@ -90,7 +104,7 @@ namespace EveFitScanUI
                                 AddTo(ref ResistBonuses, Resist, false, EffectParams.Item2, EffectParams.Item1, Count);
                                 float OverloadBonus = ModuleAndCount.Item1.m_OverloadBonus;
                                 if (OverloadBonus > 0.01f) {
-                                    float OverloadedResist = EffectParams.Item1 * (1.0f + OverloadBonus * (1.0f + ShipOverheatingBonus));
+                                    float OverloadedResist = EffectParams.Item1 * (1.0f + OverloadBonus * (1.0f + ShipOverheatingBonus + SubsystemOverheatingBonus));
                                     AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, OverloadedResist, Count);
                                 }
                                 else {

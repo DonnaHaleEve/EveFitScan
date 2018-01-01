@@ -58,17 +58,13 @@ namespace DBConverter
             {
                 while (dr.Read())
                 {
-                    string newMarketGroupName = dr["marketGroupName"].ToString();
-                    //TODO: strategic cruisers
-                    if (String.Compare(newMarketGroupName, "Strategic Cruisers", true) != 0) {
-                        int newMarketGroup = Int32.Parse(dr["marketGroupID"].ToString());
-                        bool hasTypes = Boolean.Parse(dr["hasTypes"].ToString());
-                        if (hasTypes)
-                        {
-                            shipMarketGroups.Add(newMarketGroup);
-                        }
-                        newMarketGroups.Add(newMarketGroup);
+                    int newMarketGroup = Int32.Parse(dr["marketGroupID"].ToString());
+                    bool hasTypes = Boolean.Parse(dr["hasTypes"].ToString());
+                    if (hasTypes)
+                    {
+                        shipMarketGroups.Add(newMarketGroup);
                     }
+                    newMarketGroups.Add(newMarketGroup);
                 }
             }
 
@@ -163,8 +159,9 @@ namespace DBConverter
             List<Tuple<string, int, int, MODULE_SLOT>> modules = new List<Tuple<string, int, int, MODULE_SLOT>>();
 
             // TODO: effectID=3772 - "requires subsystem slot"
-            //NpgsqlCommand cmd = new NpgsqlCommand("SELECT \"typeID\", \"typeName\" FROM \"invTypes\" JOIN \"dgmTypeEffects\" USING (\"typeID\") WHERE \"effectID\" IN (11,12,13,2663,3772)", conn);
-            NpgsqlCommand cmd = new NpgsqlCommand("SELECT \"typeID\", \"typeName\", \"groupID\", \"effectID\" FROM \"invTypes\" JOIN \"dgmTypeEffects\" USING (\"typeID\") WHERE \"published\" = TRUE AND \"effectID\" IN (11,12,13,2663)", conn);
+            //NpgsqlCommand cmd = new NpgsqlCommand("SELECT \"typeID\", \"typeName\", \"groupID\", \"effectID\" FROM \"invTypes\" JOIN \"dgmTypeEffects\" USING (\"typeID\") WHERE \"published\" = TRUE AND \"effectID\" IN (3772)", conn);
+            NpgsqlCommand cmd = new NpgsqlCommand("SELECT \"typeID\", \"typeName\", \"groupID\", \"effectID\" FROM \"invTypes\" JOIN \"dgmTypeEffects\" USING (\"typeID\") WHERE \"published\" = TRUE AND \"effectID\" IN (11,12,13,2663,3772)", conn);
+            //NpgsqlCommand cmd = new NpgsqlCommand("SELECT \"typeID\", \"typeName\", \"groupID\", \"effectID\" FROM \"invTypes\" JOIN \"dgmTypeEffects\" USING (\"typeID\") WHERE \"published\" = TRUE AND \"effectID\" IN (11,12,13,2663)", conn);
             using (NpgsqlDataReader dr = cmd.ExecuteReader())
             {
                 while (dr.Read())
@@ -216,6 +213,54 @@ namespace DBConverter
             }
 
             return moduleAttributes;
+        }
+
+        private static IReadOnlyDictionary<MODULE_TRAITS, float> GetModuleTraits(int typeID, NpgsqlConnection conn)
+        {
+            Dictionary<MODULE_TRAITS, float> moduleTraits = new Dictionary<MODULE_TRAITS, float>();
+
+            NpgsqlCommand cmd = new NpgsqlCommand(
+                String.Format("SELECT \"bonus\", \"bonusText\" FROM \"invTraits\" WHERE \"typeID\" = {0} AND \"skillID\" > 0", typeID),
+                conn);
+            using (NpgsqlDataReader dr = cmd.ExecuteReader())
+            {
+                while (dr.Read())
+                {
+                    string bonusText = dr["bonusText"].ToString();
+                    string bonusString = dr["bonus"].ToString();
+                    float bonus = (bonusString.Length > 0) ? (float)Double.Parse(bonusString) : 0.0f;
+
+                    // fuck CCP
+                    if (String.Compare(bonusText, "bonus to all shield hitpoints", true) == 0)
+                    {
+                        moduleTraits[MODULE_TRAITS.MODULE_TRAIT_SHIELD_HP_PERCENT_PER_LEVEL] = bonus;
+                    }
+                    else if (String.Compare(bonusText, "bonus to all armor hitpoints", true) == 0)
+                    {
+                        moduleTraits[MODULE_TRAITS.MODULE_TRAIT_ARMOR_HP_PERCENT_PER_LEVEL] = bonus;
+                    }
+                    else if (String.Compare(bonusText, "bonus to all armor and shield hitpoints", true) == 0)
+                    {
+                        moduleTraits[MODULE_TRAITS.MODULE_TRAIT_ARMOR_HP_PERCENT_PER_LEVEL] = bonus;
+                        moduleTraits[MODULE_TRAITS.MODULE_TRAIT_SHIELD_HP_PERCENT_PER_LEVEL] = bonus;
+                    }
+                    else if (String.Compare(bonusText, "bonus to the benefits of overheating shield hardeners", true) == 0)
+                    {
+                        moduleTraits[MODULE_TRAITS.MODULE_TRAIT_SHIELD_HARDENERS_OVERHEATING_BONUS] = bonus;
+                    }
+                    else if (String.Compare(bonusText, "bonus to the benefits of overheating armor hardeners", true) == 0)
+                    {
+                        moduleTraits[MODULE_TRAITS.MODULE_TRAIT_ARMOR_HARDENERS_OVERHEATING_BONUS] = bonus;
+                    }
+                    else if (String.Compare(bonusText, "bonus to the benefits of overheating armor and shield hardeners", true) == 0)
+                    {
+                        moduleTraits[MODULE_TRAITS.MODULE_TRAIT_ARMOR_HARDENERS_OVERHEATING_BONUS] = bonus;
+                        moduleTraits[MODULE_TRAITS.MODULE_TRAIT_SHIELD_HARDENERS_OVERHEATING_BONUS] = bonus;
+                    }
+                }
+            }
+
+            return moduleTraits;
         }
     }
 }
