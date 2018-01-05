@@ -145,7 +145,8 @@ namespace EveFitScanUI
             for (PrefixPos = 0; PrefixPos < Prefix.Length; ++PrefixPos)
             {
                 for (; Index < ShipNamesSorted.Count && ShipNamesSorted[Index].Item1[PrefixPos] < Prefix[PrefixPos]; Index++) { }
-                if (ShipNamesSorted[Index].Item1[PrefixPos] > Prefix[PrefixPos]) {
+                if (Index >= ShipNamesSorted.Count || ShipNamesSorted[Index].Item1[PrefixPos] > Prefix[PrefixPos])
+                {
                     break;
                 }
             }

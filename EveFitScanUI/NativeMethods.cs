@@ -14,6 +14,7 @@ namespace EveFitScanUI
     internal static class NativeMethods
     {
         #region P/Invoked Methods
+
         /// <summary>
         /// Adds a clipboard viewer to the current chain of clipboard registrees.
         /// </summary>
@@ -31,6 +32,10 @@ namespace EveFitScanUI
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         [return: MarshalAs(UnmanagedType.U1)]
         internal static extern bool ChangeClipboardChain(IntPtr hWndRemove, IntPtr hWndNewNext);
+
+        [DllImport("User32.dll")]
+        internal static extern int SendMessage(IntPtr hWnd, int uMsg, IntPtr wParam, IntPtr lParam);
+
         #endregion P/Invoked Methods
     }
 }
