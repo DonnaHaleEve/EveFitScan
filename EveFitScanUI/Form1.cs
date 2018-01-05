@@ -11,6 +11,7 @@ namespace EveFitScanUI
         /// Constant for the WM_DRAWCLIPBOARD message.
         /// </summary>
         private const int WMDRAWCLIPBOARD = 0x0308;        // WM_DRAWCLIPBOARD message
+        private const int WMCHANGECBCHAIN = 0x030D;  // WM_CHANGECBCHAIN message
 
         /// <summary>
         /// Holds the Handle to the next clipboard viewer in the chain.
@@ -36,40 +37,55 @@ namespace EveFitScanUI
         {
             base.WndProc(ref m);
             if (m.Msg == WMDRAWCLIPBOARD) {
-                if (m_bFirstFire) {
+                if (m_bFirstFire)
+                {
                     m_bFirstFire = false;
-                    return;
                 }
+                else {
+                    if (m_bCaptureClipboard)
+                    {
+                        IDataObject obj = Clipboard.GetDataObject();
 
-                if (!m_bCaptureClipboard) {
-                    return;
-                }
+                        string format = string.Empty;
 
-                IDataObject obj = Clipboard.GetDataObject();
+                        if (obj.GetDataPresent(DataFormats.OemText))
+                        {
+                            format = DataFormats.OemText;
+                        }
+                        else if (obj.GetDataPresent(DataFormats.Text))
+                        {
+                            format = DataFormats.Text;
+                        }
+                        else if (obj.GetDataPresent(DataFormats.UnicodeText))
+                        {
+                            format = DataFormats.UnicodeText;
+                        }
 
-                string format = string.Empty;
+                        if (!string.IsNullOrEmpty(format))
+                        {
+                            string data = (string)obj.GetData(format);
 
-                if (obj.GetDataPresent(DataFormats.OemText)) {
-                    format = DataFormats.OemText;
-                }
-                else if (obj.GetDataPresent(DataFormats.Text)) {
-                    format = DataFormats.Text;
-                }
-                else if (obj.GetDataPresent(DataFormats.UnicodeText)) {
-                    format = DataFormats.UnicodeText;
-                }
+                            if (data == m_LastCopy)
+                            {
+                                return;
+                            }
 
-                if (!string.IsNullOrEmpty(format)) {
-                    string data = (string)obj.GetData(format);
-
-                    if (data == m_LastCopy) {
-                        return;
+                            m_FitScanProcessor.NewPaste(data);
+                        }
                     }
-
-                    m_FitScanProcessor.NewPaste(data);
-                    //this.m_ClipboardText.Text = data;
                 }
 
+                NativeMethods.SendMessage(clipboardViewerNext,m.Msg,m.WParam,m.LParam);
+            }
+            else if (m.Msg == WMCHANGECBCHAIN)
+            {
+                if (m.WParam == clipboardViewerNext)
+                {
+                    clipboardViewerNext = m.LParam;
+                }
+                else {
+                    NativeMethods.SendMessage(clipboardViewerNext, m.Msg, m.WParam, m.LParam);
+                }
             }
         }
 
@@ -83,10 +99,6 @@ namespace EveFitScanUI
             m_FitScanProcessor.EventShipTankChanged += new FitScanProcessor.DelegateShipTankChanged(OnShipTankChanged);
 
             m_ComboBoxItems.Clear();
-            //m_ComboBoxItems.Add("AAA");
-            //m_ComboBoxItems.Add("BBB");
-            //m_ComboBoxItems.Add("CCC");
-            //m_ComboBoxItems.Add("DDD");
 
             m_BindingSource = new BindingSource(m_ComboBoxItems, null);
             m_ComboBoxShipType.DataSource = m_BindingSource;
