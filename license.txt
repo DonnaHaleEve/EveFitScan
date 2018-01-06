@@ -16,8 +16,8 @@ A non-exclusive, non-transferrable, limited time license to use this
 software and associated source code, has been granted to you as a 
 member of one of the following organizations or its allies:
 
-* Goonswarm
-* Miniluv
+* Imperium
+* Ministry OF Love
 
 This license exists only for as long as you continue to be a member
 of one of these groups or its allies, and will terminate at the time
