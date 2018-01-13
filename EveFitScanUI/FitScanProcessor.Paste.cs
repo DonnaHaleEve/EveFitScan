@@ -35,7 +35,7 @@ namespace EveFitScanUI
                 if (TrimmedLine.Length == 0)
                     continue;
                 if (!Model.ModuleNameToIndex.ContainsKey(TrimmedLine))
-                    return false;
+                    continue; // skip any non-module:  scripts, ammo, etc.
                 int ModuleTypeID = Model.ModuleDescriptions[Model.ModuleNameToIndex[TrimmedLine]].m_TypeID;
                 ModuleTypeIDs.Add(ModuleTypeID);
             }
