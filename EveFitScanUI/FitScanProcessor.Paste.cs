@@ -9,16 +9,17 @@ namespace EveFitScanUI
         public void NewPaste(string Data) {
             int ShipTypeID = 0;
             List<int> ModuleTypeIDs = new List<int>();
-            if (ListOfModules(Data, ref ModuleTypeIDs)) {
-                m_ShipModel.AddMoreModules(ModuleTypeIDs);
+            if (CODEFitScanURL(Data, ref ShipTypeID, ref ModuleTypeIDs))
+            {
+                m_ShipModel.SetShipAndModules(ShipTypeID, ModuleTypeIDs);
             }
             else if (EFTBlock(Data, ref ShipTypeID, ref ModuleTypeIDs))
             {
                 m_ShipModel.SetShipAndModules(ShipTypeID, ModuleTypeIDs);
             }
-            else if (CODEFitScanURL(Data, ref ShipTypeID, ref ModuleTypeIDs))
+            else if (ListOfModules(Data, ref ModuleTypeIDs))
             {
-                m_ShipModel.SetShipAndModules(ShipTypeID, ModuleTypeIDs);
+                m_ShipModel.AddMoreModules(ModuleTypeIDs);
             }
         }
 
@@ -40,7 +41,7 @@ namespace EveFitScanUI
                 ModuleTypeIDs.Add(ModuleTypeID);
             }
 
-            return true;
+            return (ModuleTypeIDs.Count > 0);
         }
 
         private bool EFTBlock(string Data, ref int ShipTypeID, ref List<int> ModuleTypeIDs)
