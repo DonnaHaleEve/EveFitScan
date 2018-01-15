@@ -62,14 +62,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigHelper.cs" />
     <Compile Include="FitScanProcessor.cs" />
     <Compile Include="FitScanProcessor.CurrentState.cs" />
     <Compile Include="FitScanProcessor.Paste.cs" />
+    <Compile Include="Form1.Buttons.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.ShipSelect.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.UpdateUI.cs">
       <SubType>Form</SubType>
