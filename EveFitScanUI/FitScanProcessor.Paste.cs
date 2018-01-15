@@ -56,7 +56,6 @@ namespace EveFitScanUI
                 if (!EFTBlockFirstLine(Lines[0], ref ShipTypeID))
                     break;
 
-                bool ModulesOK = true;
                 ModuleTypeIDs.Clear();
                 for (int i = 1; i < Lines.Length; ++i) {
                     string LineLowcase = Lines[i].Trim().ToLower();
@@ -73,16 +72,11 @@ namespace EveFitScanUI
                     string ModuleName = (CommaPosition < 0) ? Lines[i]: Lines[i].Substring(0,CommaPosition);
                     ModuleName = ModuleName.Trim();
                     if (!Model.ModuleNameToIndex.ContainsKey(ModuleName))
-                    {
-                        ModulesOK = false;
-                        break;
-                    }
+                        continue;
                     int ModuleTypeID = Model.ModuleDescriptions[Model.ModuleNameToIndex[ModuleName]].m_TypeID;
                     ModuleTypeIDs.Add(ModuleTypeID);
                 
                 }
-                if (!ModulesOK)
-                    break;
 
                 Success = true;
             } while(false);
