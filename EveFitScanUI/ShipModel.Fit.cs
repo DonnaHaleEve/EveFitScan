@@ -210,43 +210,49 @@ namespace EveFitScanUI
                     if (SD.m_SubsystemSlots > 0) {
                         // recalc slot layout for t3 cruisers
 
-                        int HS = SD.m_HighSlots;
-                        int MS = SD.m_MedSlots;
-                        int LS = SD.m_LowSlots;
+                        int nSubsystems = ((m_Fit[SLOT.SUB_CORE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_DEFENSIVE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_OFFENSIVE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_PROPULSION].Count > 0) ? 1 : 0);
+                        if (nSubsystems == 4) {
+                            int HS = SD.m_HighSlots;
+                            int MS = SD.m_MedSlots;
+                            int LS = SD.m_LowSlots;
 
-                        foreach (SLOT Slot in new SLOT[] { SLOT.SUB_CORE, SLOT.SUB_DEFENSIVE, SLOT.SUB_OFFENSIVE, SLOT.SUB_PROPULSION })
-                        {
-                            foreach (KeyValuePair<int, int> kvp in m_Fit[Slot])
-                            {
-                                int ModuleTypeID = kvp.Key;
-                                Index = -1;
-                                bool Ok = ModuleTypeIDToIndex.TryGetValue(ModuleTypeID, out Index);
-                                Debug.Assert(Ok && Index > 0);
-                                ModuleDescription MD = ModuleDescriptions[Index];
-                                if (MD.m_ShipTypeID == m_ShipTypeID) {
-                                    if (MD.m_Effects.ContainsKey(LAYER.NONE)) {
-                                        foreach (KeyValuePair<EFFECT, Tuple<float, int>> effect in MD.m_Effects[LAYER.NONE]) {
-                                            switch (effect.Key) {
-                                                case EFFECT.HIGH_SLOTS:
-                                                    HS += (int)effect.Value.Item1;
-                                                    break;
-                                                case EFFECT.MEDIUM_SLOTS:
-                                                    MS += (int)effect.Value.Item1;
-                                                    break;
-                                                case EFFECT.LOW_SLOTS:
-                                                    LS += (int)effect.Value.Item1;
-                                                    break;
+                            foreach (SLOT Slot in new SLOT[] { SLOT.SUB_CORE, SLOT.SUB_DEFENSIVE, SLOT.SUB_OFFENSIVE, SLOT.SUB_PROPULSION }) {
+                                foreach (KeyValuePair<int, int> kvp in m_Fit[Slot]) {
+                                    int ModuleTypeID = kvp.Key;
+                                    Index = -1;
+                                    bool Ok = ModuleTypeIDToIndex.TryGetValue(ModuleTypeID, out Index);
+                                    Debug.Assert(Ok && Index > 0);
+                                    ModuleDescription MD = ModuleDescriptions[Index];
+                                    if (MD.m_ShipTypeID == m_ShipTypeID) {
+                                        if (MD.m_Effects.ContainsKey(LAYER.NONE)) {
+                                            foreach (KeyValuePair<EFFECT, Tuple<float, int>> effect in MD.m_Effects[LAYER.NONE]) {
+                                                switch (effect.Key) {
+                                                    case EFFECT.HIGH_SLOTS:
+                                                        HS += (int)effect.Value.Item1;
+                                                        break;
+                                                    case EFFECT.MEDIUM_SLOTS:
+                                                        MS += (int)effect.Value.Item1;
+                                                        break;
+                                                    case EFFECT.LOW_SLOTS:
+                                                        LS += (int)effect.Value.Item1;
+                                                        break;
+                                                }
                                             }
                                         }
                                     }
-                                }
 
-                                break; // only process first module. If there is more than one, fit is invalid anyway.
+                                    break; // only process first module. If there is more than one, fit is invalid anyway.
+                                }
                             }
+                            m_Slots[SLOT.HIGH] = HS;
+                            m_Slots[SLOT.MEDIUM] = MS;
+                            m_Slots[SLOT.LOW] = LS;
                         }
-                        m_Slots[SLOT.HIGH] = HS;
-                        m_Slots[SLOT.MEDIUM] = MS;
-                        m_Slots[SLOT.LOW] = LS;
+                        else {
+                            m_Slots[SLOT.HIGH] = 8;
+                            m_Slots[SLOT.MEDIUM] = 8;
+                            m_Slots[SLOT.LOW] = 8;
+                        }
                     }
                 }
                 
@@ -275,16 +281,38 @@ namespace EveFitScanUI
                     if (ShipTypeIDToIndex.TryGetValue(ShipTypeID, out Index)) {
                         ShipDescription SD = ShipDescriptions[Index];
                         if (SD.m_SubsystemSlots > 0) {
-                            //TODO: check that subsystems belong to current t3 hull
-                            //TODO: check that all 4 subsystems are filled
 
                             foreach (SLOT Slot in new SLOT[] { SLOT.SUB_CORE, SLOT.SUB_DEFENSIVE, SLOT.SUB_OFFENSIVE, SLOT.SUB_PROPULSION }) {
-                                if (m_Fit[Slot].Count != 1) {
+                                if (m_Fit[Slot].Count > 1) {
                                     m_ValidFit = false;
                                     break;
                                 }
-                                foreach (KeyValuePair<int, int> kvp in m_Fit[Slot])
-                                {
+                                #region Check that all 4 subsystems are filled. Not required anymore, coz we can have partial t3c fits.
+                                //if (m_Fit[Slot].Count != 1) {
+                                //    m_ValidFit = false;
+                                //    break;
+                                //}
+                                #endregion
+
+                                // Check that subsystems belong to current t3 hull.
+                                foreach (KeyValuePair<int, int> kvp in m_Fit[Slot]) {
+                                    Index = -1;
+                                    if (!ModuleTypeIDToIndex.TryGetValue(kvp.Key, out Index) || Index < 0) {
+                                        m_ValidFit = false;
+                                        break;
+                                    }
+                                    ModuleDescription md = ModuleDescriptions[Index];
+                                    if (md.m_ShipTypeID < 0 || md.m_ShipTypeID != m_ShipTypeID) {
+                                        m_ValidFit = false;
+                                        break;
+                                    }
+
+                                    if (kvp.Value != 1) {
+                                        m_ValidFit = false;
+                                        break;
+                                    }
+
+                                    break;
                                 }
                             }
                         
