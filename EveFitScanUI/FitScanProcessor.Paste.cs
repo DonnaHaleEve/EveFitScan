@@ -6,20 +6,20 @@ namespace EveFitScanUI
 {
     partial class FitScanProcessor
     {
-        public void NewPaste(string Data) {
+        public void NewPaste(string Data, bool bPassive) {
             int ShipTypeID = 0;
             List<int> ModuleTypeIDs = new List<int>();
             if (CODEFitScanURL(Data, ref ShipTypeID, ref ModuleTypeIDs))
             {
-                m_ShipModel.SetShipAndModules(ShipTypeID, ModuleTypeIDs);
+                m_ShipModel.SetShipAndModules(ShipTypeID, ModuleTypeIDs, bPassive);
             }
             else if (EFTBlock(Data, ref ShipTypeID, ref ModuleTypeIDs))
             {
-                m_ShipModel.SetShipAndModules(ShipTypeID, ModuleTypeIDs);
+                m_ShipModel.SetShipAndModules(ShipTypeID, ModuleTypeIDs, bPassive);
             }
             else if (ListOfModules(Data, ref ModuleTypeIDs))
             {
-                m_ShipModel.AddMoreModules(ModuleTypeIDs);
+                m_ShipModel.AddMoreModules(ModuleTypeIDs, bPassive);
             }
         }
 

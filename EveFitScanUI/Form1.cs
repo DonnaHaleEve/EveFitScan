@@ -86,7 +86,7 @@ namespace EveFitScanUI
                                 return;
                             }
 
-                            m_FitScanProcessor.NewPaste(data);
+                            m_FitScanProcessor.NewPaste(data, m_checkBoxPassive.Checked);
                         }
                     }
                 }
@@ -124,6 +124,9 @@ namespace EveFitScanUI
             m_BindingSource = new BindingSource(m_ComboBoxItems, null);
             m_ComboBoxShipType.DataSource = m_BindingSource;
             m_ComboBoxShipType.SelectedIndex = -1;
+
+            this.m_checkBoxPassive.Checked = ConfigHelper.Instance.PassiveTank;
+            m_FitScanProcessor.SetPassive(ConfigHelper.Instance.PassiveTank);
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -133,5 +136,6 @@ namespace EveFitScanUI
 
             NativeMethods.ChangeClipboardChain(this.Handle, this.clipboardViewerNext);        // Removes our from the chain of clipboard viewers when the form closes.
         }
+
     }
 }

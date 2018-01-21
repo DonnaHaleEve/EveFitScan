@@ -84,6 +84,19 @@ namespace EveFitScanUI
             }
         }
 
+        public bool PassiveTank
+        {
+            get
+            {
+                return Properties.Settings.Default.PassiveTank;
+            }
+            set
+            {
+                Properties.Settings.Default.PassiveTank = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
         private void Load() {
             //TODO
         }

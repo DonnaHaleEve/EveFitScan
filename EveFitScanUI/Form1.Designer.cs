@@ -84,6 +84,7 @@
             this.m_TextBoxEHPHailHot = new System.Windows.Forms.RichTextBox();
             this.m_TextBoxEHPHailCold = new System.Windows.Forms.RichTextBox();
             this.m_FitText = new System.Windows.Forms.RichTextBox();
+            this.m_checkBoxPassive = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -651,12 +652,25 @@
             this.m_FitText.TabIndex = 48;
             this.m_FitText.Text = "";
             // 
+            // m_checkBoxPassive
+            // 
+            this.m_checkBoxPassive.AutoSize = true;
+            this.m_checkBoxPassive.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_checkBoxPassive.Location = new System.Drawing.Point(528, 576);
+            this.m_checkBoxPassive.Name = "m_checkBoxPassive";
+            this.m_checkBoxPassive.Size = new System.Drawing.Size(89, 24);
+            this.m_checkBoxPassive.TabIndex = 49;
+            this.m_checkBoxPassive.Text = "Passive";
+            this.m_checkBoxPassive.UseVisualStyleBackColor = true;
+            this.m_checkBoxPassive.CheckedChanged += new System.EventHandler(this.m_checkBoxPassive_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(964, 652);
+            this.Controls.Add(this.m_checkBoxPassive);
             this.Controls.Add(this.m_FitText);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.m_TextBoxEHPHailHot);
@@ -776,6 +790,7 @@
         private System.Windows.Forms.RichTextBox m_TextBoxEHPHailHot;
         private System.Windows.Forms.RichTextBox m_TextBoxEHPHailCold;
         private System.Windows.Forms.RichTextBox m_FitText;
+        private System.Windows.Forms.CheckBox m_checkBoxPassive;
     }
 }
 

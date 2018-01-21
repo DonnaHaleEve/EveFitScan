@@ -23,6 +23,13 @@ namespace EveFitScanUI
             }
         }
 
+        private bool m_bPassiveTank = true;
+        public bool PassiveTank {
+            get {
+                return m_bPassiveTank;
+            }
+        }
+
         #endregion
         // ==============================================================================================================
 
@@ -86,29 +93,36 @@ namespace EveFitScanUI
                 int Count = ModuleAndCount.Item2;
                 if (ModuleAndCount.Item1.m_Effects.ContainsKey(Layer)) {
                     foreach (EFFECT Effect in ModuleAndCount.Item1.m_Effects[Layer].Keys) {
-                        Tuple<float, int> EffectParams = ModuleAndCount.Item1.m_Effects[Layer][Effect];
+                        Tuple<float, bool, int> EffectParams = ModuleAndCount.Item1.m_Effects[Layer][Effect];
                         switch (Effect) {
                             case EFFECT.ADD:
-                                Debug.Assert(EffectParams.Item2 == 1); // all flat shield/armor/hull bonuses have stacking group 1
+                                Debug.Assert(EffectParams.Item2 == false); // all flat shield/armor/hull bonuses belong to passive modules
+                                Debug.Assert(EffectParams.Item3 == 1); // all flat shield/armor/hull bonuses have stacking group 1
                                 FlatHPBonus += (EffectParams.Item1 * Count);
                                 break;
                             case EFFECT.MULTIPLY:
-                                Debug.Assert(EffectParams.Item2 == 1); // all multiplicative shield/armor/hull bonuses have stacking group 1
+                                Debug.Assert(EffectParams.Item2 == false); // all multiplicative shield/armor/hull bonuses belong to passive modules
+                                Debug.Assert(EffectParams.Item3 == 1); // all multiplicative shield/armor/hull bonuses have stacking group 1
                                 HPMultiplier *= (float)Math.Pow(EffectParams.Item1, Count);
                                 break;
                             case EFFECT.EM:
                             case EFFECT.THERMAL:
                             case EFFECT.KINETIC:
                             case EFFECT.EXPLOSIVE:
-                                RESIST Resist = EffectToResist(Effect);
-                                AddTo(ref ResistBonuses, Resist, false, EffectParams.Item2, EffectParams.Item1, Count);
-                                float OverloadBonus = ModuleAndCount.Item1.m_OverloadBonus;
-                                if (OverloadBonus > 0.01f) {
-                                    float OverloadedResist = EffectParams.Item1 * (1.0f + OverloadBonus * (1.0f + ShipOverheatingBonus + SubsystemOverheatingBonus));
-                                    AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, OverloadedResist, Count);
-                                }
-                                else {
-                                    AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, EffectParams.Item1, Count);
+                                if (EffectParams.Item2 && !PassiveTank)
+                                {
+                                    RESIST Resist = EffectToResist(Effect);
+                                    AddTo(ref ResistBonuses, Resist, false, EffectParams.Item3, EffectParams.Item1, Count);
+                                    float OverloadBonus = ModuleAndCount.Item1.m_OverloadBonus;
+                                    if (OverloadBonus > 0.01f)
+                                    {
+                                        float OverloadedResist = EffectParams.Item1 * (1.0f + OverloadBonus * (1.0f + ShipOverheatingBonus + SubsystemOverheatingBonus));
+                                        AddTo(ref ResistBonuses, Resist, true, EffectParams.Item3, OverloadedResist, Count);
+                                    }
+                                    else
+                                    {
+                                        AddTo(ref ResistBonuses, Resist, true, EffectParams.Item3, EffectParams.Item1, Count);
+                                    }
                                 }
                                 break;
                         }

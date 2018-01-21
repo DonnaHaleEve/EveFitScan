@@ -13,7 +13,7 @@ namespace DBConverter
                 string Name,
                 int TypeID,
                 MODULE_SLOT Slot,
-                IReadOnlyDictionary<MODULE_ATTRIBUTES,Tuple<float,int>> Attributes,
+                IReadOnlyDictionary<MODULE_ATTRIBUTES,Tuple<float,bool,int>> Attributes,
                 float OverloadBonus,
                 int ShipTypeID
             )
@@ -21,14 +21,14 @@ namespace DBConverter
                 m_Name = Name;
                 m_TypeID = TypeID;
                 m_Slot = Slot;
-                m_Attributes = (Dictionary<MODULE_ATTRIBUTES, Tuple<float, int>>)Attributes;
+                m_Attributes = (Dictionary<MODULE_ATTRIBUTES, Tuple<float, bool, int>>)Attributes;
                 m_OverloadBonus = OverloadBonus;
                 m_ShipTypeID = ShipTypeID;
             }
             private string m_Name;
             private int m_TypeID;
             private MODULE_SLOT m_Slot;
-            private Dictionary<MODULE_ATTRIBUTES, Tuple<float, int>> m_Attributes;
+            private Dictionary<MODULE_ATTRIBUTES, Tuple<float, bool, int>> m_Attributes;
             private float m_OverloadBonus;
             private int m_ShipTypeID;
 
@@ -40,105 +40,105 @@ namespace DBConverter
             private string StringifyAttributes() {
                 string Result = "";
 
-                Tuple<float, int> AttrValue;
+                Tuple<float, bool, int> AttrValue;
 
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.SHIELD,EFFECT.EM,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.SHIELD,EFFECT.EM,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.SHIELD,EFFECT.THERMAL,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.SHIELD,EFFECT.THERMAL,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.SHIELD,EFFECT.KINETIC,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.SHIELD,EFFECT.KINETIC,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.SHIELD,EFFECT.EXPLOSIVE,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.SHIELD,EFFECT.EXPLOSIVE,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
 
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.ARMOR,EFFECT.EM,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.ARMOR,EFFECT.EM,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.ARMOR,EFFECT.THERMAL,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.ARMOR,EFFECT.THERMAL,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.ARMOR,EFFECT.KINETIC,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.ARMOR,EFFECT.KINETIC,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.ARMOR,EFFECT.EXPLOSIVE,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.ARMOR,EFFECT.EXPLOSIVE,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
 
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_EM_RESIST, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.HULL,EFFECT.EM,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.HULL,EFFECT.EM,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_THERMAL_RESIST, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.HULL,EFFECT.THERMAL,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.HULL,EFFECT.THERMAL,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_KINETIC_RESIST, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.HULL,EFFECT.KINETIC,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.HULL,EFFECT.KINETIC,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_EXPLOSIVE_RESIST, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.HULL,EFFECT.EXPLOSIVE,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.HULL,EFFECT.EXPLOSIVE,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
 
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_BONUS_ADD, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.SHIELD,EFFECT.ADD,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.SHIELD,EFFECT.ADD,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_BONUS_ADD, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.ARMOR,EFFECT.ADD,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.ARMOR,EFFECT.ADD,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_BONUS_ADD, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.HULL,EFFECT.ADD,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.HULL,EFFECT.ADD,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
 
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_BONUS_MULTIPLY, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.SHIELD,EFFECT.MULTIPLY,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.SHIELD,EFFECT.MULTIPLY,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_BONUS_MULTIPLY, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.ARMOR,EFFECT.MULTIPLY,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.ARMOR,EFFECT.MULTIPLY,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_BONUS_MULTIPLY, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.HULL,EFFECT.MULTIPLY,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.HULL,EFFECT.MULTIPLY,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
 
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HIGH_SLOTS, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.NONE,EFFECT.HIGH_SLOTS,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.NONE,EFFECT.HIGH_SLOTS,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_MEDIUM_SLOTS, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.NONE,EFFECT.MEDIUM_SLOTS,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.NONE,EFFECT.MEDIUM_SLOTS,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_LOW_SLOTS, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.NONE,EFFECT.LOW_SLOTS,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.NONE,EFFECT.LOW_SLOTS,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
 
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_HARDENERS_OVERLOAD_BONUS, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.SHIELD,EFFECT.OVERHEATING,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.SHIELD,EFFECT.OVERHEATING,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
                 if (m_Attributes.TryGetValue(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_HARDENERS_OVERLOAD_BONUS, out AttrValue))
                 {
-                    Result = Result + String.Format(".AddEffect(LAYER.ARMOR,EFFECT.OVERHEATING,{0:f4}f,{1})", AttrValue.Item1, AttrValue.Item2);
+                    Result = Result + String.Format(".AddEffect(LAYER.ARMOR,EFFECT.OVERHEATING,{0:f4}f,{1},{2})", AttrValue.Item1, AttrValue.Item2.ToString().ToLower(), AttrValue.Item3);
                 }
 
                 return Result;

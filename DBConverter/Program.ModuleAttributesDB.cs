@@ -6,6 +6,8 @@ namespace DBConverter
     {
         enum MODULE_ATTRIBUTES_DB
         {
+            MODULE_ATTR_DB_CAPACITOR_NEEDED = 6,
+
             MODULE_ATTR_DB_SHIELD_EM_RESONANCE = 271,
             MODULE_ATTR_DB_SHIELD_THERMAL_RESONANCE = 274,
             MODULE_ATTR_DB_SHIELD_KINETIC_RESONANCE = 273,

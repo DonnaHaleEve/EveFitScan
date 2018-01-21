@@ -7,6 +7,12 @@ namespace EveFitScanUI
 {
     public partial class Form1 : Form
     {
+        private void m_checkBoxPassive_CheckedChanged(object sender, EventArgs e)
+        {
+            ConfigHelper.Instance.PassiveTank = m_checkBoxPassive.Checked;
+            m_FitScanProcessor.SetPassive(m_checkBoxPassive.Checked);
+        }
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
@@ -73,7 +79,7 @@ DEALINGS IN THE SOFTWARE.";
 
         private void m_ButtonResetFit_Click(object sender, EventArgs e)
         {
-            m_FitScanProcessor.ResetFit();
+            m_FitScanProcessor.ResetFit(m_checkBoxPassive.Checked);
         }
 
         private void m_ButtonCopyCODE_Click(object sender, EventArgs e)

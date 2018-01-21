@@ -82,5 +82,17 @@ namespace EveFitScanUI.Properties {
                 this["AlwaysOnTop"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PassiveTank {
+            get {
+                return ((bool)(this["PassiveTank"]));
+            }
+            set {
+                this["PassiveTank"] = value;
+            }
+        }
     }
 }

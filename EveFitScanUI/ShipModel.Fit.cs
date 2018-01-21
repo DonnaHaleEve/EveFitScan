@@ -133,7 +133,7 @@ namespace EveFitScanUI
 
         // ==============================================================================================================
 
-        public void SetShipAndModules(int ShipTypeID, IReadOnlyCollection<int> ModuleTypeIDs)
+        public void SetShipAndModules(int ShipTypeID, IReadOnlyCollection<int> ModuleTypeIDs, bool bPassive)
         {
             Debug.Assert(ShipTypeID < 0 || ShipTypeIDToIndex.ContainsKey(ShipTypeID));
             foreach (int ModuleTypeID in ModuleTypeIDs) {
@@ -144,34 +144,43 @@ namespace EveFitScanUI
             CheckFitValid();
             EventFitChanged();
 
+            m_bPassiveTank = bPassive;
             RecalculateTank();
         }
 
-        public void AddMoreModules(IReadOnlyCollection<int> ModuleTypeIDs)
+        public void AddMoreModules(IReadOnlyCollection<int> ModuleTypeIDs, bool bPassive)
         {
             DoAddMoreModules(ModuleTypeIDs);
             CheckFitValid();
             EventFitChanged();
 
+            m_bPassiveTank = bPassive;
             RecalculateTank();
         }
 
-        public void SetShip(int ShipTypeID)
+        public void SetShip(int ShipTypeID, bool bPassive)
         {
             Debug.Assert(ShipTypeID < 0 || ShipTypeIDToIndex.ContainsKey(ShipTypeID));
             SetShipTypeID(ShipTypeID);
             CheckFitValid();
             EventFitChanged();
 
+            m_bPassiveTank = bPassive;
             RecalculateTank();
         }
 
-        public void ResetFit()
+        public void ResetFit(bool bPassive)
         {
             CleanFit(m_ShipTypeID);
             CheckFitValid();
             EventFitChanged();
 
+            m_bPassiveTank = bPassive;
+            RecalculateTank();
+        }
+
+        public void SetPassive(bool bPassive) {
+            m_bPassiveTank = bPassive;
             RecalculateTank();
         }
 
@@ -225,7 +234,7 @@ namespace EveFitScanUI
                                     ModuleDescription MD = ModuleDescriptions[Index];
                                     if (MD.m_ShipTypeID == m_ShipTypeID) {
                                         if (MD.m_Effects.ContainsKey(LAYER.NONE)) {
-                                            foreach (KeyValuePair<EFFECT, Tuple<float, int>> effect in MD.m_Effects[LAYER.NONE]) {
+                                            foreach (KeyValuePair<EFFECT, Tuple<float, bool, int>> effect in MD.m_Effects[LAYER.NONE]) {
                                                 switch (effect.Key) {
                                                     case EFFECT.HIGH_SLOTS:
                                                         HS += (int)effect.Value.Item1;
