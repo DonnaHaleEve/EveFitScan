@@ -94,5 +94,17 @@ namespace EveFitScanUI.Properties {
                 this["PassiveTank"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool GetPrices {
+            get {
+                return ((bool)(this["GetPrices"]));
+            }
+            set {
+                this["GetPrices"] = value;
+            }
+        }
     }
 }

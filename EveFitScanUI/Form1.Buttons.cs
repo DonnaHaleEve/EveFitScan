@@ -109,5 +109,10 @@ DEALINGS IN THE SOFTWARE.";
             ConfigHelper.Instance.AlwaysOnTop = toggleAlwaysOnTopToolStripMenuItem.Checked;
             this.TopMost = toggleAlwaysOnTopToolStripMenuItem.Checked;
         }
+
+        private void getPricesToolStripMenuItem_CheckedChanged(object sender, EventArgs e) {
+            ConfigHelper.Instance.GetPrices = getPricesToolStripMenuItem.Checked;
+        }
+
     }
 }

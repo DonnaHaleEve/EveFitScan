@@ -41,6 +41,24 @@ namespace EveFitScanUI
 
         // -----------------------------------------------------------------------------------------------------------------------
 
+        private float m_ValueShip = 0.0f;
+        private float m_ValueRigs = 0.0f;
+        private float m_ValueSubsystems = 0.0f;
+        private float m_ValueModules = 0.0f;
+        // fit value is: hull, fit, total, can drop
+        public Tuple<float, float, float, float> FitValue {
+            get {
+                return new Tuple<float, float, float, float>(
+                    m_ValueShip,
+                    m_ValueRigs + m_ValueSubsystems + m_ValueModules,
+                    m_ValueShip + m_ValueRigs + m_ValueSubsystems + m_ValueModules,
+                    m_ValueSubsystems + m_ValueModules
+                );
+            }
+        }
+
+        // -----------------------------------------------------------------------------------------------------------------------
+
         private string m_ShipName = "Drake";
 
         public string ShipName {

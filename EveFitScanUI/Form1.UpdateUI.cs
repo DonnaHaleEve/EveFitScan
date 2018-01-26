@@ -7,6 +7,34 @@ namespace EveFitScanUI
 {
     public partial class Form1 : Form
     {
+        private void OnFitValueChanged() {
+            Tuple<float, float, float, float> Value = m_FitScanProcessor.FitValue;
+
+            m_ValueHullText.Clear();
+            m_ValueHullText.AppendText(String.Format("{0:N0}", Value.Item1));
+            m_ValueHullText.SelectAll();
+            m_ValueHullText.SelectionAlignment = HorizontalAlignment.Right;
+            m_ValueHullText.SelectionLength = 0;
+            
+            m_ValueFittingsText.Clear();
+            m_ValueFittingsText.AppendText(String.Format("{0:N0}", Value.Item2));
+            m_ValueFittingsText.SelectAll();
+            m_ValueFittingsText.SelectionAlignment = HorizontalAlignment.Right;
+            m_ValueFittingsText.SelectionLength = 0;
+            
+            m_ValueTotalText.Clear();
+            m_ValueTotalText.AppendText(String.Format("{0:N0}", Value.Item3));
+            m_ValueTotalText.SelectAll();
+            m_ValueTotalText.SelectionAlignment = HorizontalAlignment.Right;
+            m_ValueTotalText.SelectionLength = 0;
+            
+            m_ValueCanDropText.Clear();
+            m_ValueCanDropText.AppendText(String.Format("{0:N0}", Value.Item4));
+            m_ValueCanDropText.SelectAll();
+            m_ValueCanDropText.SelectionAlignment = HorizontalAlignment.Right;
+            m_ValueCanDropText.SelectionLength = 0;
+        }
+
         private void OnShipFitChanged()
         {
             m_FitText.Clear();
@@ -18,10 +46,6 @@ namespace EveFitScanUI
                 m_FitText.SelectionLength = 0;
             }
             m_FitText.AppendText(m_FitScanProcessor.EFTFit);
-
-            //m_FitText.AppendText(System.Environment.NewLine);
-            //m_FitText.AppendText(System.Environment.NewLine);
-            //m_FitText.AppendText(m_FitScanProcessor.CODEToolURL);
         }
 
         private void OnShipTankChanged()

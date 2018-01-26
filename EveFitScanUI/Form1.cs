@@ -112,12 +112,15 @@ namespace EveFitScanUI
             if (ConfigHelper.Instance.AlwaysOnTop) {
                 this.TopMost = true;
             }
+            this.getPricesToolStripMenuItem.Checked = ConfigHelper.Instance.GetPrices;
 
             this.clipboardViewerNext = NativeMethods.SetClipboardViewer(this.Handle);      // Adds our form to the chain of clipboard viewers.
 
             m_FitScanProcessor = new FitScanProcessor();
             m_FitScanProcessor.EventShipFitChanged += new FitScanProcessor.DelegateShipFitChanged(OnShipFitChanged);
             m_FitScanProcessor.EventShipTankChanged += new FitScanProcessor.DelegateShipTankChanged(OnShipTankChanged);
+            m_FitScanProcessor.EventNewItemsWithUnknownPrices += new FitScanProcessor.DelegateNewItemsWithUnknownPrices(OnNewItemsWithUnknownPrices);
+            m_FitScanProcessor.EventFitValueChanged += new FitScanProcessor.DelegateFitValueChanged(OnFitValueChanged);
 
             m_ComboBoxItems.Clear();
 

@@ -34,6 +34,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toggleAlwaysOnTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.getPricesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.licenseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,6 +86,15 @@
             this.m_TextBoxEHPHailCold = new System.Windows.Forms.RichTextBox();
             this.m_FitText = new System.Windows.Forms.RichTextBox();
             this.m_checkBoxPassive = new System.Windows.Forms.CheckBox();
+            this.m_BackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.m_ValueHullText = new System.Windows.Forms.RichTextBox();
+            this.m_ValueFittingsText = new System.Windows.Forms.RichTextBox();
+            this.m_ValueTotalText = new System.Windows.Forms.RichTextBox();
+            this.m_ValueCanDropText = new System.Windows.Forms.RichTextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -118,7 +128,8 @@
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toggleAlwaysOnTopToolStripMenuItem});
+            this.toggleAlwaysOnTopToolStripMenuItem,
+            this.getPricesToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
@@ -130,6 +141,14 @@
             this.toggleAlwaysOnTopToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.toggleAlwaysOnTopToolStripMenuItem.Text = "Toggle Always On Top";
             this.toggleAlwaysOnTopToolStripMenuItem.CheckedChanged += new System.EventHandler(this.toggleAlwaysOnTopToolStripMenuItem_CheckedChanged);
+            // 
+            // getPricesToolStripMenuItem
+            // 
+            this.getPricesToolStripMenuItem.CheckOnClick = true;
+            this.getPricesToolStripMenuItem.Name = "getPricesToolStripMenuItem";
+            this.getPricesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.getPricesToolStripMenuItem.Text = "Get Prices";
+            this.getPricesToolStripMenuItem.CheckedChanged += new System.EventHandler(this.getPricesToolStripMenuItem_CheckedChanged);
             // 
             // helpToolStripMenuItem
             // 
@@ -188,7 +207,7 @@
             // m_ButtonCopyCODE
             // 
             this.m_ButtonCopyCODE.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_ButtonCopyCODE.Location = new System.Drawing.Point(8, 608);
+            this.m_ButtonCopyCODE.Location = new System.Drawing.Point(8, 672);
             this.m_ButtonCopyCODE.Name = "m_ButtonCopyCODE";
             this.m_ButtonCopyCODE.Size = new System.Drawing.Size(144, 32);
             this.m_ButtonCopyCODE.TabIndex = 5;
@@ -198,7 +217,7 @@
             // 
             // m_ButtonCopyEFT
             // 
-            this.m_ButtonCopyEFT.Location = new System.Drawing.Point(168, 608);
+            this.m_ButtonCopyEFT.Location = new System.Drawing.Point(168, 672);
             this.m_ButtonCopyEFT.Name = "m_ButtonCopyEFT";
             this.m_ButtonCopyEFT.Size = new System.Drawing.Size(144, 32);
             this.m_ButtonCopyEFT.TabIndex = 6;
@@ -648,7 +667,7 @@
             this.m_FitText.Name = "m_FitText";
             this.m_FitText.ReadOnly = true;
             this.m_FitText.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.m_FitText.Size = new System.Drawing.Size(304, 472);
+            this.m_FitText.Size = new System.Drawing.Size(304, 432);
             this.m_FitText.TabIndex = 48;
             this.m_FitText.Text = "";
             // 
@@ -664,12 +683,109 @@
             this.m_checkBoxPassive.UseVisualStyleBackColor = true;
             this.m_checkBoxPassive.CheckedChanged += new System.EventHandler(this.m_checkBoxPassive_CheckedChanged);
             // 
+            // m_BackgroundWorker
+            // 
+            this.m_BackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.m_BackgroundWorker_DoWork);
+            this.m_BackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.m_BackgroundWorker_RunWorkerCompleted);
+            // 
+            // m_ValueHullText
+            // 
+            this.m_ValueHullText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_ValueHullText.Location = new System.Drawing.Point(152, 568);
+            this.m_ValueHullText.Name = "m_ValueHullText";
+            this.m_ValueHullText.ReadOnly = true;
+            this.m_ValueHullText.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.m_ValueHullText.Size = new System.Drawing.Size(160, 24);
+            this.m_ValueHullText.TabIndex = 51;
+            this.m_ValueHullText.Text = "";
+            // 
+            // m_ValueFittingsText
+            // 
+            this.m_ValueFittingsText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_ValueFittingsText.Location = new System.Drawing.Point(152, 592);
+            this.m_ValueFittingsText.Name = "m_ValueFittingsText";
+            this.m_ValueFittingsText.ReadOnly = true;
+            this.m_ValueFittingsText.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.m_ValueFittingsText.Size = new System.Drawing.Size(160, 24);
+            this.m_ValueFittingsText.TabIndex = 52;
+            this.m_ValueFittingsText.Text = "";
+            // 
+            // m_ValueTotalText
+            // 
+            this.m_ValueTotalText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_ValueTotalText.Location = new System.Drawing.Point(152, 616);
+            this.m_ValueTotalText.Name = "m_ValueTotalText";
+            this.m_ValueTotalText.ReadOnly = true;
+            this.m_ValueTotalText.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.m_ValueTotalText.Size = new System.Drawing.Size(160, 24);
+            this.m_ValueTotalText.TabIndex = 53;
+            this.m_ValueTotalText.Text = "";
+            // 
+            // m_ValueCanDropText
+            // 
+            this.m_ValueCanDropText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_ValueCanDropText.Location = new System.Drawing.Point(152, 640);
+            this.m_ValueCanDropText.Name = "m_ValueCanDropText";
+            this.m_ValueCanDropText.ReadOnly = true;
+            this.m_ValueCanDropText.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.m_ValueCanDropText.Size = new System.Drawing.Size(160, 24);
+            this.m_ValueCanDropText.TabIndex = 54;
+            this.m_ValueCanDropText.Text = "";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label15.Location = new System.Drawing.Point(72, 568);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(39, 16);
+            this.label15.TabIndex = 55;
+            this.label15.Text = "Hull:";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label16.Location = new System.Drawing.Point(72, 592);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(62, 16);
+            this.label16.TabIndex = 56;
+            this.label16.Text = "Fittings:";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label17.Location = new System.Drawing.Point(72, 616);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(48, 16);
+            this.label17.TabIndex = 57;
+            this.label17.Text = "Total:";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label18.Location = new System.Drawing.Point(72, 640);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(75, 16);
+            this.label18.TabIndex = 58;
+            this.label18.Text = "Can drop:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.ClientSize = new System.Drawing.Size(964, 652);
+            this.ClientSize = new System.Drawing.Size(964, 712);
+            this.Controls.Add(this.label18);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.m_ValueCanDropText);
+            this.Controls.Add(this.m_ValueTotalText);
+            this.Controls.Add(this.m_ValueFittingsText);
+            this.Controls.Add(this.m_ValueHullText);
             this.Controls.Add(this.m_checkBoxPassive);
             this.Controls.Add(this.m_FitText);
             this.Controls.Add(this.label14);
@@ -721,7 +837,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(980, 690);
+            this.MinimumSize = new System.Drawing.Size(980, 750);
             this.Name = "Form1";
             this.Text = "Miniluv fit scanner";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -791,6 +907,16 @@
         private System.Windows.Forms.RichTextBox m_TextBoxEHPHailCold;
         private System.Windows.Forms.RichTextBox m_FitText;
         private System.Windows.Forms.CheckBox m_checkBoxPassive;
+        private System.ComponentModel.BackgroundWorker m_BackgroundWorker;
+        private System.Windows.Forms.RichTextBox m_ValueHullText;
+        private System.Windows.Forms.RichTextBox m_ValueFittingsText;
+        private System.Windows.Forms.RichTextBox m_ValueTotalText;
+        private System.Windows.Forms.RichTextBox m_ValueCanDropText;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.ToolStripMenuItem getPricesToolStripMenuItem;
     }
 }
 

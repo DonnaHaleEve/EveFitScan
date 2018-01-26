@@ -97,6 +97,16 @@ namespace EveFitScanUI
             }
         }
 
+        public bool GetPrices {
+            get {
+                return Properties.Settings.Default.GetPrices;
+            }
+            set {
+                Properties.Settings.Default.GetPrices = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
         private void Load() {
             //TODO
         }
