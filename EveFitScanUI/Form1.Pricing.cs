@@ -58,7 +58,6 @@ namespace EveFitScanUI
         {
             Debug.Assert(!m_BackgroundWorker.IsBusy);
             if (e.Error == null) {
-                MessageBox.Show("no error", "RunWorkerCompleted", MessageBoxButtons.OK);
                 string Result = (string)e.Result;
                 char[] Separators = { '\r', '\n' };
                 char[] SeparatorTab = { '\t' };
