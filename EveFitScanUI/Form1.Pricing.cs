@@ -58,8 +58,9 @@ namespace EveFitScanUI
         {
             Debug.Assert(!m_BackgroundWorker.IsBusy);
             if (e.Error == null) {
+                MessageBox.Show("no error", "RunWorkerCompleted", MessageBoxButtons.OK);
                 string Result = (string)e.Result;
-                char[] Separators = {'\r', '\n'};
+                char[] Separators = { '\r', '\n' };
                 char[] SeparatorTab = { '\t' };
                 string[] Lines = Result.Split(Separators, StringSplitOptions.RemoveEmptyEntries);
                 Dictionary<string, double> Prices = new Dictionary<string, double>();
@@ -95,8 +96,6 @@ namespace EveFitScanUI
                     break;
 
                 Result = ProcessResponse(Response);
-
-                int qq = 666;
             } while (false);
 
             e.Result = Result;

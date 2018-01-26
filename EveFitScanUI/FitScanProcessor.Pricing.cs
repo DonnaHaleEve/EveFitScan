@@ -14,7 +14,6 @@ namespace EveFitScanUI
         private Dictionary<string, float> m_ItemPrices = new Dictionary<string, float>();
 
         public void ConsumeNewPrices(IReadOnlyDictionary<string,double> Prices) {
-            int qq = 666;
             // update m_ItemPrices
             foreach (KeyValuePair<string, double> kvp in Prices) {
                 if (m_ItemPrices.ContainsKey(kvp.Key)) {
