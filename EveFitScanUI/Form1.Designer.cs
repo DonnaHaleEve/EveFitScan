@@ -144,7 +144,9 @@
             // 
             // getPricesToolStripMenuItem
             // 
+            this.getPricesToolStripMenuItem.Checked = true;
             this.getPricesToolStripMenuItem.CheckOnClick = true;
+            this.getPricesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.getPricesToolStripMenuItem.Name = "getPricesToolStripMenuItem";
             this.getPricesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.getPricesToolStripMenuItem.Text = "Get Prices";
