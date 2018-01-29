@@ -109,19 +109,24 @@ namespace EveFitScanUI
                             case EFFECT.THERMAL:
                             case EFFECT.KINETIC:
                             case EFFECT.EXPLOSIVE:
-                                if (EffectParams.Item2 && !PassiveTank)
-                                {
-                                    RESIST Resist = EffectToResist(Effect);
+                                RESIST Resist = EffectToResist(Effect);
+                                if (!EffectParams.Item2) {
+                                    // passive effect
                                     AddTo(ref ResistBonuses, Resist, false, EffectParams.Item3, EffectParams.Item1, Count);
-                                    float OverloadBonus = ModuleAndCount.Item1.m_OverloadBonus;
-                                    if (OverloadBonus > 0.01f)
-                                    {
-                                        float OverloadedResist = EffectParams.Item1 * (1.0f + OverloadBonus * (1.0f + ShipOverheatingBonus + SubsystemOverheatingBonus));
-                                        AddTo(ref ResistBonuses, Resist, true, EffectParams.Item3, OverloadedResist, Count);
-                                    }
-                                    else
-                                    {
-                                        AddTo(ref ResistBonuses, Resist, true, EffectParams.Item3, EffectParams.Item1, Count);
+                                    AddTo(ref ResistBonuses, Resist, true, EffectParams.Item3, EffectParams.Item1, Count);
+                                }
+                                else {
+                                    // active effect
+                                    if (!PassiveTank) {
+                                        AddTo(ref ResistBonuses, Resist, false, EffectParams.Item3, EffectParams.Item1, Count);
+                                        float OverloadBonus = ModuleAndCount.Item1.m_OverloadBonus;
+                                        if (OverloadBonus > 0.01f) {
+                                            float OverloadedResist = EffectParams.Item1 * (1.0f + OverloadBonus * (1.0f + ShipOverheatingBonus + SubsystemOverheatingBonus));
+                                            AddTo(ref ResistBonuses, Resist, true, EffectParams.Item3, OverloadedResist, Count);
+                                        }
+                                        else {
+                                            AddTo(ref ResistBonuses, Resist, true, EffectParams.Item3, EffectParams.Item1, Count);
+                                        }
                                     }
                                 }
                                 break;
