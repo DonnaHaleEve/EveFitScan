@@ -158,10 +158,7 @@ namespace DBConverter
         {
             List<Tuple<string, int, int, MODULE_SLOT>> modules = new List<Tuple<string, int, int, MODULE_SLOT>>();
 
-            // TODO: effectID=3772 - "requires subsystem slot"
-            //NpgsqlCommand cmd = new NpgsqlCommand("SELECT \"typeID\", \"typeName\", \"groupID\", \"effectID\" FROM \"invTypes\" JOIN \"dgmTypeEffects\" USING (\"typeID\") WHERE \"published\" = TRUE AND \"effectID\" IN (3772)", conn);
             NpgsqlCommand cmd = new NpgsqlCommand("SELECT \"typeID\", \"typeName\", \"groupID\", \"effectID\" FROM \"invTypes\" JOIN \"dgmTypeEffects\" USING (\"typeID\") WHERE \"published\" = TRUE AND \"effectID\" IN (11,12,13,2663,3772)", conn);
-            //NpgsqlCommand cmd = new NpgsqlCommand("SELECT \"typeID\", \"typeName\", \"groupID\", \"effectID\" FROM \"invTypes\" JOIN \"dgmTypeEffects\" USING (\"typeID\") WHERE \"published\" = TRUE AND \"effectID\" IN (11,12,13,2663)", conn);
             using (NpgsqlDataReader dr = cmd.ExecuteReader())
             {
                 while (dr.Read())

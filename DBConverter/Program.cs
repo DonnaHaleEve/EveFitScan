@@ -379,6 +379,13 @@ namespace DBConverter
                 bActiveModule = attrDBValue > 0.0f;
             }
 
+            if (!bActiveModule) {
+                if (moduleAttributesDB.ContainsKey(MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_DURATION)) {
+                    float attrDBValue = GetValue(moduleAttributesDB[MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_DURATION]);
+                    bActiveModule = attrDBValue > 0.0f;
+                }
+            }
+
             foreach (MODULE_ATTRIBUTES_DB attrDB in moduleAttributesDB.Keys)
             {
                 float attrDBValue = GetValue(moduleAttributesDB[attrDB]);
@@ -874,6 +881,7 @@ namespace DBConverter
             if (
                 groupID == 60 // damage controls
                 || groupID == 1150 // reactive armor hardener
+                || groupID == 515 // bastion module
             ) {
                 return 2;
             }

@@ -12,7 +12,7 @@ WHERE
     --"typeID" = 1541 -- 'Power Diagnostic System II'
     --"typeID" = 1248 -- 'Capacitor Flux Coil II'
     --"typeID" = 1355 -- 'Reactor Control Unit II'
-    --"typeID" = 33400 -- Bastion Module I
+    "typeID" = 33400 -- Bastion Module I
     --"typeID" = 3841 -- Large Shield Extender II
 	--"typeID" = 2301 -- EM Ward Field II (********************)
 	--"typeID" = 2281 -- Adaptive Invulnerability Field II (********************)
@@ -39,5 +39,5 @@ WHERE
     --"typeID" = 31119 -- Medium Cargohold Optimization I (********** EVERY RIG THAT HAS DRAWBACK TO SHIELD OR ARMOR **********)
     --"typeID" = 45586 -- 'Legion Defensive - Covert Reconfiguration'
     --"typeID" = 45596 -- 'Loki Defensive - Augmented Durability'
-    "typeID" = 45592 -- 'Proteus Defensive - Covert Reconfiguration'
+    --"typeID" = 45592 -- 'Proteus Defensive - Covert Reconfiguration'
 ;
