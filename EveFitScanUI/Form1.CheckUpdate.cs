@@ -22,6 +22,7 @@ namespace EveFitScanUI
             var doc = web.Load(m_DownloadPageURL);
             var names = doc.DocumentNode.SelectNodes("//table[@id='uploaded-files']//tr//td[@class='name']/a");
             Regex BuildRegex = new Regex(@"EveFitScan_build_(\d+)\.(\d+)\.(\d+)\.(\d+)\.zip", RegexOptions.IgnoreCase);
+            List<Version> availableVersions = new List<Version>();
             foreach (HtmlNode name in names) {
                 var buildName = name.InnerText;
                 Match match = BuildRegex.Match(buildName);
@@ -35,10 +36,14 @@ namespace EveFitScanUI
                         }
                     }
                     if (v.Count == 4) {
-                        e.Result = new Version(v[0], v[1], v[2], v[3]);
-                        return;
+                        availableVersions.Add(new Version(v[0], v[1], v[2], v[3]));
                     }
                 }
+            }
+            if (availableVersions.Count > 0) {
+                availableVersions.Sort();
+                e.Result = availableVersions[availableVersions.Count - 1];
+                return;
             }
            
             e.Result = new Version(0,0,0,0);
