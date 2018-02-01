@@ -14,7 +14,10 @@ namespace DBConverter
             SHIP_TRAIT_ARMOR_HP_PERCENT_PER_LEVEL  = 5,
             SHIP_TRAIT_HULL_HP_PERCENT_PER_LEVEL   = 6,
 
-            SHIP_TRAIT_OVERHEATING_BONUS_PERCENT   = 7
+            SHIP_TRAIT_OVERHEATING_BONUS_PERCENT   = 7,
+
+            SHIP_TRAIT_SHIELD_RESISTS_ROLE         = 8,
+            SHIP_TRAIT_ARMOR_RESISTS_ROLE          = 9,
         };
     }
 }

@@ -86,7 +86,7 @@
             this.m_TextBoxEHPHailCold = new System.Windows.Forms.RichTextBox();
             this.m_FitText = new System.Windows.Forms.RichTextBox();
             this.m_checkBoxPassive = new System.Windows.Forms.CheckBox();
-            this.m_BackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.m_BackgroundWorkerPrices = new System.ComponentModel.BackgroundWorker();
             this.m_ValueHullText = new System.Windows.Forms.RichTextBox();
             this.m_ValueFittingsText = new System.Windows.Forms.RichTextBox();
             this.m_ValueTotalText = new System.Windows.Forms.RichTextBox();
@@ -95,6 +95,7 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
+            this.m_BackgroundWorkerUpdate = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -685,10 +686,10 @@
             this.m_checkBoxPassive.UseVisualStyleBackColor = true;
             this.m_checkBoxPassive.CheckedChanged += new System.EventHandler(this.m_checkBoxPassive_CheckedChanged);
             // 
-            // m_BackgroundWorker
+            // m_BackgroundWorkerPrices
             // 
-            this.m_BackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.m_BackgroundWorker_DoWork);
-            this.m_BackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.m_BackgroundWorker_RunWorkerCompleted);
+            this.m_BackgroundWorkerPrices.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorkerPrices_DoWork);
+            this.m_BackgroundWorkerPrices.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorkerPrices_RunWorkerCompleted);
             // 
             // m_ValueHullText
             // 
@@ -773,6 +774,11 @@
             this.label18.Size = new System.Drawing.Size(75, 16);
             this.label18.TabIndex = 58;
             this.label18.Text = "Can drop:";
+            // 
+            // m_BackgroundWorkerUpdate
+            // 
+            this.m_BackgroundWorkerUpdate.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorkerUpdate_DoWork);
+            this.m_BackgroundWorkerUpdate.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorkerUpdate_RunWorkerCompleted);
             // 
             // Form1
             // 
@@ -909,7 +915,7 @@
         private System.Windows.Forms.RichTextBox m_TextBoxEHPHailCold;
         private System.Windows.Forms.RichTextBox m_FitText;
         private System.Windows.Forms.CheckBox m_checkBoxPassive;
-        private System.ComponentModel.BackgroundWorker m_BackgroundWorker;
+        private System.ComponentModel.BackgroundWorker m_BackgroundWorkerPrices;
         private System.Windows.Forms.RichTextBox m_ValueHullText;
         private System.Windows.Forms.RichTextBox m_ValueFittingsText;
         private System.Windows.Forms.RichTextBox m_ValueTotalText;
@@ -919,6 +925,7 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.ToolStripMenuItem getPricesToolStripMenuItem;
+        private System.ComponentModel.BackgroundWorker m_BackgroundWorkerUpdate;
     }
 }
 

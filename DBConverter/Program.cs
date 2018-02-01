@@ -72,11 +72,12 @@ namespace DBConverter
 #else
 
                     List<Tuple<string, int>> shipNames = new List<Tuple<string, int>>();
-                    shipNames.Add(new Tuple<string, int>("Damnation", 22474));
-                    shipNames.Add(new Tuple<string, int>("Drake", 24698));
-                    shipNames.Add(new Tuple<string, int>("Ark", 28850));
-                    shipNames.Add(new Tuple<string, int>("Rhea", 28844));
-                    shipNames.Add(new Tuple<string, int>("Procurer", 17480));
+                    shipNames.Add(new Tuple<string, int>("Broadsword", 12013));
+                    //shipNames.Add(new Tuple<string, int>("Damnation", 22474));
+                    //shipNames.Add(new Tuple<string, int>("Drake", 24698));
+                    //shipNames.Add(new Tuple<string, int>("Ark", 28850));
+                    //shipNames.Add(new Tuple<string, int>("Rhea", 28844));
+                    //shipNames.Add(new Tuple<string, int>("Procurer", 17480));
 #endif
                     Console.WriteLine("got {0} ships", shipNames.Count);
 
@@ -271,18 +272,26 @@ namespace DBConverter
 
             IReadOnlyDictionary<SHIP_TRAITS, float> shipTraits = GetShipTraits(typeID, conn);
 
+            Debug.Assert(!(shipTraits.ContainsKey(SHIP_TRAITS.SHIP_TRAIT_SHIELD_RESISTS_PER_LEVEL) && shipTraits.ContainsKey(SHIP_TRAITS.SHIP_TRAIT_SHIELD_RESISTS_ROLE)));
+            float traitShieldResonance = 1.0f;
             float traitShieldResists = 0.0f;
-            if (!shipTraits.TryGetValue(SHIP_TRAITS.SHIP_TRAIT_SHIELD_RESISTS_PER_LEVEL, out traitShieldResists)) {
-                traitShieldResists = 0.0f;
+            if (shipTraits.TryGetValue(SHIP_TRAITS.SHIP_TRAIT_SHIELD_RESISTS_PER_LEVEL, out traitShieldResists)) {
+                traitShieldResonance = 1.0f - traitShieldResists * 5.0f * 0.01f; // 5 levels, percent value
             }
-            float traitShieldResonance = 1.0f - traitShieldResists * 5.0f * 0.01f; // 5 levels, percent value
+            else if (shipTraits.TryGetValue(SHIP_TRAITS.SHIP_TRAIT_SHIELD_RESISTS_ROLE, out traitShieldResists)) {
+                traitShieldResonance = 1.0f - traitShieldResists * 0.01f; // role bonus, percent value
+            }
 
+            Debug.Assert(!(shipTraits.ContainsKey(SHIP_TRAITS.SHIP_TRAIT_ARMOR_RESISTS_PER_LEVEL) && shipTraits.ContainsKey(SHIP_TRAITS.SHIP_TRAIT_ARMOR_RESISTS_ROLE)));
+            float traitArmorResonance = 1.0f;
             float traitArmorResists = 0.0f;
-            if (!shipTraits.TryGetValue(SHIP_TRAITS.SHIP_TRAIT_ARMOR_RESISTS_PER_LEVEL, out traitArmorResists))
+            if (shipTraits.TryGetValue(SHIP_TRAITS.SHIP_TRAIT_ARMOR_RESISTS_PER_LEVEL, out traitArmorResists))
             {
-                traitArmorResists = 0.0f;
+                traitArmorResonance = 1.0f - traitArmorResists * 5.0f * 0.01f; // 5 levels, percent value
             }
-            float traitArmorResonance = 1.0f - traitArmorResists * 5.0f * 0.01f; // 5 levels, percent value
+            else if (shipTraits.TryGetValue(SHIP_TRAITS.SHIP_TRAIT_ARMOR_RESISTS_ROLE, out traitArmorResists)) {
+                traitArmorResonance = 1.0f - traitArmorResists * 0.01f; // role bonus, percent value
+            }
 
             float traitShieldHP = 0.0f;
             if (!shipTraits.TryGetValue(SHIP_TRAITS.SHIP_TRAIT_SHIELD_HP_PERCENT_PER_LEVEL, out traitShieldHP)) {

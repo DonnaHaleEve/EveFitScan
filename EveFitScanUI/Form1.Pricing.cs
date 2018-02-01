@@ -31,14 +31,14 @@ namespace EveFitScanUI
 
                 m_Guard.ReleaseMutex();
 
-                if (!m_BackgroundWorker.IsBusy && !Empty) {
+                if (!m_BackgroundWorkerPrices.IsBusy && !Empty) {
                     RestartWorker();
                 }
             }
         }
 
         private void RestartWorker() {
-            Debug.Assert(!m_BackgroundWorker.IsBusy);
+            Debug.Assert(!m_BackgroundWorkerPrices.IsBusy);
             m_Guard.WaitOne();
 
             string ItemsString = "";
@@ -50,13 +50,13 @@ namespace EveFitScanUI
             m_Guard.ReleaseMutex();
 
             if (ItemsString.Length > 0) {
-                m_BackgroundWorker.RunWorkerAsync(ItemsString);
+                m_BackgroundWorkerPrices.RunWorkerAsync(ItemsString);
             }
         }
 
-        private void m_BackgroundWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        private void BackgroundWorkerPrices_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
-            Debug.Assert(!m_BackgroundWorker.IsBusy);
+            Debug.Assert(!m_BackgroundWorkerPrices.IsBusy);
             if (e.Error == null) {
                 string Result = (string)e.Result;
                 char[] Separators = { '\r', '\n' };
@@ -79,7 +79,7 @@ namespace EveFitScanUI
             RestartWorker();
         }
 
-        private void m_BackgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void BackgroundWorkerPrices_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             string ItemString = (string)e.Argument;
 

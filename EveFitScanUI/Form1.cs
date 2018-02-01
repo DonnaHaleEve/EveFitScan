@@ -130,6 +130,8 @@ namespace EveFitScanUI
 
             this.m_checkBoxPassive.Checked = ConfigHelper.Instance.PassiveTank;
             m_FitScanProcessor.SetPassive(ConfigHelper.Instance.PassiveTank);
+
+            m_BackgroundWorkerUpdate.RunWorkerAsync();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -139,6 +141,7 @@ namespace EveFitScanUI
 
             NativeMethods.ChangeClipboardChain(this.Handle, this.clipboardViewerNext);        // Removes our from the chain of clipboard viewers when the form closes.
         }
+
 
     }
 }

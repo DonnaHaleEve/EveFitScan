@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Npgsql;
 
 namespace DBConverter
@@ -107,7 +108,7 @@ namespace DBConverter
             Dictionary<SHIP_TRAITS, float> shipTraits = new Dictionary<SHIP_TRAITS, float>();
 
             NpgsqlCommand cmd = new NpgsqlCommand(
-                String.Format("SELECT \"bonus\", \"bonusText\" FROM \"invTraits\" WHERE \"typeID\" = {0}", typeID),
+                String.Format("SELECT \"bonus\", \"bonusText\", \"skillID\" FROM \"invTraits\" WHERE \"typeID\" = {0}", typeID),
                 conn);
             using (NpgsqlDataReader dr = cmd.ExecuteReader())
             {
@@ -116,36 +117,53 @@ namespace DBConverter
                     string bonusText = dr["bonusText"].ToString();
                     string bonusString = dr["bonus"].ToString();
                     float bonus = (bonusString.Length > 0) ? (float)Double.Parse(bonusString) : 0.0f;
+                    string skillID_str = dr["skillID"].ToString();
+                    int skillID = Int32.Parse(skillID_str);
 
                     // fuck CCP
                     if (String.Compare(bonusText, "bonus to ship shield hitpoints", true) == 0)
                     {
+                        Debug.Assert(skillID > 0);
                         shipTraits[SHIP_TRAITS.SHIP_TRAIT_SHIELD_HP_PERCENT_PER_LEVEL] = bonus;
                     }
                     else if (String.Compare(bonusText, "bonus to ship armor hitpoints", true) == 0)
                     {
+                        Debug.Assert(skillID > 0);
                         shipTraits[SHIP_TRAITS.SHIP_TRAIT_ARMOR_HP_PERCENT_PER_LEVEL] = bonus;
                     }
                     else if (String.Compare(bonusText, "bonus to ship shield and hull hitpoints", true) == 0)
                     {
+                        Debug.Assert(skillID > 0);
                         shipTraits[SHIP_TRAITS.SHIP_TRAIT_SHIELD_HP_PERCENT_PER_LEVEL] = bonus;
                         shipTraits[SHIP_TRAITS.SHIP_TRAIT_HULL_HP_PERCENT_PER_LEVEL] = bonus;
                     }
                     else if (String.Compare(bonusText, "bonus to ship armor and hull hitpoints", true) == 0)
                     {
+                        Debug.Assert(skillID > 0);
                         shipTraits[SHIP_TRAITS.SHIP_TRAIT_ARMOR_HP_PERCENT_PER_LEVEL] = bonus;
                         shipTraits[SHIP_TRAITS.SHIP_TRAIT_HULL_HP_PERCENT_PER_LEVEL] = bonus;
                     }
                     else if (String.Compare(bonusText, "bonus to all shield resistances", true) == 0)
                     {
-                        shipTraits[SHIP_TRAITS.SHIP_TRAIT_SHIELD_RESISTS_PER_LEVEL] = bonus;
+                        if (skillID > 0) {
+                            shipTraits[SHIP_TRAITS.SHIP_TRAIT_SHIELD_RESISTS_PER_LEVEL] = bonus;
+                        }
+                        else {
+                            shipTraits[SHIP_TRAITS.SHIP_TRAIT_SHIELD_RESISTS_ROLE] = bonus;
+                        }
                     }
                     else if (String.Compare(bonusText, "bonus to all armor resistances", true) == 0)
                     {
-                        shipTraits[SHIP_TRAITS.SHIP_TRAIT_ARMOR_RESISTS_PER_LEVEL] = bonus;
+                        if (skillID > 0) {
+                            shipTraits[SHIP_TRAITS.SHIP_TRAIT_ARMOR_RESISTS_PER_LEVEL] = bonus;
+                        }
+                        else {
+                            shipTraits[SHIP_TRAITS.SHIP_TRAIT_ARMOR_RESISTS_ROLE] = bonus;
+                        }
                     }
                     else if (bonusText.StartsWith("bonus to the benefits of overheating "))
                     {
+                        Debug.Assert(skillID < 0);
                         shipTraits[SHIP_TRAITS.SHIP_TRAIT_OVERHEATING_BONUS_PERCENT] = bonus;
                     }
                 }
