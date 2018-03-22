@@ -52,7 +52,7 @@ namespace EveFitScanUI
                     m_ValueShip,
                     m_ValueRigs + m_ValueSubsystems + m_ValueModules,
                     m_ValueShip + m_ValueRigs + m_ValueSubsystems + m_ValueModules,
-                    m_ValueSubsystems + m_ValueModules
+                    m_ValueModules
                 );
             }
         }

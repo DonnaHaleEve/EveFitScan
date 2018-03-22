@@ -42,7 +42,7 @@ namespace EveFitScanUI
             if (m_ComboBoxShipType.SelectedIndex >= 0)
             {
                 string Text = m_ComboBoxShipType.Text;
-                m_FitScanProcessor.SetShipName(Text, m_checkBoxPassive.Checked);
+                m_FitScanProcessor.SetShipName(Text, m_checkBoxPassive.Checked, m_checkBoxADCActive.Checked);
             }
         }
     }

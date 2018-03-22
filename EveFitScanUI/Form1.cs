@@ -86,7 +86,7 @@ namespace EveFitScanUI
                                 return;
                             }
 
-                            m_FitScanProcessor.NewPaste(data, m_checkBoxPassive.Checked);
+                            m_FitScanProcessor.NewPaste(data, m_checkBoxPassive.Checked, m_checkBoxADCActive.Checked);
                         }
                     }
                 }
@@ -141,7 +141,5 @@ namespace EveFitScanUI
 
             NativeMethods.ChangeClipboardChain(this.Handle, this.clipboardViewerNext);        // Removes our from the chain of clipboard viewers when the form closes.
         }
-
-
     }
 }

@@ -30,6 +30,13 @@ namespace EveFitScanUI
             }
         }
 
+        private bool m_bAssaultDCEnabled = true;
+        public bool AssaultDCEnabled {
+            get {
+                return m_bAssaultDCEnabled;
+            }
+        }
+
         #endregion
         // ==============================================================================================================
 
@@ -81,10 +88,14 @@ namespace EveFitScanUI
                 int Count = ModuleAndCount.Item2;
                 if (ModuleAndCount.Item1.m_Effects.ContainsKey(Layer)) {
                     if (ModuleAndCount.Item1.m_Effects[Layer].ContainsKey(EFFECT.OVERHEATING)) {
-                        Debug.Assert(Count == 1);
-                        Debug.Assert(SubsystemOverheatingBonus <= 0.0f);
-                        SubsystemOverheatingBonus = ModuleAndCount.Item1.m_Effects[Layer][EFFECT.OVERHEATING].Item1;
-                        Debug.Assert(SubsystemOverheatingBonus > 0.0f);
+                        if (ModuleAndCount.Item1.m_Effects[Layer][EFFECT.OVERHEATING].ContainsKey(ACTIVE.PASSIVE)) {
+                            // Only subsystems (passive modules) can be with overheating bonus.
+                            // Not active and not assault DCs.
+                            Debug.Assert(Count == 1);
+                            Debug.Assert(SubsystemOverheatingBonus <= 0.0f);
+                            SubsystemOverheatingBonus = ModuleAndCount.Item1.m_Effects[Layer][EFFECT.OVERHEATING][ACTIVE.PASSIVE].Item1;
+                            Debug.Assert(SubsystemOverheatingBonus > 0.0f);
+                        }
                     }
                 }
             }
@@ -93,43 +104,64 @@ namespace EveFitScanUI
                 int Count = ModuleAndCount.Item2;
                 if (ModuleAndCount.Item1.m_Effects.ContainsKey(Layer)) {
                     foreach (EFFECT Effect in ModuleAndCount.Item1.m_Effects[Layer].Keys) {
-                        Tuple<float, bool, int> EffectParams = ModuleAndCount.Item1.m_Effects[Layer][Effect];
-                        switch (Effect) {
-                            case EFFECT.ADD:
-                                Debug.Assert(EffectParams.Item2 == false); // all flat shield/armor/hull bonuses belong to passive modules
-                                Debug.Assert(EffectParams.Item3 == 1); // all flat shield/armor/hull bonuses have stacking group 1
-                                FlatHPBonus += (EffectParams.Item1 * Count);
-                                break;
-                            case EFFECT.MULTIPLY:
-                                Debug.Assert(EffectParams.Item2 == false); // all multiplicative shield/armor/hull bonuses belong to passive modules
-                                Debug.Assert(EffectParams.Item3 == 1); // all multiplicative shield/armor/hull bonuses have stacking group 1
-                                HPMultiplier *= (float)Math.Pow(EffectParams.Item1, Count);
-                                break;
-                            case EFFECT.EM:
-                            case EFFECT.THERMAL:
-                            case EFFECT.KINETIC:
-                            case EFFECT.EXPLOSIVE:
-                                RESIST Resist = EffectToResist(Effect);
-                                if (!EffectParams.Item2) {
-                                    // passive effect
-                                    AddTo(ref ResistBonuses, Resist, false, EffectParams.Item3, EffectParams.Item1, Count);
-                                    AddTo(ref ResistBonuses, Resist, true, EffectParams.Item3, EffectParams.Item1, Count);
-                                }
-                                else {
-                                    // active effect
-                                    if (!PassiveTank) {
-                                        AddTo(ref ResistBonuses, Resist, false, EffectParams.Item3, EffectParams.Item1, Count);
-                                        float OverloadBonus = ModuleAndCount.Item1.m_OverloadBonus;
-                                        if (OverloadBonus > 0.01f) {
-                                            float OverloadedResist = EffectParams.Item1 * (1.0f + OverloadBonus * (1.0f + ShipOverheatingBonus + SubsystemOverheatingBonus));
-                                            AddTo(ref ResistBonuses, Resist, true, EffectParams.Item3, OverloadedResist, Count);
-                                        }
-                                        else {
-                                            AddTo(ref ResistBonuses, Resist, true, EffectParams.Item3, EffectParams.Item1, Count);
-                                        }
+
+                        foreach (ACTIVE Active in ModuleAndCount.Item1.m_Effects[Layer][Effect].Keys) {
+                            Tuple<float, int> EffectParams = ModuleAndCount.Item1.m_Effects[Layer][Effect][Active];
+
+                            switch (Effect) {
+                                case EFFECT.ADD:
+                                    Debug.Assert(Active == ACTIVE.PASSIVE); // all flat shield/armor/hull bonuses belong to passive modules
+                                    Debug.Assert(EffectParams.Item2 == 1); // all flat shield/armor/hull bonuses have stacking group 1
+                                    FlatHPBonus += (EffectParams.Item1 * Count);
+                                    break;
+                                case EFFECT.MULTIPLY:
+                                    Debug.Assert(Active == ACTIVE.PASSIVE); // all multiplicative shield/armor/hull bonuses belong to passive modules
+                                    Debug.Assert(EffectParams.Item2 == 1); // all multiplicative shield/armor/hull bonuses have stacking group 1
+                                    HPMultiplier *= (float)Math.Pow(EffectParams.Item1, Count);
+                                    break;
+
+                                case EFFECT.EM:
+                                case EFFECT.THERMAL:
+                                case EFFECT.KINETIC:
+                                case EFFECT.EXPLOSIVE:
+                                    RESIST Resist = EffectToResist(Effect);
+                                    switch (Active) {
+                                        case ACTIVE.PASSIVE:
+                                            // passive effect
+                                            AddTo(ref ResistBonuses, Resist, false, EffectParams.Item2, EffectParams.Item1, Count);
+                                            AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, EffectParams.Item1, Count);
+                                            break;
+                                        case ACTIVE.ACTIVE:
+                                            // active effect
+                                            if (!PassiveTank) {
+                                                AddTo(ref ResistBonuses, Resist, false, EffectParams.Item2, EffectParams.Item1, Count);
+                                                float OverloadBonus = ModuleAndCount.Item1.m_OverloadBonus;
+                                                if (OverloadBonus > 0.01f) {
+                                                    float OverloadedResist = EffectParams.Item1 * (1.0f + OverloadBonus * (1.0f + ShipOverheatingBonus + SubsystemOverheatingBonus));
+                                                    AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, OverloadedResist, Count);
+                                                }
+                                                else {
+                                                    AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, EffectParams.Item1, Count);
+                                                }
+                                            }
+                                            break;
+                                        case ACTIVE.ASSAULT_PASSIVE:
+                                            // bonus from passive ADC
+                                            if (PassiveTank || !AssaultDCEnabled) {
+                                                AddTo(ref ResistBonuses, Resist, false, EffectParams.Item2, EffectParams.Item1, Count);
+                                                AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, EffectParams.Item1, Count);
+                                            }
+                                            break;
+                                        case ACTIVE.ASSAULT_ACTIVE:
+                                            // bonus from active ADC
+                                            if (!PassiveTank && AssaultDCEnabled) {
+                                                AddTo(ref ResistBonuses, Resist, false, EffectParams.Item2, EffectParams.Item1, Count);
+                                                AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, EffectParams.Item1, Count);
+                                            }
+                                            break;
                                     }
-                                }
-                                break;
+                                    break;
+                            }
                         }
                     }
                 }

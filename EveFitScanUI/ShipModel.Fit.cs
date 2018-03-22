@@ -133,7 +133,7 @@ namespace EveFitScanUI
 
         // ==============================================================================================================
 
-        public void SetShipAndModules(int ShipTypeID, IReadOnlyCollection<int> ModuleTypeIDs, bool bPassive)
+        public void SetShipAndModules(int ShipTypeID, IReadOnlyCollection<int> ModuleTypeIDs, bool bPassive, bool bADC)
         {
             Debug.Assert(ShipTypeID < 0 || ShipTypeIDToIndex.ContainsKey(ShipTypeID));
             foreach (int ModuleTypeID in ModuleTypeIDs) {
@@ -145,20 +145,22 @@ namespace EveFitScanUI
             EventFitChanged();
 
             m_bPassiveTank = bPassive;
+            m_bAssaultDCEnabled = bADC;
             RecalculateTank();
         }
 
-        public void AddMoreModules(IReadOnlyCollection<int> ModuleTypeIDs, bool bPassive)
+        public void AddMoreModules(IReadOnlyCollection<int> ModuleTypeIDs, bool bPassive, bool bADC)
         {
             DoAddMoreModules(ModuleTypeIDs);
             CheckFitValid();
             EventFitChanged();
 
             m_bPassiveTank = bPassive;
+            m_bAssaultDCEnabled = bADC;
             RecalculateTank();
         }
 
-        public void SetShip(int ShipTypeID, bool bPassive)
+        public void SetShip(int ShipTypeID, bool bPassive, bool bADC)
         {
             Debug.Assert(ShipTypeID < 0 || ShipTypeIDToIndex.ContainsKey(ShipTypeID));
             SetShipTypeID(ShipTypeID);
@@ -166,21 +168,28 @@ namespace EveFitScanUI
             EventFitChanged();
 
             m_bPassiveTank = bPassive;
+            m_bAssaultDCEnabled = bADC;
             RecalculateTank();
         }
 
-        public void ResetFit(bool bPassive)
+        public void ResetFit(bool bPassive, bool bADC)
         {
             CleanFit(m_ShipTypeID);
             CheckFitValid();
             EventFitChanged();
 
             m_bPassiveTank = bPassive;
+            m_bAssaultDCEnabled = bADC;
             RecalculateTank();
         }
 
         public void SetPassive(bool bPassive) {
             m_bPassiveTank = bPassive;
+            RecalculateTank();
+        }
+
+        public void SetAssaultDCEnabled(bool bADC) {
+            m_bAssaultDCEnabled = bADC;
             RecalculateTank();
         }
 
@@ -202,7 +211,7 @@ namespace EveFitScanUI
                 int ModuleCount = kvp.Value;
                 int Index = -1;
                 bool Ok = ModuleTypeIDToIndex.TryGetValue(ModuleTypeID, out Index);
-                Debug.Assert(Ok && Index > 0);
+                Debug.Assert(Ok && Index >= 0);
                 ModuleDescription MD = ModuleDescriptions[Index];
                 if (m_Fit[MD.m_Slot].ContainsKey(ModuleTypeID)) {
                     m_Fit[MD.m_Slot][ModuleTypeID] = Math.Max(m_Fit[MD.m_Slot][ModuleTypeID], ModuleCount);
@@ -234,17 +243,20 @@ namespace EveFitScanUI
                                     ModuleDescription MD = ModuleDescriptions[Index];
                                     if (MD.m_ShipTypeID == m_ShipTypeID) {
                                         if (MD.m_Effects.ContainsKey(LAYER.NONE)) {
-                                            foreach (KeyValuePair<EFFECT, Tuple<float, bool, int>> effect in MD.m_Effects[LAYER.NONE]) {
-                                                switch (effect.Key) {
-                                                    case EFFECT.HIGH_SLOTS:
-                                                        HS += (int)effect.Value.Item1;
-                                                        break;
-                                                    case EFFECT.MEDIUM_SLOTS:
-                                                        MS += (int)effect.Value.Item1;
-                                                        break;
-                                                    case EFFECT.LOW_SLOTS:
-                                                        LS += (int)effect.Value.Item1;
-                                                        break;
+
+                                            foreach (KeyValuePair<EFFECT, Dictionary<ACTIVE,Tuple<float, int>>> effect in MD.m_Effects[LAYER.NONE]) {
+                                                if (effect.Value.ContainsKey(ACTIVE.PASSIVE)) {
+                                                    switch (effect.Key) {
+                                                        case EFFECT.HIGH_SLOTS:
+                                                            HS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
+                                                            break;
+                                                        case EFFECT.MEDIUM_SLOTS:
+                                                            MS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
+                                                            break;
+                                                        case EFFECT.LOW_SLOTS:
+                                                            LS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
+                                                            break;
+                                                    }
                                                 }
                                             }
                                         }

@@ -5,20 +5,24 @@ namespace EveFitScanUI
 {
     partial class FitScanProcessor {
 
-        public void SetShipName(string ShipName, bool bPassive) {
+        public void SetShipName(string ShipName, bool bPassive, bool bADCActive) {
             int Index = -1;
             if (Model.ShipNameToIndex.TryGetValue(ShipName, out Index)) {
                 int ShipTypeID = Model.ShipDescriptions[Index].m_TypeID;
-                Model.SetShip(ShipTypeID, bPassive);
+                Model.SetShip(ShipTypeID, bPassive, bADCActive);
             }
         }
 
-        public void ResetFit(bool bPassive) {
-            Model.SetShipAndModules(Model.ShipTypeID, new List<int>(), bPassive);
+        public void ResetFit(bool bPassive, bool bADCActive) {
+            Model.SetShipAndModules(Model.ShipTypeID, new List<int>(), bPassive, bADCActive);
         }
 
         public void SetPassive(bool bPassive) {
             Model.SetPassive(bPassive);
+        }
+
+        public void SetADCActive(bool bADCActive) {
+            Model.SetAssaultDCEnabled(bADCActive);
         }
 
         public IReadOnlyCollection<string> SuggestNames(string Prefix) {

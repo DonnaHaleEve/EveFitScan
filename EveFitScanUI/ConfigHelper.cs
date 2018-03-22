@@ -97,6 +97,16 @@ namespace EveFitScanUI
             }
         }
 
+        public bool ADCActive {
+            get {
+                return Properties.Settings.Default.ADCActive;
+            }
+            set {
+                Properties.Settings.Default.ADCActive = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
         public bool GetPrices {
             get {
                 return Properties.Settings.Default.GetPrices;

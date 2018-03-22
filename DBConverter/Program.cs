@@ -221,14 +221,17 @@ namespace DBConverter
             fileModules.WriteLine("    public enum SLOT { HIGH, MEDIUM, LOW, RIG, SUB_CORE, SUB_DEFENSIVE, SUB_OFFENSIVE, SUB_PROPULSION };");
             fileModules.WriteLine("    public enum LAYER { SHIELD, ARMOR, HULL, NONE };");
             fileModules.WriteLine("    public enum EFFECT { EM, THERMAL, KINETIC, EXPLOSIVE, ADD, MULTIPLY, HIGH_SLOTS, MEDIUM_SLOTS, LOW_SLOTS, OVERHEATING };");
+            fileModules.WriteLine("    public enum ACTIVE { PASSIVE, ACTIVE, ASSAULT_PASSIVE, ASSAULT_ACTIVE };");
             fileModules.WriteLine("    public class ModuleDescription {");
             fileModules.WriteLine("      public ModuleDescription(string Name, int TypeID, SLOT Slot, float OverloadBonus, int ShipTypeID) {");
             fileModules.WriteLine("        m_Name = Name; m_TypeID = TypeID; m_Slot = Slot; m_OverloadBonus = OverloadBonus; m_ShipTypeID = ShipTypeID;");
             fileModules.WriteLine("      }");
-            fileModules.WriteLine("      public ModuleDescription AddEffect(LAYER Layer, EFFECT Effect, float Value, bool Active, int StackGroup) {");
+            fileModules.WriteLine("      public ModuleDescription AddEffect(LAYER Layer, EFFECT Effect, float Value, ACTIVE Active, int StackGroup) {");
             fileModules.WriteLine("        if(!m_Effects.ContainsKey(Layer))");
-            fileModules.WriteLine("          m_Effects.Add(Layer, new Dictionary<EFFECT, Tuple<float, bool, int>>());");
-            fileModules.WriteLine("        m_Effects[Layer][Effect] = new Tuple<float,bool,int>(Value, Active, StackGroup);");
+            fileModules.WriteLine("          m_Effects.Add(Layer, new Dictionary<EFFECT, Dictionary<ACTIVE, Tuple<float, int>>>());");
+            fileModules.WriteLine("        if (!m_Effects[Layer].ContainsKey(Effect))");
+            fileModules.WriteLine("          m_Effects[Layer].Add(Effect, new Dictionary<ACTIVE, Tuple<float, int>>());");
+            fileModules.WriteLine("        m_Effects[Layer][Effect][Active] = new Tuple<float, int>(Value, StackGroup);");
             fileModules.WriteLine("        return this;");
             fileModules.WriteLine("      }");
             fileModules.WriteLine("      public string m_Name;");
@@ -236,7 +239,7 @@ namespace DBConverter
             fileModules.WriteLine("      public SLOT m_Slot;");
             fileModules.WriteLine("      public float m_OverloadBonus;");
             fileModules.WriteLine("      public float m_ShipTypeID;");
-            fileModules.WriteLine("      public Dictionary<LAYER, Dictionary<EFFECT, Tuple<float, bool, int>>> m_Effects = new Dictionary<LAYER, Dictionary<EFFECT, Tuple<float, bool, int>>>();");
+            fileModules.WriteLine("      public Dictionary<LAYER, Dictionary<EFFECT, Dictionary<ACTIVE, Tuple<float, int>>>> m_Effects = new Dictionary<LAYER, Dictionary<EFFECT, Dictionary<ACTIVE, Tuple<float, int>>>>();");
             fileModules.WriteLine("    }");
             fileModules.WriteLine("    private List<ModuleDescription> m_ModuleDescriptions = null;");
             fileModules.WriteLine("    public IReadOnlyList<ModuleDescription> ModuleDescriptions {");
@@ -371,12 +374,27 @@ namespace DBConverter
             return moduleDescriptions;
         }
 
+        static MODULE_ACTIVE GetActive(bool isOmni, bool isADC, bool isActive) {
+            if (isOmni) {
+                Debug.Assert(isADC);
+                return MODULE_ACTIVE.ASSAULT_ACTIVE;
+            }
+            else {
+                if (isADC) {
+                    return MODULE_ACTIVE.ASSAULT_PASSIVE;
+                }
+                else {
+                    return isActive ? MODULE_ACTIVE.ACTIVE : MODULE_ACTIVE.PASSIVE;
+                }
+            }
+        }
+
         static ModuleDescription GetModuleDescription(string moduleName, int typeID, int groupID, MODULE_SLOT slot, NpgsqlConnection conn)
         {
             IReadOnlyDictionary<MODULE_ATTRIBUTES_DB, Tuple<bool,int,bool,float>> moduleAttributesDB = GetModuleAttributes(typeID, conn);
 
             // Tuple is : value + stacking group
-            Dictionary<MODULE_ATTRIBUTES, Tuple<float, bool, int>> attributes = new Dictionary<MODULE_ATTRIBUTES, Tuple<float, bool, int>>();
+            Dictionary<MODULE_ATTRIBUTES, Dictionary<MODULE_ACTIVE, Tuple<float, int>>> Attributes = new Dictionary<MODULE_ATTRIBUTES, Dictionary<MODULE_ACTIVE, Tuple<float, int>>>();
 
             float OverloadBonus = 0.0f;
 
@@ -395,48 +413,50 @@ namespace DBConverter
                 }
             }
 
+            bool isADC = moduleAttributesDB.ContainsKey(MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_ALL_RESONANCES);
+
             foreach (MODULE_ATTRIBUTES_DB attrDB in moduleAttributesDB.Keys)
             {
                 float attrDBValue = GetValue(moduleAttributesDB[attrDB]);
                 switch (attrDB) {
                     //
                     case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_SHIELD_EM_RESONANCE:
-                        attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST, new Tuple<float, bool, int>(1.0f - attrDBValue, bActiveModule, GetStackingGroup(groupID)));
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST, GetActive(false, isADC, bActiveModule), 1.0f - attrDBValue, GetStackingGroup(groupID));
                         break;
                     case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_SHIELD_THERMAL_RESONANCE:
-                        attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST, new Tuple<float, bool, int>(1.0f - attrDBValue, bActiveModule, GetStackingGroup(groupID)));
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST, GetActive(false, isADC, bActiveModule), 1.0f - attrDBValue, GetStackingGroup(groupID));
                         break;
                     case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_SHIELD_KINETIC_RESONANCE:
-                        attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST, new Tuple<float, bool, int>(1.0f - attrDBValue, bActiveModule, GetStackingGroup(groupID)));
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST, GetActive(false, isADC, bActiveModule), 1.0f - attrDBValue, GetStackingGroup(groupID));
                         break;
                     case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_SHIELD_EXPLOSIVE_RESONANCE:
-                        attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST, new Tuple<float, bool, int>(1.0f - attrDBValue, bActiveModule, GetStackingGroup(groupID)));
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST, GetActive(false, isADC, bActiveModule), 1.0f - attrDBValue, GetStackingGroup(groupID));
                         break;
                     //
                     case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_ARMOR_EM_RESONANCE:
-                        attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST, new Tuple<float, bool, int>(1.0f - attrDBValue, bActiveModule, GetStackingGroup(groupID)));
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST, GetActive(false, isADC, bActiveModule), 1.0f - attrDBValue, GetStackingGroup(groupID));
                         break;
                     case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_ARMOR_THERMAL_RESONANCE:
-                        attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST, new Tuple<float, bool, int>(1.0f - attrDBValue, bActiveModule, GetStackingGroup(groupID)));
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST, GetActive(false, isADC, bActiveModule), 1.0f - attrDBValue, GetStackingGroup(groupID));
                         break;
                     case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_ARMOR_KINETIC_RESONANCE:
-                        attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST, new Tuple<float, bool, int>(1.0f - attrDBValue, bActiveModule, GetStackingGroup(groupID)));
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST, GetActive(false, isADC, bActiveModule), 1.0f - attrDBValue, GetStackingGroup(groupID));
                         break;
                     case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_ARMOR_EXPLOSIVE_RESONANCE:
-                        attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST, new Tuple<float, bool, int>(1.0f - attrDBValue, bActiveModule, GetStackingGroup(groupID)));
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST, GetActive(false, isADC, bActiveModule), 1.0f - attrDBValue, GetStackingGroup(groupID));
                         break;
                     //
                     case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_HULL_EM_RESONANCE:
-                        attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_EM_RESIST, new Tuple<float, bool, int>(1.0f - attrDBValue, bActiveModule, GetStackingGroup(groupID)));
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_EM_RESIST, GetActive(false, isADC, bActiveModule), 1.0f - attrDBValue, GetStackingGroup(groupID));
                         break;
                     case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_HULL_THERMAL_RESONANCE:
-                        attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_THERMAL_RESIST, new Tuple<float, bool, int>(1.0f - attrDBValue, bActiveModule, GetStackingGroup(groupID)));
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_THERMAL_RESIST, GetActive(false, isADC, bActiveModule), 1.0f - attrDBValue, GetStackingGroup(groupID));
                         break;
                     case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_HULL_KINETIC_RESONANCE:
-                        attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_KINETIC_RESIST, new Tuple<float, bool, int>(1.0f - attrDBValue, bActiveModule, GetStackingGroup(groupID)));
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_KINETIC_RESIST, GetActive(false, isADC, bActiveModule), 1.0f - attrDBValue, GetStackingGroup(groupID));
                         break;
                     case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_HULL_EXPLOSIVE_RESONANCE:
-                        attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_EXPLOSIVE_RESIST, new Tuple<float, bool, int>(1.0f - attrDBValue, bActiveModule, GetStackingGroup(groupID)));
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_EXPLOSIVE_RESIST, GetActive(false, isADC, bActiveModule), 1.0f - attrDBValue, GetStackingGroup(groupID));
                         break;
                     //
                     case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_EM_RESIST_BONUS:
@@ -447,37 +467,37 @@ namespace DBConverter
                             {
                                 // active shield resist modules: Invulnerability Fields, Ward Fields, Flex Hardeners
                                 Debug.Assert(bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST);
                             }
                             else if (groupID == 328 || groupID == 1699)
                             {
                                 // active armor resist modules
                                 Debug.Assert(bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST);
                             }
                             else if (groupID == 295)
                             {
                                 // passive shield resist modules
                                 Debug.Assert(!bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST);
                             }
                             else if (groupID == 98 || groupID == 326)
                             {
                                 // passive armor resist modules
                                 Debug.Assert(!bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST);
                             }
                             else if (groupID == 774)
                             {
                                 // shield rigs
                                 Debug.Assert(!bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST);
                             }
                             else if (groupID == 773)
                             {
                                 // armor rigs
                                 Debug.Assert(!bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST);
                             }
                             else
                             {
@@ -493,37 +513,37 @@ namespace DBConverter
                             {
                                 // active shield resist modules: Invulnerability Fields, Ward Fields, Flex Hardeners
                                 Debug.Assert(bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST);
                             }
                             else if (groupID == 328 || groupID == 1699)
                             {
                                 // active armor resist modules
                                 Debug.Assert(bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST);
                             }
                             else if (groupID == 295)
                             {
                                 // passive shield resist modules
                                 Debug.Assert(!bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST);
                             }
                             else if (groupID == 98 || groupID == 326)
                             {
                                 // passive armor resist modules
                                 Debug.Assert(!bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST);
                             }
                             else if (groupID == 774)
                             {
                                 // shield rigs
                                 Debug.Assert(!bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST);
                             }
                             else if (groupID == 773)
                             {
                                 // armor rigs
                                 Debug.Assert(!bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST);
                             }
                             else
                             {
@@ -539,37 +559,37 @@ namespace DBConverter
                             {
                                 // active shield resist modules: Invulnerability Fields, Ward Fields, Flex Hardeners
                                 Debug.Assert(bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST);
                             }
                             else if (groupID == 328 || groupID == 1699)
                             {
                                 // active armor resist modules
                                 Debug.Assert(bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST);
                             }
                             else if (groupID == 295)
                             {
                                 // passive shield resist modules
                                 Debug.Assert(!bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST);
                             }
                             else if (groupID == 98 || groupID == 326)
                             {
                                 // passive armor resist modules
                                 Debug.Assert(!bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST);
                             }
                             else if (groupID == 774)
                             {
                                 // shield rigs
                                 Debug.Assert(!bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST);
                             }
                             else if (groupID == 773)
                             {
                                 // armor rigs
                                 Debug.Assert(!bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST);
                             }
                             else
                             {
@@ -585,43 +605,68 @@ namespace DBConverter
                             {
                                 // active shield resist modules: Invulnerability Fields, Ward Fields, Flex Hardeners
                                 Debug.Assert(bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST);
                             }
                             else if (groupID == 328 || groupID == 1699)
                             {
                                 // active armor resist modules
                                 Debug.Assert(bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, true, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST);
                             }
                             else if (groupID == 295)
                             {
                                 // passive shield resist modules
                                 Debug.Assert(!bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST);
                             }
                             else if (groupID == 98 || groupID == 326)
                             {
                                 // passive armor resist modules
                                 Debug.Assert(!bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, false, false, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST);
                             }
                             else if (groupID == 774)
                             {
                                 // shield rigs
                                 Debug.Assert(!bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST);
                             }
                             else if (groupID == 773)
                             {
                                 // armor rigs
                                 Debug.Assert(!bActiveModule);
-                                AddResitAttributesWithHeat(ref attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST);
+                                AddResitAttributesWithHeat(ref Attributes, attrDBValue, false, true, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST);
                             }
                             else
                             {
                                 Console.WriteLine("Unknown EM resist module: {0}, groupID={1}", moduleName, groupID);
                             }
                         }
+                        break;
+                    case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_ALL_RESONANCES:
+                        Debug.Assert(bActiveModule == true);
+                        Debug.Assert(isADC == true);
+                        MODULE_ACTIVE Active = GetActive(true,true,true);
+                        Debug.Assert(Active == MODULE_ACTIVE.ASSAULT_ACTIVE);
+
+                        float Resist = 1.0f - attrDBValue;
+                        int StackingGroup = GetStackingGroup(groupID);
+
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST, Active, Resist, StackingGroup);
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST, Active, Resist, StackingGroup);
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST, Active, Resist, StackingGroup);
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EXPLOSIVE_RESIST, Active, Resist, StackingGroup);
+
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EM_RESIST, Active, Resist, StackingGroup);
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_THERMAL_RESIST, Active, Resist, StackingGroup);
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_KINETIC_RESIST, Active, Resist, StackingGroup);
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_EXPLOSIVE_RESIST, Active, Resist, StackingGroup);
+
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_EM_RESIST, Active, Resist, StackingGroup);
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_THERMAL_RESIST, Active, Resist, StackingGroup);
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_KINETIC_RESIST, Active, Resist, StackingGroup);
+                        AddTo(ref Attributes, MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_EXPLOSIVE_RESIST, Active, Resist, StackingGroup);
+                        
                         break;
                     //
                     case MODULE_ATTRIBUTES_DB.MODULE_ATTR_DB_OVERLOAD_HARDENING_BONUS:
@@ -641,7 +686,10 @@ namespace DBConverter
                             if (bonus > 0.01f)
                             {
                                 // filter out reactor control units, they have shield multiplier = 1
-                                attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_BONUS_MULTIPLY, new Tuple<float, bool, int>(attrDBValue, false, 1));
+                                Attributes.Add(
+                                    MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_BONUS_MULTIPLY,
+                                    new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(attrDBValue, 1) } }
+                                );
                             }
                         }
                         break;
@@ -653,7 +701,10 @@ namespace DBConverter
                             if (bonus > 0.01f)
                             {
                                 // filter out armor resist modules, they have armor multiplier = 1
-                                attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_BONUS_MULTIPLY, new Tuple<float, bool, int>(attrDBValue, false, 1));
+                                Attributes.Add(
+                                    MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_BONUS_MULTIPLY,
+                                    new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(attrDBValue, 1) } }
+                                );
                             }
                         }
                         break;
@@ -666,7 +717,10 @@ namespace DBConverter
                             if (bonus > 0.01f)
                             {
                                 // filter out nanofibers, they have hull multiplier = 1
-                                attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_BONUS_MULTIPLY, new Tuple<float, bool, int>(attrDBValue, false, 1));
+                                Attributes.Add(
+                                    MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_BONUS_MULTIPLY,
+                                    new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(attrDBValue, 1) } }
+                                );
                             }
                         }
                         break;
@@ -677,7 +731,10 @@ namespace DBConverter
                             float bonus = Math.Abs(attrDBValue);
                             if (bonus > 0.01f)
                             {
-                                attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_BONUS_ADD, new Tuple<float, bool, int>(attrDBValue, false, 1));
+                                Attributes.Add(
+                                    MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_BONUS_ADD,
+                                    new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(attrDBValue, 1) } }
+                                );
                             }
                         }
                         break;
@@ -690,7 +747,10 @@ namespace DBConverter
                             if (bonus > 0.01f)
                             {
                                 // filter out shield resist amplifiers, they have shield bonus = 0
-                                attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_BONUS_ADD, new Tuple<float, bool, int>(attrDBValue, false, 1));
+                                Attributes.Add(
+                                    MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_BONUS_ADD,
+                                    new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(attrDBValue, 1) } }
+                                );
                             }
                         }
                         break;
@@ -701,7 +761,10 @@ namespace DBConverter
                             float bonus = Math.Abs(attrDBValue);
                             if (bonus > 0.01f)
                             {
-                                attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_BONUS_ADD, new Tuple<float, bool, int>(attrDBValue, false, 1));
+                                Attributes.Add(
+                                    MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_BONUS_ADD,
+                                    new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(attrDBValue, 1) } }
+                                );
                             }
                         }
                         break;
@@ -715,7 +778,10 @@ namespace DBConverter
                             {
                                 // shield % bonus
                                 bonus = 1.0f + 0.01f * bonus;
-                                attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_BONUS_MULTIPLY, new Tuple<float, bool, int>(bonus, false, 1));
+                                Attributes.Add(
+                                    MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_BONUS_MULTIPLY,
+                                    new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(bonus, 1) } }
+                                );
                             }
                         }
                         break;
@@ -729,7 +795,10 @@ namespace DBConverter
                             {
                                 // armor % bonus
                                 bonus = 1.0f + 0.01f * bonus;
-                                attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_BONUS_MULTIPLY, new Tuple<float, bool, int>(bonus, false, 1));
+                                Attributes.Add(
+                                    MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_BONUS_MULTIPLY,
+                                    new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(bonus, 1) } }
+                                );
                             }
                         }
                         break;
@@ -743,7 +812,10 @@ namespace DBConverter
                             {
                                 // hull % bonus
                                 bonus = 1.0f + 0.01f * bonus;
-                                attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_BONUS_MULTIPLY, new Tuple<float, bool, int>(bonus, false, 1));
+                                Attributes.Add(
+                                    MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HULL_BONUS_MULTIPLY,
+                                    new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(bonus, 1) } }
+                                );
                             }
                         }
                         break;
@@ -766,7 +838,10 @@ namespace DBConverter
                                 moduleName.Contains("Targeting System Subcontroller")
                             ) {
                                 Debug.Assert(drawback < 1.0f);
-                                attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_BONUS_MULTIPLY, new Tuple<float, bool, int>(drawback, false, 1));
+                                Attributes.Add(
+                                    MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_BONUS_MULTIPLY,
+                                    new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(drawback, 1) } }
+                                );
                             }
                             else if
                             (
@@ -778,7 +853,10 @@ namespace DBConverter
                                 moduleName.Contains("Polycarbon Engine Housing")
                             ) {
                                 Debug.Assert(drawback < 1.0f);
-                                attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_BONUS_MULTIPLY, new Tuple<float, bool, int>(drawback, false, 1));
+                                Attributes.Add(
+                                    MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_BONUS_MULTIPLY,
+                                    new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(drawback, 1) } }
+                                );
                             }
                         }
                         break;
@@ -791,7 +869,10 @@ namespace DBConverter
                         if (attrDBValue > 0.01f)
                         {
                             Debug.Assert(bActiveModule == false);
-                            attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HIGH_SLOTS, new Tuple<float, bool, int>(attrDBValue, false, 1));
+                            Attributes.Add(
+                                MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_HIGH_SLOTS,
+                                new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(attrDBValue, 1) } }
+                            );
                         }
                         break;
 
@@ -799,7 +880,10 @@ namespace DBConverter
                         if (attrDBValue > 0.01f)
                         {
                             Debug.Assert(bActiveModule == false);
-                            attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_MEDIUM_SLOTS, new Tuple<float, bool, int>(attrDBValue, false, 1));
+                            Attributes.Add(
+                                MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_MEDIUM_SLOTS,
+                                new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(attrDBValue, 1) } }
+                            );
                         }
                         break;
 
@@ -807,7 +891,10 @@ namespace DBConverter
                         if (attrDBValue > 0.01f)
                         {
                             Debug.Assert(bActiveModule == false);
-                            attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_LOW_SLOTS, new Tuple<float, bool, int>(attrDBValue, false, 1));
+                            Attributes.Add(
+                                MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_LOW_SLOTS,
+                                new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(attrDBValue, 1) } }
+                            );
                         }
                         break;
                 }
@@ -822,7 +909,10 @@ namespace DBConverter
                     // shield % bonus
                     Debug.Assert(bActiveModule == false);
                     float bonus = 1.0f + traitShieldHPPercentPerLevel * 0.01f * 5.0f;
-                    attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_BONUS_MULTIPLY, new Tuple<float, bool, int>(bonus, false, 1));
+                    Attributes.Add(
+                        MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_BONUS_MULTIPLY,
+                        new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(bonus, 1) } }
+                    );
                 }
 
                 float traitArmorHPPercentPerLevel = 0.0f;
@@ -831,7 +921,10 @@ namespace DBConverter
                     // armor % bonus
                     Debug.Assert(bActiveModule == false);
                     float bonus = 1.0f + traitArmorHPPercentPerLevel * 0.01f * 5.0f;
-                    attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_BONUS_MULTIPLY, new Tuple<float, bool, int>(bonus, false, 1));
+                    Attributes.Add(
+                        MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_BONUS_MULTIPLY,
+                        new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(bonus, 1) } }
+                    );
                 }
 
                 float traitShieldHardenersOHBonusPerLevel = 0.0f;
@@ -840,7 +933,10 @@ namespace DBConverter
                     // shield hardeners overheating bonus
                     Debug.Assert(bActiveModule == false);
                     float bonus = traitShieldHardenersOHBonusPerLevel * 0.01f * 5.0f;
-                    attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_HARDENERS_OVERLOAD_BONUS, new Tuple<float, bool, int>(bonus, false, 1));
+                    Attributes.Add(
+                        MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_HARDENERS_OVERLOAD_BONUS,
+                        new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(bonus, 1) } }
+                    );
                 }
 
                 float traitArmorHardenersOHBonusPerLevel = 0.0f;
@@ -849,7 +945,10 @@ namespace DBConverter
                     // shield hardeners overheating bonus
                     Debug.Assert(bActiveModule == false);
                     float bonus = traitArmorHardenersOHBonusPerLevel * 0.01f * 5.0f;
-                    attributes.Add(MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_HARDENERS_OVERLOAD_BONUS, new Tuple<float, bool, int>(bonus, false, 1));
+                    Attributes.Add(
+                        MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_ARMOR_HARDENERS_OVERLOAD_BONUS,
+                        new Dictionary<MODULE_ACTIVE, Tuple<float, int>> { { GetActive(false, false, false), new Tuple<float, int>(bonus, 1) } }
+                    );
                 }
             }
 
@@ -857,23 +956,29 @@ namespace DBConverter
                 moduleName,
                 typeID,
                 slot,
-                attributes,
+                Attributes,
                 OverloadBonus,
                 ShipTypeID
             );
         }
 
-        static void AddResitAttributesWithHeat(ref Dictionary<MODULE_ATTRIBUTES, Tuple<float, bool, int>> attributes, float resistValueDB, bool bActiveModule, bool bRig, MODULE_ATTRIBUTES attribute)
-        {
+        static void AddTo(ref Dictionary<MODULE_ATTRIBUTES, Dictionary<MODULE_ACTIVE, Tuple<float, int>>> Attributes, MODULE_ATTRIBUTES Attr, MODULE_ACTIVE Active, float Value, int StackingGroup) {
+            if (!Attributes.ContainsKey(Attr)) {
+                Attributes.Add(Attr, new Dictionary<MODULE_ACTIVE, Tuple<float, int>>());
+            }
+            Attributes[Attr][Active] = new Tuple<float, int>(Value, StackingGroup);
+        }
+
+        static void AddResitAttributesWithHeat(ref Dictionary<MODULE_ATTRIBUTES, Dictionary<MODULE_ACTIVE, Tuple<float, int>>> Attributes, float resistValueDB, bool bActiveModule, bool bRig, MODULE_ATTRIBUTES attribute) {
             Debug.Assert(!(bActiveModule && bRig));
             Debug.Assert(resistValueDB < 0.0f);
 
             float resistCold = -(0.01f * resistValueDB);
-            if (!bActiveModule && !bRig)
-            {
+            if (!bActiveModule && !bRig) {
                 resistCold *= 1.25f; // compensation skill bonus
             }
-            attributes.Add(attribute, new Tuple<float, bool, int>(resistCold, bActiveModule, 1));
+
+            AddTo(ref Attributes, attribute, bActiveModule ? MODULE_ACTIVE.ACTIVE : MODULE_ACTIVE.PASSIVE, resistCold, 1);
         }
 
         #region --------------------- aux methods --------------------

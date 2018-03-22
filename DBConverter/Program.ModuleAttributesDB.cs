@@ -30,6 +30,8 @@ namespace DBConverter
             MODULE_ATTR_DB_KINETIC_RESIST_BONUS = 986, // Unknown layer (shield/armor/hull).
             MODULE_ATTR_DB_EXPLOSIVE_RESIST_BONUS = 985, // Unknown layer (shield/armor/hull).
 
+            MODULE_ATTR_DB_ALL_RESONANCES = 2746, // all layers, found on assault damage controls
+
             MODULE_ATTR_DB_OVERLOAD_HARDENING_BONUS = 1208,
 
             MODULE_ATTR_DB_SHIELD_CAPACITY_MULTIPLIER = 146, // shield %

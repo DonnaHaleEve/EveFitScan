@@ -8,11 +8,12 @@ FROM
 WHERE
 	"published" = TRUE
     AND
+	"typeID" = 47257 -- 'Assault Damage Control II'
     --"typeID" = 440 -- '5MN Microwarpdrive II'
     --"typeID" = 1541 -- 'Power Diagnostic System II'
     --"typeID" = 1248 -- 'Capacitor Flux Coil II'
     --"typeID" = 1355 -- 'Reactor Control Unit II'
-    "typeID" = 33400 -- Bastion Module I
+    --"typeID" = 33400 -- Bastion Module I
     --"typeID" = 3841 -- Large Shield Extender II
 	--"typeID" = 2301 -- EM Ward Field II (********************)
 	--"typeID" = 2281 -- Adaptive Invulnerability Field II (********************)

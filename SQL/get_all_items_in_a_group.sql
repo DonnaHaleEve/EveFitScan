@@ -3,5 +3,6 @@ SELECT
 FROM
     "invTypes"
 WHERE
-	"groupID" = 515 -- bastion/siege/triage/industrial_core
+	"groupID" = 60 -- damage controls
+	--"groupID" = 515 -- bastion/siege/triage/industrial_core
 ;

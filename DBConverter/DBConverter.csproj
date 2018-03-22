@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
+    <Compile Include="Program.ModuleActive.cs" />
     <Compile Include="Program.ModuleAttributes.cs" />
     <Compile Include="Program.ModuleAttributesDB.cs" />
     <Compile Include="Program.ModuleDescription.cs" />

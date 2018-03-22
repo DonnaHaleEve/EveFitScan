@@ -96,6 +96,7 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.m_BackgroundWorkerUpdate = new System.ComponentModel.BackgroundWorker();
+            this.m_checkBoxADCActive = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -780,12 +781,25 @@
             this.m_BackgroundWorkerUpdate.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorkerUpdate_DoWork);
             this.m_BackgroundWorkerUpdate.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorkerUpdate_RunWorkerCompleted);
             // 
+            // m_checkBoxADCActive
+            // 
+            this.m_checkBoxADCActive.AutoSize = true;
+            this.m_checkBoxADCActive.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_checkBoxADCActive.Location = new System.Drawing.Point(528, 624);
+            this.m_checkBoxADCActive.Name = "m_checkBoxADCActive";
+            this.m_checkBoxADCActive.Size = new System.Drawing.Size(210, 24);
+            this.m_checkBoxADCActive.TabIndex = 59;
+            this.m_checkBoxADCActive.Text = "ADC active (if present)";
+            this.m_checkBoxADCActive.UseVisualStyleBackColor = true;
+            this.m_checkBoxADCActive.CheckedChanged += new System.EventHandler(this.m_checkBoxADCActive_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(964, 712);
+            this.Controls.Add(this.m_checkBoxADCActive);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.label16);
@@ -926,6 +940,7 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.ToolStripMenuItem getPricesToolStripMenuItem;
         private System.ComponentModel.BackgroundWorker m_BackgroundWorkerUpdate;
+        private System.Windows.Forms.CheckBox m_checkBoxADCActive;
     }
 }
 

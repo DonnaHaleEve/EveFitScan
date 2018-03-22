@@ -106,5 +106,17 @@ namespace EveFitScanUI.Properties {
                 this["GetPrices"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ADCActive {
+            get {
+                return ((bool)(this["ADCActive"]));
+            }
+            set {
+                this["ADCActive"] = value;
+            }
+        }
     }
 }

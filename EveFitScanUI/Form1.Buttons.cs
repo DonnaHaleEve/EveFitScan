@@ -11,6 +11,17 @@ namespace EveFitScanUI
         {
             ConfigHelper.Instance.PassiveTank = m_checkBoxPassive.Checked;
             m_FitScanProcessor.SetPassive(m_checkBoxPassive.Checked);
+            if (m_checkBoxPassive.Checked) {
+                m_checkBoxADCActive.Enabled = false;
+            }
+            else {
+                m_checkBoxADCActive.Enabled = true;
+            }
+        }
+
+        private void m_checkBoxADCActive_CheckedChanged(object sender, EventArgs e) {
+            ConfigHelper.Instance.ADCActive = m_checkBoxADCActive.Checked;
+            m_FitScanProcessor.SetADCActive(m_checkBoxADCActive.Checked);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -79,7 +90,7 @@ DEALINGS IN THE SOFTWARE.";
 
         private void m_ButtonResetFit_Click(object sender, EventArgs e)
         {
-            m_FitScanProcessor.ResetFit(m_checkBoxPassive.Checked);
+            m_FitScanProcessor.ResetFit(m_checkBoxPassive.Checked, m_checkBoxADCActive.Checked);
         }
 
         private void m_ButtonCopyCODE_Click(object sender, EventArgs e)
