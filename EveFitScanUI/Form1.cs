@@ -108,11 +108,9 @@ namespace EveFitScanUI
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.toggleAlwaysOnTopToolStripMenuItem.Checked = ConfigHelper.Instance.AlwaysOnTop;
             if (ConfigHelper.Instance.AlwaysOnTop) {
                 this.TopMost = true;
             }
-            this.getPricesToolStripMenuItem.Checked = ConfigHelper.Instance.GetPrices;
 
             this.clipboardViewerNext = NativeMethods.SetClipboardViewer(this.Handle);      // Adds our form to the chain of clipboard viewers.
 
@@ -141,5 +139,6 @@ namespace EveFitScanUI
 
             NativeMethods.ChangeClipboardChain(this.Handle, this.clipboardViewerNext);        // Removes our from the chain of clipboard viewers when the form closes.
         }
+
     }
 }

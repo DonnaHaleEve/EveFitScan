@@ -7,6 +7,17 @@ namespace EveFitScanUI
 {
     public partial class Form1 : Form
     {
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e) {
+            SettingsDialog dlg = new SettingsDialog();
+            DialogResult res = dlg.ShowDialog(this);
+            dlg.Dispose();
+            if (res == DialogResult.OK) {
+                this.TopMost = ConfigHelper.Instance.AlwaysOnTop;
+            }
+            HighlightFit();
+        }
+
         private void m_checkBoxPassive_CheckedChanged(object sender, EventArgs e)
         {
             ConfigHelper.Instance.PassiveTank = m_checkBoxPassive.Checked;
@@ -114,16 +125,5 @@ DEALINGS IN THE SOFTWARE.";
 
             m_bCaptureClipboard = prevClipboard;
         }
-
-        private void toggleAlwaysOnTopToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
-        {
-            ConfigHelper.Instance.AlwaysOnTop = toggleAlwaysOnTopToolStripMenuItem.Checked;
-            this.TopMost = toggleAlwaysOnTopToolStripMenuItem.Checked;
-        }
-
-        private void getPricesToolStripMenuItem_CheckedChanged(object sender, EventArgs e) {
-            ConfigHelper.Instance.GetPrices = getPricesToolStripMenuItem.Checked;
-        }
-
     }
 }

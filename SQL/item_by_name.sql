@@ -3,7 +3,8 @@ SELECT
 FROM
 	"invTypes"
 WHERE
-	"typeName" = 'Assault Damage Control II'
+	"typeName" IN ('Paladin','Golem','Kronos','Vargur')
+	--"typeName" = 'Assault Damage Control II'
 	--"typeName" = 'Bastion Module I'
 	--"typeName" = 'Medium Core Defense Field Extender I'
 	--"typeName" = 'Rhea'

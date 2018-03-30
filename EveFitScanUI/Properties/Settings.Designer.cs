@@ -118,5 +118,17 @@ namespace EveFitScanUI.Properties {
                 this["ADCActive"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int Highlight {
+            get {
+                return ((int)(this["Highlight"]));
+            }
+            set {
+                this["Highlight"] = value;
+            }
+        }
     }
 }

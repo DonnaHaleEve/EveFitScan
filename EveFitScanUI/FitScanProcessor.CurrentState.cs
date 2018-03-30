@@ -40,6 +40,18 @@ namespace EveFitScanUI
         }
 
         // -----------------------------------------------------------------------------------------------------------------------
+        public bool FullFitKnown {
+            get {
+                return Model.FullFitKnown;
+            }
+        }
+        public bool FullTankKnown {
+            get {
+                return Model.FullTankKnown;
+            }
+        }
+
+        // -----------------------------------------------------------------------------------------------------------------------
 
         private float m_ValueShip = 0.0f;
         private float m_ValueRigs = 0.0f;

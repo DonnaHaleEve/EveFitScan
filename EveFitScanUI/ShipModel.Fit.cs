@@ -21,6 +21,20 @@ namespace EveFitScanUI
             }
         }
 
+        private bool m_FullFitKnown = false;
+        public bool FullFitKnown {
+            get {
+                return m_FullFitKnown;
+            }
+        }
+
+        private bool m_FullTankKnown = false;
+        public bool FullTankKnown {
+            get {
+                return m_FullTankKnown;
+            }
+        }
+
         private int m_ShipTypeID = -1;
         public int ShipTypeID {
             get {
@@ -227,58 +241,61 @@ namespace EveFitScanUI
                     ShipDescription SD = ShipDescriptions[Index];
                     if (SD.m_SubsystemSlots > 0) {
                         // recalc slot layout for t3 cruisers
-
-                        int nSubsystems = ((m_Fit[SLOT.SUB_CORE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_DEFENSIVE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_OFFENSIVE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_PROPULSION].Count > 0) ? 1 : 0);
-                        if (nSubsystems == 4) {
-                            int HS = SD.m_HighSlots;
-                            int MS = SD.m_MedSlots;
-                            int LS = SD.m_LowSlots;
-
-                            foreach (SLOT Slot in new SLOT[] { SLOT.SUB_CORE, SLOT.SUB_DEFENSIVE, SLOT.SUB_OFFENSIVE, SLOT.SUB_PROPULSION }) {
-                                foreach (KeyValuePair<int, int> kvp in m_Fit[Slot]) {
-                                    int ModuleTypeID = kvp.Key;
-                                    Index = -1;
-                                    bool Ok = ModuleTypeIDToIndex.TryGetValue(ModuleTypeID, out Index);
-                                    Debug.Assert(Ok && Index > 0);
-                                    ModuleDescription MD = ModuleDescriptions[Index];
-                                    if (MD.m_ShipTypeID == m_ShipTypeID) {
-                                        if (MD.m_Effects.ContainsKey(LAYER.NONE)) {
-
-                                            foreach (KeyValuePair<EFFECT, Dictionary<ACTIVE,Tuple<float, int>>> effect in MD.m_Effects[LAYER.NONE]) {
-                                                if (effect.Value.ContainsKey(ACTIVE.PASSIVE)) {
-                                                    switch (effect.Key) {
-                                                        case EFFECT.HIGH_SLOTS:
-                                                            HS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
-                                                            break;
-                                                        case EFFECT.MEDIUM_SLOTS:
-                                                            MS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
-                                                            break;
-                                                        case EFFECT.LOW_SLOTS:
-                                                            LS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
-                                                            break;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    break; // only process first module. If there is more than one, fit is invalid anyway.
-                                }
-                            }
-                            m_Slots[SLOT.HIGH] = HS;
-                            m_Slots[SLOT.MEDIUM] = MS;
-                            m_Slots[SLOT.LOW] = LS;
-                        }
-                        else {
-                            m_Slots[SLOT.HIGH] = 8;
-                            m_Slots[SLOT.MEDIUM] = 8;
-                            m_Slots[SLOT.LOW] = 8;
-                        }
+                        RecalcStategicCruiserSlotLayout(SD);
                     }
                 }
                 
             }
         
+        }
+
+        private void RecalcStategicCruiserSlotLayout(ShipDescription SD) {
+            int nSubsystems = ((m_Fit[SLOT.SUB_CORE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_DEFENSIVE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_OFFENSIVE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_PROPULSION].Count > 0) ? 1 : 0);
+            if (nSubsystems == 4) {
+                int HS = SD.m_HighSlots;
+                int MS = SD.m_MedSlots;
+                int LS = SD.m_LowSlots;
+
+                foreach (SLOT Slot in new SLOT[] { SLOT.SUB_CORE, SLOT.SUB_DEFENSIVE, SLOT.SUB_OFFENSIVE, SLOT.SUB_PROPULSION }) {
+                    foreach (KeyValuePair<int, int> kvp in m_Fit[Slot]) {
+                        int ModuleTypeID = kvp.Key;
+                        int Index = -1;
+                        bool Ok = ModuleTypeIDToIndex.TryGetValue(ModuleTypeID, out Index);
+                        Debug.Assert(Ok && Index > 0);
+                        ModuleDescription MD = ModuleDescriptions[Index];
+                        if (MD.m_ShipTypeID == m_ShipTypeID) {
+                            if (MD.m_Effects.ContainsKey(LAYER.NONE)) {
+
+                                foreach (KeyValuePair<EFFECT, Dictionary<ACTIVE, Tuple<float, int>>> effect in MD.m_Effects[LAYER.NONE]) {
+                                    if (effect.Value.ContainsKey(ACTIVE.PASSIVE)) {
+                                        switch (effect.Key) {
+                                            case EFFECT.HIGH_SLOTS:
+                                                HS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
+                                                break;
+                                            case EFFECT.MEDIUM_SLOTS:
+                                                MS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
+                                                break;
+                                            case EFFECT.LOW_SLOTS:
+                                                LS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        break; // only process first module. If there is more than one, fit is invalid anyway.
+                    }
+                }
+                m_Slots[SLOT.HIGH] = HS;
+                m_Slots[SLOT.MEDIUM] = MS;
+                m_Slots[SLOT.LOW] = LS;
+            }
+            else {
+                m_Slots[SLOT.HIGH] = 8;
+                m_Slots[SLOT.MEDIUM] = 8;
+                m_Slots[SLOT.LOW] = 8;
+            }
         }
 
         private void CheckFitValid()
@@ -342,6 +359,53 @@ namespace EveFitScanUI
                     }
                 }
             }
+            CheckFullFit();
+        }
+
+        private void CheckFullFit() {
+            if (m_ValidFit && m_ShipTypeID > 0) {
+                m_FullFitKnown = true;
+                m_FullTankKnown = true;
+
+                bool bAllHighSlots = false;
+                bool bHaveBastion = false;
+                foreach (SLOT Slot in m_Fit.Keys) {
+                    int nModules = 0;
+                    foreach (KeyValuePair<int, int> ModuleAndCount in m_Fit[Slot]) {
+                        nModules += ModuleAndCount.Value;
+                        if (ModuleAndCount.Key == 33400) { // typeID for 'Bastion Module I'
+                            bHaveBastion = true;
+                        }
+                    }
+
+                    int nModulesRequired = 0;
+                    if (!m_Slots.TryGetValue(Slot, out nModulesRequired)) {
+                        nModulesRequired = 0;
+                    }
+
+                    if (Slot == SLOT.HIGH) {
+                        bAllHighSlots = (nModules == nModulesRequired);
+                    }
+
+                    if (nModules != nModulesRequired) {
+                        m_FullFitKnown = false;
+                        if (Slot != SLOT.HIGH) {
+                            m_FullTankKnown = false;
+                        }
+                    }
+                }
+
+                if (m_ShipTypeID == 28659 || m_ShipTypeID == 28710 || m_ShipTypeID == 28661 || m_ShipTypeID == 28665) {
+                    // Paladin, Golem, Kronos, Vargur
+                    if (!bAllHighSlots && !bHaveBastion) {
+                        m_FullTankKnown = false;
+                    }
+                }
+            }
+            else {
+                m_FullFitKnown = false;
+                m_FullTankKnown = false;
+            }
         }
 
         private void SetShipTypeID(int ShipTypeID)
@@ -369,6 +433,7 @@ namespace EveFitScanUI
                     m_Slots[SLOT.SUB_OFFENSIVE] = 0;
                     m_Slots[SLOT.SUB_PROPULSION] = 0;
                 }
+                RecalcStategicCruiserSlotLayout(SD);
             }
             else
             {

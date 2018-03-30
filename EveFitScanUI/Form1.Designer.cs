@@ -32,13 +32,11 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toggleAlwaysOnTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.getPricesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.licenseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sourceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_ButtonResetFit = new System.Windows.Forms.Button();
             this.m_ComboBoxShipType = new System.Windows.Forms.ComboBox();
             this.m_ButtonCopyCODE = new System.Windows.Forms.Button();
@@ -104,8 +102,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.optionsToolStripMenuItem,
-            this.helpToolStripMenuItem});
+            this.helpToolStripMenuItem,
+            this.settingsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(964, 24);
@@ -126,33 +124,6 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // optionsToolStripMenuItem
-            // 
-            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toggleAlwaysOnTopToolStripMenuItem,
-            this.getPricesToolStripMenuItem});
-            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.optionsToolStripMenuItem.Text = "Options";
-            // 
-            // toggleAlwaysOnTopToolStripMenuItem
-            // 
-            this.toggleAlwaysOnTopToolStripMenuItem.CheckOnClick = true;
-            this.toggleAlwaysOnTopToolStripMenuItem.Name = "toggleAlwaysOnTopToolStripMenuItem";
-            this.toggleAlwaysOnTopToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.toggleAlwaysOnTopToolStripMenuItem.Text = "Toggle Always On Top";
-            this.toggleAlwaysOnTopToolStripMenuItem.CheckedChanged += new System.EventHandler(this.toggleAlwaysOnTopToolStripMenuItem_CheckedChanged);
-            // 
-            // getPricesToolStripMenuItem
-            // 
-            this.getPricesToolStripMenuItem.Checked = true;
-            this.getPricesToolStripMenuItem.CheckOnClick = true;
-            this.getPricesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.getPricesToolStripMenuItem.Name = "getPricesToolStripMenuItem";
-            this.getPricesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.getPricesToolStripMenuItem.Text = "Get Prices";
-            this.getPricesToolStripMenuItem.CheckedChanged += new System.EventHandler(this.getPricesToolStripMenuItem_CheckedChanged);
             // 
             // helpToolStripMenuItem
             // 
@@ -185,6 +156,13 @@
             this.sourceToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.sourceToolStripMenuItem.Text = "Source Code (Opens in browser)";
             this.sourceToolStripMenuItem.Click += new System.EventHandler(this.sourceToolStripMenuItem_Click);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // m_ButtonResetFit
             // 
@@ -876,9 +854,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toggleAlwaysOnTopToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem licenseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sourceToolStripMenuItem;
@@ -938,9 +914,9 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.ToolStripMenuItem getPricesToolStripMenuItem;
         private System.ComponentModel.BackgroundWorker m_BackgroundWorkerUpdate;
         private System.Windows.Forms.CheckBox m_checkBoxADCActive;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
     }
 }
 

@@ -117,6 +117,16 @@ namespace EveFitScanUI
             }
         }
 
+        public int Highlight {
+            get {
+                return Properties.Settings.Default.Highlight;
+            }
+            set {
+                Properties.Settings.Default.Highlight = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
         private void Load() {
             //TODO
         }

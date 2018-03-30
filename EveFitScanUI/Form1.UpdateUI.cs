@@ -46,6 +46,20 @@ namespace EveFitScanUI
                 m_FitText.SelectionLength = 0;
             }
             m_FitText.AppendText(m_FitScanProcessor.EFTFit);
+
+            HighlightFit();
+        }
+
+        private void HighlightFit() {
+            bool bGreen =
+                (ConfigHelper.Instance.Highlight == 1 && m_FitScanProcessor.FullTankKnown) ||
+                (ConfigHelper.Instance.Highlight == 2 && m_FitScanProcessor.FullFitKnown);
+            if (bGreen) {
+                m_FitText.BackColor = Color.LightGreen;
+            }
+            else {
+                m_FitText.BackColor = Color.White;
+            }
         }
 
         private void OnShipTankChanged()
