@@ -51,11 +51,11 @@ namespace EveFitScanUI
         }
 
         private void HighlightFit() {
-            bool bGreen =
-                (ConfigHelper.Instance.Highlight == 1 && m_FitScanProcessor.FullTankKnown) ||
-                (ConfigHelper.Instance.Highlight == 2 && m_FitScanProcessor.FullFitKnown);
-            if (bGreen) {
+            if (ConfigHelper.Instance.Highlight && m_FitScanProcessor.FullFitKnown) {
                 m_FitText.BackColor = Color.LightGreen;
+            }
+            else if (ConfigHelper.Instance.Highlight && m_FitScanProcessor.FullTankKnown) {
+                m_FitText.BackColor = Color.Yellow;
             }
             else {
                 m_FitText.BackColor = Color.White;

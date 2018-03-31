@@ -28,11 +28,7 @@
             this.m_ButtonOk = new System.Windows.Forms.Button();
             this.m_AlwaysOnTop = new System.Windows.Forms.CheckBox();
             this.m_GetPrices = new System.Windows.Forms.CheckBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.m_HighlightNothing = new System.Windows.Forms.RadioButton();
-            this.m_HighlightFullTank = new System.Windows.Forms.RadioButton();
-            this.m_HighlightFullFit = new System.Windows.Forms.RadioButton();
-            this.groupBox1.SuspendLayout();
+            this.m_Highlight = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // m_ButtonOk
@@ -48,7 +44,7 @@
             // m_AlwaysOnTop
             // 
             this.m_AlwaysOnTop.AutoSize = true;
-            this.m_AlwaysOnTop.Location = new System.Drawing.Point(32, 24);
+            this.m_AlwaysOnTop.Location = new System.Drawing.Point(32, 32);
             this.m_AlwaysOnTop.Name = "m_AlwaysOnTop";
             this.m_AlwaysOnTop.Size = new System.Drawing.Size(127, 17);
             this.m_AlwaysOnTop.TabIndex = 1;
@@ -61,7 +57,7 @@
             this.m_GetPrices.AutoSize = true;
             this.m_GetPrices.Checked = true;
             this.m_GetPrices.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.m_GetPrices.Location = new System.Drawing.Point(32, 64);
+            this.m_GetPrices.Location = new System.Drawing.Point(32, 88);
             this.m_GetPrices.Name = "m_GetPrices";
             this.m_GetPrices.Size = new System.Drawing.Size(74, 17);
             this.m_GetPrices.TabIndex = 2;
@@ -69,51 +65,18 @@
             this.m_GetPrices.UseVisualStyleBackColor = true;
             this.m_GetPrices.CheckedChanged += new System.EventHandler(this.m_GetPrices_CheckedChanged);
             // 
-            // groupBox1
+            // m_Highlight
             // 
-            this.groupBox1.Controls.Add(this.m_HighlightFullFit);
-            this.groupBox1.Controls.Add(this.m_HighlightFullTank);
-            this.groupBox1.Controls.Add(this.m_HighlightNothing);
-            this.groupBox1.Location = new System.Drawing.Point(16, 104);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(256, 112);
-            this.groupBox1.TabIndex = 3;
-            this.groupBox1.TabStop = false;
-            // 
-            // m_HighlightNothing
-            // 
-            this.m_HighlightNothing.AutoSize = true;
-            this.m_HighlightNothing.Location = new System.Drawing.Point(16, 24);
-            this.m_HighlightNothing.Name = "m_HighlightNothing";
-            this.m_HighlightNothing.Size = new System.Drawing.Size(104, 17);
-            this.m_HighlightNothing.TabIndex = 0;
-            this.m_HighlightNothing.Text = "Highlight nothing";
-            this.m_HighlightNothing.UseVisualStyleBackColor = true;
-            this.m_HighlightNothing.CheckedChanged += new System.EventHandler(this.m_HighlightNothing_CheckedChanged);
-            // 
-            // m_HighlightFullTank
-            // 
-            this.m_HighlightFullTank.AutoSize = true;
-            this.m_HighlightFullTank.Checked = true;
-            this.m_HighlightFullTank.Location = new System.Drawing.Point(16, 48);
-            this.m_HighlightFullTank.Name = "m_HighlightFullTank";
-            this.m_HighlightFullTank.Size = new System.Drawing.Size(106, 17);
-            this.m_HighlightFullTank.TabIndex = 1;
-            this.m_HighlightFullTank.TabStop = true;
-            this.m_HighlightFullTank.Text = "Highlight full tank";
-            this.m_HighlightFullTank.UseVisualStyleBackColor = true;
-            this.m_HighlightFullTank.CheckedChanged += new System.EventHandler(this.m_HighlightFullTank_CheckedChanged);
-            // 
-            // m_HighlightFullFit
-            // 
-            this.m_HighlightFullFit.AutoSize = true;
-            this.m_HighlightFullFit.Location = new System.Drawing.Point(16, 72);
-            this.m_HighlightFullFit.Name = "m_HighlightFullFit";
-            this.m_HighlightFullFit.Size = new System.Drawing.Size(93, 17);
-            this.m_HighlightFullFit.TabIndex = 2;
-            this.m_HighlightFullFit.Text = "Highlight full fit";
-            this.m_HighlightFullFit.UseVisualStyleBackColor = true;
-            this.m_HighlightFullFit.CheckedChanged += new System.EventHandler(this.m_HighlightFullFit_CheckedChanged);
+            this.m_Highlight.AutoSize = true;
+            this.m_Highlight.Checked = true;
+            this.m_Highlight.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.m_Highlight.Location = new System.Drawing.Point(32, 144);
+            this.m_Highlight.Name = "m_Highlight";
+            this.m_Highlight.Size = new System.Drawing.Size(126, 17);
+            this.m_Highlight.TabIndex = 4;
+            this.m_Highlight.Text = "Highlight full tank / fit";
+            this.m_Highlight.UseVisualStyleBackColor = true;
+            this.m_Highlight.CheckedChanged += new System.EventHandler(this.m_Highlight_CheckedChanged);
             // 
             // SettingsDialog
             // 
@@ -121,7 +84,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.ControlBox = false;
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.m_Highlight);
             this.Controls.Add(this.m_GetPrices);
             this.Controls.Add(this.m_AlwaysOnTop);
             this.Controls.Add(this.m_ButtonOk);
@@ -132,8 +95,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Settings";
             this.Load += new System.EventHandler(this.SettingsDialog_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -144,9 +105,6 @@
         private System.Windows.Forms.Button m_ButtonOk;
         private System.Windows.Forms.CheckBox m_AlwaysOnTop;
         private System.Windows.Forms.CheckBox m_GetPrices;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton m_HighlightFullFit;
-        private System.Windows.Forms.RadioButton m_HighlightFullTank;
-        private System.Windows.Forms.RadioButton m_HighlightNothing;
+        private System.Windows.Forms.CheckBox m_Highlight;
     }
 }

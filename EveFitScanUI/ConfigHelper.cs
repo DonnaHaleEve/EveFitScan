@@ -117,7 +117,7 @@ namespace EveFitScanUI
             }
         }
 
-        public int Highlight {
+        public bool Highlight {
             get {
                 return Properties.Settings.Default.Highlight;
             }

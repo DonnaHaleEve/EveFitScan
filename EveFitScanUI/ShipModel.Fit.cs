@@ -239,10 +239,8 @@ namespace EveFitScanUI
                 int Index = -1;
                 if (ShipTypeIDToIndex.TryGetValue(ShipTypeID, out Index)) {
                     ShipDescription SD = ShipDescriptions[Index];
-                    if (SD.m_SubsystemSlots > 0) {
-                        // recalc slot layout for t3 cruisers
-                        RecalcStategicCruiserSlotLayout(SD);
-                    }
+                    // recalc slot layout for t3 cruisers
+                    RecalcStategicCruiserSlotLayout(SD);
                 }
                 
             }
@@ -250,51 +248,53 @@ namespace EveFitScanUI
         }
 
         private void RecalcStategicCruiserSlotLayout(ShipDescription SD) {
-            int nSubsystems = ((m_Fit[SLOT.SUB_CORE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_DEFENSIVE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_OFFENSIVE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_PROPULSION].Count > 0) ? 1 : 0);
-            if (nSubsystems == 4) {
-                int HS = SD.m_HighSlots;
-                int MS = SD.m_MedSlots;
-                int LS = SD.m_LowSlots;
+            if (SD.m_SubsystemSlots > 0) {
+                int nSubsystems = ((m_Fit[SLOT.SUB_CORE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_DEFENSIVE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_OFFENSIVE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_PROPULSION].Count > 0) ? 1 : 0);
+                if (nSubsystems == 4) {
+                    int HS = SD.m_HighSlots;
+                    int MS = SD.m_MedSlots;
+                    int LS = SD.m_LowSlots;
 
-                foreach (SLOT Slot in new SLOT[] { SLOT.SUB_CORE, SLOT.SUB_DEFENSIVE, SLOT.SUB_OFFENSIVE, SLOT.SUB_PROPULSION }) {
-                    foreach (KeyValuePair<int, int> kvp in m_Fit[Slot]) {
-                        int ModuleTypeID = kvp.Key;
-                        int Index = -1;
-                        bool Ok = ModuleTypeIDToIndex.TryGetValue(ModuleTypeID, out Index);
-                        Debug.Assert(Ok && Index > 0);
-                        ModuleDescription MD = ModuleDescriptions[Index];
-                        if (MD.m_ShipTypeID == m_ShipTypeID) {
-                            if (MD.m_Effects.ContainsKey(LAYER.NONE)) {
+                    foreach (SLOT Slot in new SLOT[] { SLOT.SUB_CORE, SLOT.SUB_DEFENSIVE, SLOT.SUB_OFFENSIVE, SLOT.SUB_PROPULSION }) {
+                        foreach (KeyValuePair<int, int> kvp in m_Fit[Slot]) {
+                            int ModuleTypeID = kvp.Key;
+                            int Index = -1;
+                            bool Ok = ModuleTypeIDToIndex.TryGetValue(ModuleTypeID, out Index);
+                            Debug.Assert(Ok && Index > 0);
+                            ModuleDescription MD = ModuleDescriptions[Index];
+                            if (MD.m_ShipTypeID == m_ShipTypeID) {
+                                if (MD.m_Effects.ContainsKey(LAYER.NONE)) {
 
-                                foreach (KeyValuePair<EFFECT, Dictionary<ACTIVE, Tuple<float, int>>> effect in MD.m_Effects[LAYER.NONE]) {
-                                    if (effect.Value.ContainsKey(ACTIVE.PASSIVE)) {
-                                        switch (effect.Key) {
-                                            case EFFECT.HIGH_SLOTS:
-                                                HS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
-                                                break;
-                                            case EFFECT.MEDIUM_SLOTS:
-                                                MS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
-                                                break;
-                                            case EFFECT.LOW_SLOTS:
-                                                LS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
-                                                break;
+                                    foreach (KeyValuePair<EFFECT, Dictionary<ACTIVE, Tuple<float, int>>> effect in MD.m_Effects[LAYER.NONE]) {
+                                        if (effect.Value.ContainsKey(ACTIVE.PASSIVE)) {
+                                            switch (effect.Key) {
+                                                case EFFECT.HIGH_SLOTS:
+                                                    HS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
+                                                    break;
+                                                case EFFECT.MEDIUM_SLOTS:
+                                                    MS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
+                                                    break;
+                                                case EFFECT.LOW_SLOTS:
+                                                    LS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
+                                                    break;
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
 
-                        break; // only process first module. If there is more than one, fit is invalid anyway.
+                            break; // only process first module. If there is more than one, fit is invalid anyway.
+                        }
                     }
+                    m_Slots[SLOT.HIGH] = HS;
+                    m_Slots[SLOT.MEDIUM] = MS;
+                    m_Slots[SLOT.LOW] = LS;
                 }
-                m_Slots[SLOT.HIGH] = HS;
-                m_Slots[SLOT.MEDIUM] = MS;
-                m_Slots[SLOT.LOW] = LS;
-            }
-            else {
-                m_Slots[SLOT.HIGH] = 8;
-                m_Slots[SLOT.MEDIUM] = 8;
-                m_Slots[SLOT.LOW] = 8;
+                else {
+                    m_Slots[SLOT.HIGH] = 8;
+                    m_Slots[SLOT.MEDIUM] = 8;
+                    m_Slots[SLOT.LOW] = 8;
+                }
             }
         }
 
