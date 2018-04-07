@@ -14,7 +14,7 @@ namespace EveFitScanUI
 
         // -----------------------------------------------------------------------------------------------------------------------
 
-        public bool StateOk {
+        public bool ValidFit {
             get {
                 return m_ShipModel.ValidFit;
             }
@@ -81,11 +81,11 @@ namespace EveFitScanUI
 
         // -----------------------------------------------------------------------------------------------------------------------
 
-        public int SubsystemSlots
+        public uint SubsystemSlots
         {
             get
             {
-                int SSSlots = Model.CoreSlots + Model.DefensiveSlots + Model.OffensiveSlots + Model.PropulsionSlots;
+                uint SSSlots = Model.CoreSlots + Model.DefensiveSlots + Model.OffensiveSlots + Model.PropulsionSlots;
                 Debug.Assert(SSSlots == 0 || SSSlots == 4);
                 return SSSlots;
             }
@@ -102,7 +102,7 @@ namespace EveFitScanUI
 
         // -----------------------------------------------------------------------------------------------------------------------
 
-        public int HighSlots {
+        public uint HighSlots {
             get {
                 return Model.HighSlots;
             }
@@ -117,7 +117,7 @@ namespace EveFitScanUI
 
         // -----------------------------------------------------------------------------------------------------------------------
 
-        public int MediumSlots
+        public uint MediumSlots
         {
             get
             {
@@ -136,7 +136,7 @@ namespace EveFitScanUI
 
         // -----------------------------------------------------------------------------------------------------------------------
 
-        public int LowSlots
+        public uint LowSlots
         {
             get
             {
@@ -155,7 +155,7 @@ namespace EveFitScanUI
 
         // -----------------------------------------------------------------------------------------------------------------------
 
-        public int RigSlots
+        public uint RigSlots
         {
             get
             {

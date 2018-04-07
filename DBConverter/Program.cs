@@ -126,7 +126,7 @@ namespace DBConverter
             fileShips.WriteLine("  partial class ShipModel");
             fileShips.WriteLine("  {");
             fileShips.WriteLine("    public class ShipDescription {");
-            fileShips.WriteLine("      public ShipDescription( string Name, int TypeID, int HighSlots, int MedSlots, int LowSlots, int RigSlots, int SubsystemSlots,");
+            fileShips.WriteLine("      public ShipDescription( string Name, int TypeID, uint HighSlots, uint MedSlots, uint LowSlots, uint RigSlots, uint SubsystemSlots,");
             fileShips.WriteLine("        float ShieldHP, float ShieldHPMultiplier, float ShieldResistEM, float ShieldResistThermal, float ShieldResistKinetic, float ShieldResistExplosive,");
             fileShips.WriteLine("        float ArmorHP, float ArmorHPMultiplier, float ArmorResistEM, float ArmorResistThermal, float ArmorResistKinetic, float ArmorResistExplosive,");
             fileShips.WriteLine("        float HullHP, float HullHPMultiplier, float HullResistEM, float HullResistThermal, float HullResistKinetic, float HullResistExplosive,");
@@ -161,11 +161,11 @@ namespace DBConverter
             fileShips.WriteLine("      }");
             fileShips.WriteLine("      public string m_Name;");
             fileShips.WriteLine("      public int m_TypeID;");
-            fileShips.WriteLine("      public int m_HighSlots;");
-            fileShips.WriteLine("      public int m_MedSlots;");
-            fileShips.WriteLine("      public int m_LowSlots;");
-            fileShips.WriteLine("      public int m_RigSlots;");
-            fileShips.WriteLine("      public int m_SubsystemSlots;");
+            fileShips.WriteLine("      public uint m_HighSlots;");
+            fileShips.WriteLine("      public uint m_MedSlots;");
+            fileShips.WriteLine("      public uint m_LowSlots;");
+            fileShips.WriteLine("      public uint m_RigSlots;");
+            fileShips.WriteLine("      public uint m_SubsystemSlots;");
             fileShips.WriteLine("      public float m_ShieldHP;");
             fileShips.WriteLine("      public float m_ShieldHPMultiplier;");
             fileShips.WriteLine("      public float m_ShieldResistEM;");
@@ -325,7 +325,7 @@ namespace DBConverter
 
             float TechLevel = -1;
             float SubsystemHoldCapacity = -1;
-            int SubsystemSlots = 0;
+            uint SubsystemSlots = 0;
             if (shipAttributes.TryGetValue(SHIP_ATTRIBUTES.SHIP_ATTR_TECH_LEVEL, out TechLevel) && shipAttributes.TryGetValue(SHIP_ATTRIBUTES.SHIP_ATTR_SUBSYSTEM_HOLD_CAPACITY, out SubsystemHoldCapacity)) {
                 if (TechLevel == 3.0f && SubsystemHoldCapacity > 0.0f) {
                     SubsystemSlots = 4;
@@ -335,10 +335,10 @@ namespace DBConverter
             return new ShipDescription(
                 shipName,
                 typeID,
-                (int)(shipAttributes[SHIP_ATTRIBUTES.SHIP_ATTR_HIGH_SLOTS]),
-                (int)(shipAttributes[SHIP_ATTRIBUTES.SHIP_ATTR_MED_SLOTS]),
-                (int)(shipAttributes[SHIP_ATTRIBUTES.SHIP_ATTR_LOW_SLOTS]),
-                (int)(shipAttributes[SHIP_ATTRIBUTES.SHIP_ATTR_RIG_SLOTS]),
+                (uint)(shipAttributes[SHIP_ATTRIBUTES.SHIP_ATTR_HIGH_SLOTS]),
+                (uint)(shipAttributes[SHIP_ATTRIBUTES.SHIP_ATTR_MED_SLOTS]),
+                (uint)(shipAttributes[SHIP_ATTRIBUTES.SHIP_ATTR_LOW_SLOTS]),
+                (uint)(shipAttributes[SHIP_ATTRIBUTES.SHIP_ATTR_RIG_SLOTS]),
                 SubsystemSlots,
                 shipAttributes[SHIP_ATTRIBUTES.SHIP_ATTR_SHIELD_HP],
                 traitShieldHPMultiplier,

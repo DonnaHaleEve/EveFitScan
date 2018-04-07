@@ -51,18 +51,18 @@ namespace EveFitScanUI
                 Debug.Assert(Ok && ShipIndex >= 0 && ShipIndex < ShipDescriptions.Count);
                 ShipDescription SD = ShipDescriptions[ShipIndex];
 
-                Dictionary<int, int> AllModuleIDs = new Dictionary<int, int>();
+                Dictionary<int, uint> AllModuleIDs = new Dictionary<int, uint>();
                 foreach (SLOT Slot in Enum.GetValues(typeof(SLOT))) {
-                    foreach (KeyValuePair<int,int> ModuleAndCount in m_Fit[Slot]) {
+                    foreach (KeyValuePair<int,uint> ModuleAndCount in m_Fit[Slot]) {
                         AllModuleIDs[ModuleAndCount.Key] = ModuleAndCount.Value;
                     }
                 }
-                List<Tuple<ModuleDescription, int>> AllModules = new List<Tuple<ModuleDescription, int>>();
-                foreach (KeyValuePair<int,int> kvp in AllModuleIDs) {
+                List<Tuple<ModuleDescription, uint>> AllModules = new List<Tuple<ModuleDescription, uint>>();
+                foreach (KeyValuePair<int,uint> kvp in AllModuleIDs) {
                     int Index = -1;
                     Ok = ModuleTypeIDToIndex.TryGetValue(kvp.Key, out Index);
                     Debug.Assert(Ok);
-                    AllModules.Add(new Tuple<ModuleDescription, int>(ModuleDescriptions[Index], kvp.Value));
+                    AllModules.Add(new Tuple<ModuleDescription, uint>(ModuleDescriptions[Index], kvp.Value));
                 }
 
                 m_Tank[LAYER.SHIELD] = GetLayerTank(SD.m_ShieldHP, SD.m_ShieldHPMultiplier, SD.m_ShieldResistEM, SD.m_ShieldResistThermal, SD.m_ShieldResistKinetic, SD.m_ShieldResistExplosive, LAYER.SHIELD, AllModules, SD.m_OverheatingBonus);
@@ -74,7 +74,7 @@ namespace EveFitScanUI
         }
 
         private Tuple<float, Dictionary<RESIST, float>, Dictionary<RESIST, float>>
-            GetLayerTank(float BaseHP, float LayerMultiplier, float ResistEM, float ResistThermal, float ResistKinetic, float ResistExplosive, LAYER Layer, IReadOnlyCollection<Tuple<ModuleDescription, int>> Modules, float ShipOverheatingBonus)
+            GetLayerTank(float BaseHP, float LayerMultiplier, float ResistEM, float ResistThermal, float ResistKinetic, float ResistExplosive, LAYER Layer, IReadOnlyCollection<Tuple<ModuleDescription, uint>> Modules, float ShipOverheatingBonus)
         {
             float FlatHPBonus = 0.0f;
             float HPMultiplier = LayerMultiplier;
@@ -83,9 +83,9 @@ namespace EveFitScanUI
             Dictionary<RESIST, Dictionary<bool, Dictionary<int, List<float>>>> ResistBonuses = new Dictionary<RESIST, Dictionary<bool, Dictionary<int, List<float>>>>();
 
             float SubsystemOverheatingBonus = 0.0f;
-            foreach (Tuple<ModuleDescription, int> ModuleAndCount in Modules)
+            foreach (Tuple<ModuleDescription, uint> ModuleAndCount in Modules)
             {
-                int Count = ModuleAndCount.Item2;
+                uint Count = ModuleAndCount.Item2;
                 if (ModuleAndCount.Item1.m_Effects.ContainsKey(Layer)) {
                     if (ModuleAndCount.Item1.m_Effects[Layer].ContainsKey(EFFECT.OVERHEATING)) {
                         if (ModuleAndCount.Item1.m_Effects[Layer][EFFECT.OVERHEATING].ContainsKey(ACTIVE.PASSIVE)) {
@@ -100,8 +100,8 @@ namespace EveFitScanUI
                 }
             }
 
-            foreach (Tuple<ModuleDescription, int> ModuleAndCount in Modules) {
-                int Count = ModuleAndCount.Item2;
+            foreach (Tuple<ModuleDescription, uint> ModuleAndCount in Modules) {
+                uint Count = ModuleAndCount.Item2;
                 if (ModuleAndCount.Item1.m_Effects.ContainsKey(Layer)) {
                     foreach (EFFECT Effect in ModuleAndCount.Item1.m_Effects[Layer].Keys) {
 
@@ -238,7 +238,7 @@ namespace EveFitScanUI
             return (float)Math.Exp( -Math.Pow( n/2.67, 2.0) );
         }
 
-        private void AddTo(ref Dictionary<RESIST, Dictionary<bool, Dictionary<int, List<float>>>> ResistBonuses, RESIST Resist, bool Hot, int StackGroup, float Value, int Count)
+        private void AddTo(ref Dictionary<RESIST, Dictionary<bool, Dictionary<int, List<float>>>> ResistBonuses, RESIST Resist, bool Hot, int StackGroup, float Value, uint Count)
         {
             if (!ResistBonuses.ContainsKey(Resist))
                 ResistBonuses.Add(Resist, new Dictionary<bool,Dictionary<int,List<float>>>());
@@ -246,7 +246,7 @@ namespace EveFitScanUI
                 ResistBonuses[Resist].Add(Hot, new Dictionary<int,List<float>>());
             if (!ResistBonuses[Resist][Hot].ContainsKey(StackGroup))
                 ResistBonuses[Resist][Hot].Add(StackGroup, new List<float>());
-            for (int i = 0; i < Count; ++i) {
+            for (uint i = 0; i < Count; ++i) {
                 ResistBonuses[Resist][Hot][StackGroup].Add(Value);
             }
         }

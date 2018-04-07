@@ -22,6 +22,7 @@ namespace EveFitScanUI
         private bool m_bFirstFire = true;
         private string m_LastCopy = string.Empty;
         private FitScanProcessor m_FitScanProcessor = null;
+        private HistoryManager m_HistoryManager = null;
 
         public Form1()
         {
@@ -119,6 +120,8 @@ namespace EveFitScanUI
             m_FitScanProcessor.EventShipTankChanged += new FitScanProcessor.DelegateShipTankChanged(OnShipTankChanged);
             m_FitScanProcessor.EventNewItemsWithUnknownPrices += new FitScanProcessor.DelegateNewItemsWithUnknownPrices(OnNewItemsWithUnknownPrices);
             m_FitScanProcessor.EventFitValueChanged += new FitScanProcessor.DelegateFitValueChanged(OnFitValueChanged);
+
+            m_HistoryManager = new HistoryManager();
 
             m_ComboBoxItems.Clear();
 

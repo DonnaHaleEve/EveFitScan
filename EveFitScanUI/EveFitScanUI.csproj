@@ -87,6 +87,9 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form1.History.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form1.Pricing.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +99,7 @@
     <Compile Include="Form1.UpdateUI.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="HistoryManager.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

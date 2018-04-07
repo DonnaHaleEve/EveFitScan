@@ -95,6 +95,7 @@
             this.label18 = new System.Windows.Forms.Label();
             this.m_BackgroundWorkerUpdate = new System.ComponentModel.BackgroundWorker();
             this.m_checkBoxADCActive = new System.Windows.Forms.CheckBox();
+            this.m_History = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -771,12 +772,24 @@
             this.m_checkBoxADCActive.UseVisualStyleBackColor = true;
             this.m_checkBoxADCActive.CheckedChanged += new System.EventHandler(this.m_checkBoxADCActive_CheckedChanged);
             // 
+            // m_History
+            // 
+            this.m_History.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_History.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_History.FormattingEnabled = true;
+            this.m_History.Location = new System.Drawing.Point(8, 728);
+            this.m_History.Name = "m_History";
+            this.m_History.Size = new System.Drawing.Size(944, 23);
+            this.m_History.TabIndex = 60;
+            this.m_History.SelectedIndexChanged += new System.EventHandler(this.m_History_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.ClientSize = new System.Drawing.Size(964, 712);
+            this.ClientSize = new System.Drawing.Size(964, 762);
+            this.Controls.Add(this.m_History);
             this.Controls.Add(this.m_checkBoxADCActive);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.label17);
@@ -837,7 +850,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(980, 750);
+            this.MinimumSize = new System.Drawing.Size(980, 800);
             this.Name = "Form1";
             this.Text = "Miniluv fit scanner";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -917,6 +930,7 @@
         private System.ComponentModel.BackgroundWorker m_BackgroundWorkerUpdate;
         private System.Windows.Forms.CheckBox m_checkBoxADCActive;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ComboBox m_History;
     }
 }
 

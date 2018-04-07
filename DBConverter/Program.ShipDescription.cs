@@ -10,11 +10,11 @@ namespace DBConverter
             public ShipDescription(
                 string Name,
                 int TypeID,
-                int HighSlots,
-                int MedSlots,
-                int LowSlots,
-                int RigSlots,
-                int SubsystemSlots,
+                uint HighSlots,
+                uint MedSlots,
+                uint LowSlots,
+                uint RigSlots,
+                uint SubsystemSlots,
                 float ShieldHP,
                 float ShieldHPMultiplier,
                 float ShieldResistEM,
@@ -70,11 +70,11 @@ namespace DBConverter
             public string m_Name;
             public int m_TypeID;
 
-            public int m_HighSlots;
-            public int m_MedSlots;
-            public int m_LowSlots;
-            public int m_RigSlots;
-            public int m_SubsystemSlots;
+            public uint m_HighSlots;
+            public uint m_MedSlots;
+            public uint m_LowSlots;
+            public uint m_RigSlots;
+            public uint m_SubsystemSlots;
 
             public float m_ShieldHP;
             public float m_ShieldHPMultiplier;

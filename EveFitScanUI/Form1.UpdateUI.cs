@@ -33,12 +33,14 @@ namespace EveFitScanUI
             m_ValueCanDropText.SelectAll();
             m_ValueCanDropText.SelectionAlignment = HorizontalAlignment.Right;
             m_ValueCanDropText.SelectionLength = 0;
+
+            UpdateHistoryPrice(Value.Item3);
         }
 
         private void OnShipFitChanged()
         {
             m_FitText.Clear();
-            if (!m_FitScanProcessor.StateOk) {
+            if (!m_FitScanProcessor.ValidFit) {
                 m_FitText.AppendText("INVALID FIT" + System.Environment.NewLine + System.Environment.NewLine);
                 int end = m_FitText.TextLength;
                 m_FitText.SelectAll();
@@ -48,6 +50,10 @@ namespace EveFitScanUI
             m_FitText.AppendText(m_FitScanProcessor.EFTFit);
 
             HighlightFit();
+
+            if (!m_bInsideIndexChange) {
+                UpdateHistoryFit();
+            }
         }
 
         private void HighlightFit() {
@@ -123,6 +129,9 @@ namespace EveFitScanUI
                 FormatEHP(m_TextBoxEHPPhasedPlasmaHot, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoPhasedPlasma));
                 FormatEHP(m_TextBoxEHPHailHot, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoHail));
             }
+
+            float EHP = GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoUniform);
+            UpdateHistoryTank(EHP);
         }
 
         private void FormatResists(RichTextBox box, Dictionary<ShipModel.RESIST, float> Resists) {
@@ -323,6 +332,20 @@ namespace EveFitScanUI
                     m_AmmoHail[ShipModel.RESIST.EXPLOSIVE] = 12.1f;
                 }
                 return m_AmmoHail;
+            }
+        }
+
+        private Dictionary<ShipModel.RESIST, float> m_AmmoUniform = null;
+        private Dictionary<ShipModel.RESIST, float> AmmoUniform {
+            get {
+                if (m_AmmoUniform == null) {
+                    m_AmmoUniform = new Dictionary<ShipModel.RESIST, float>();
+                    m_AmmoUniform[ShipModel.RESIST.EM] = 10.0f;
+                    m_AmmoUniform[ShipModel.RESIST.THERMAL] = 10.0f;
+                    m_AmmoUniform[ShipModel.RESIST.KINETIC] = 10.0f;
+                    m_AmmoUniform[ShipModel.RESIST.EXPLOSIVE] = 10.0f;
+                }
+                return m_AmmoUniform;
             }
         }
     }

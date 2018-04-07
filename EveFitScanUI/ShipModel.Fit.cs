@@ -42,20 +42,20 @@ namespace EveFitScanUI
             }
         }
 
-        private Dictionary<SLOT, int> m_Slots = new Dictionary<SLOT, int>();
-        public int HighSlots {
+        private Dictionary<SLOT, uint> m_Slots = new Dictionary<SLOT, uint>();
+        public uint HighSlots {
             get {
-                int Slots = 0;
+                uint Slots = 0;
                 if (m_Slots.TryGetValue(SLOT.HIGH, out Slots)) {
                     return Slots;
                 }
                 return 0;
             }
         }
-        public int MediumSlots {
+        public uint MediumSlots {
             get
             {
-                int Slots = 0;
+                uint Slots = 0;
                 if (m_Slots.TryGetValue(SLOT.MEDIUM, out Slots))
                 {
                     return Slots;
@@ -63,10 +63,10 @@ namespace EveFitScanUI
                 return 0;
             }
         }
-        public int LowSlots {
+        public uint LowSlots {
             get
             {
-                int Slots = 0;
+                uint Slots = 0;
                 if (m_Slots.TryGetValue(SLOT.LOW, out Slots))
                 {
                     return Slots;
@@ -74,10 +74,10 @@ namespace EveFitScanUI
                 return 0;
             }
         }
-        public int RigSlots {
+        public uint RigSlots {
             get
             {
-                int Slots = 0;
+                uint Slots = 0;
                 if (m_Slots.TryGetValue(SLOT.RIG, out Slots))
                 {
                     return Slots;
@@ -86,10 +86,10 @@ namespace EveFitScanUI
             }
         }
 
-        public int CoreSlots {
+        public uint CoreSlots {
             get
             {
-                int Slots = 0;
+                uint Slots = 0;
                 if (m_Slots.TryGetValue(SLOT.SUB_CORE, out Slots))
                 {
                     return Slots;
@@ -97,11 +97,11 @@ namespace EveFitScanUI
                 return 0;
             }
         }
-        public int DefensiveSlots
+        public uint DefensiveSlots
         {
             get
             {
-                int Slots = 0;
+                uint Slots = 0;
                 if (m_Slots.TryGetValue(SLOT.SUB_DEFENSIVE, out Slots))
                 {
                     return Slots;
@@ -109,11 +109,11 @@ namespace EveFitScanUI
                 return 0;
             }
         }
-        public int OffensiveSlots
+        public uint OffensiveSlots
         {
             get
             {
-                int Slots = 0;
+                uint Slots = 0;
                 if (m_Slots.TryGetValue(SLOT.SUB_OFFENSIVE, out Slots))
                 {
                     return Slots;
@@ -121,11 +121,11 @@ namespace EveFitScanUI
                 return 0;
             }
         }
-        public int PropulsionSlots
+        public uint PropulsionSlots
         {
             get
             {
-                int Slots = 0;
+                uint Slots = 0;
                 if (m_Slots.TryGetValue(SLOT.SUB_PROPULSION, out Slots))
                 {
                     return Slots;
@@ -135,8 +135,8 @@ namespace EveFitScanUI
         }
 
         // slot => { ModuleTypeID => count }
-        private Dictionary<SLOT, Dictionary<int, int>> m_Fit = new Dictionary<SLOT, Dictionary<int, int>>();
-        public IReadOnlyDictionary<SLOT, Dictionary<int, int>> Fit {
+        private Dictionary<SLOT, Dictionary<int, uint>> m_Fit = new Dictionary<SLOT, Dictionary<int, uint>>();
+        public IReadOnlyDictionary<SLOT, Dictionary<int, uint>> Fit {
             get {
                 return m_Fit;
             }
@@ -211,7 +211,7 @@ namespace EveFitScanUI
 
         private void DoAddMoreModules(IReadOnlyCollection<int> ModuleTypeIDs)
         {
-            Dictionary<int, int> NewModules = new Dictionary<int, int>();
+            Dictionary<int, uint> NewModules = new Dictionary<int, uint>();
             foreach (int ModuleTypeID in ModuleTypeIDs) {
                 if (NewModules.ContainsKey(ModuleTypeID)) {
                     NewModules[ModuleTypeID]++;
@@ -220,9 +220,9 @@ namespace EveFitScanUI
                     NewModules[ModuleTypeID] = 1;
                 }
             }
-            foreach (KeyValuePair<int,int> kvp in NewModules) {
+            foreach (KeyValuePair<int,uint> kvp in NewModules) {
                 int ModuleTypeID = kvp.Key;
-                int ModuleCount = kvp.Value;
+                uint ModuleCount = kvp.Value;
                 int Index = -1;
                 bool Ok = ModuleTypeIDToIndex.TryGetValue(ModuleTypeID, out Index);
                 Debug.Assert(Ok && Index >= 0);
@@ -251,12 +251,12 @@ namespace EveFitScanUI
             if (SD.m_SubsystemSlots > 0) {
                 int nSubsystems = ((m_Fit[SLOT.SUB_CORE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_DEFENSIVE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_OFFENSIVE].Count > 0) ? 1 : 0) + ((m_Fit[SLOT.SUB_PROPULSION].Count > 0) ? 1 : 0);
                 if (nSubsystems == 4) {
-                    int HS = SD.m_HighSlots;
-                    int MS = SD.m_MedSlots;
-                    int LS = SD.m_LowSlots;
+                    uint HS = SD.m_HighSlots;
+                    uint MS = SD.m_MedSlots;
+                    uint LS = SD.m_LowSlots;
 
                     foreach (SLOT Slot in new SLOT[] { SLOT.SUB_CORE, SLOT.SUB_DEFENSIVE, SLOT.SUB_OFFENSIVE, SLOT.SUB_PROPULSION }) {
-                        foreach (KeyValuePair<int, int> kvp in m_Fit[Slot]) {
+                        foreach (KeyValuePair<int, uint> kvp in m_Fit[Slot]) {
                             int ModuleTypeID = kvp.Key;
                             int Index = -1;
                             bool Ok = ModuleTypeIDToIndex.TryGetValue(ModuleTypeID, out Index);
@@ -269,13 +269,13 @@ namespace EveFitScanUI
                                         if (effect.Value.ContainsKey(ACTIVE.PASSIVE)) {
                                             switch (effect.Key) {
                                                 case EFFECT.HIGH_SLOTS:
-                                                    HS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
+                                                    HS += (uint)effect.Value[ACTIVE.PASSIVE].Item1;
                                                     break;
                                                 case EFFECT.MEDIUM_SLOTS:
-                                                    MS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
+                                                    MS += (uint)effect.Value[ACTIVE.PASSIVE].Item1;
                                                     break;
                                                 case EFFECT.LOW_SLOTS:
-                                                    LS += (int)effect.Value[ACTIVE.PASSIVE].Item1;
+                                                    LS += (uint)effect.Value[ACTIVE.PASSIVE].Item1;
                                                     break;
                                             }
                                         }
@@ -304,8 +304,8 @@ namespace EveFitScanUI
             foreach (SLOT Slot in Enum.GetValues(typeof(SLOT)))
             {
                 Debug.Assert(m_Fit.ContainsKey(Slot));
-                int ModuleCount = 0;
-                foreach (KeyValuePair<int,int> M in m_Fit[Slot]) {
+                uint ModuleCount = 0;
+                foreach (KeyValuePair<int,uint> M in m_Fit[Slot]) {
                     ModuleCount += M.Value;
                 }
                 if (ModuleCount > m_Slots[Slot]) {
@@ -333,7 +333,7 @@ namespace EveFitScanUI
                                 #endregion
 
                                 // Check that subsystems belong to current t3 hull.
-                                foreach (KeyValuePair<int, int> kvp in m_Fit[Slot]) {
+                                foreach (KeyValuePair<int, uint> kvp in m_Fit[Slot]) {
                                     Index = -1;
                                     if (!ModuleTypeIDToIndex.TryGetValue(kvp.Key, out Index) || Index < 0) {
                                         m_ValidFit = false;
@@ -370,15 +370,15 @@ namespace EveFitScanUI
                 bool bAllHighSlots = false;
                 bool bHaveBastion = false;
                 foreach (SLOT Slot in m_Fit.Keys) {
-                    int nModules = 0;
-                    foreach (KeyValuePair<int, int> ModuleAndCount in m_Fit[Slot]) {
+                    uint nModules = 0;
+                    foreach (KeyValuePair<int, uint> ModuleAndCount in m_Fit[Slot]) {
                         nModules += ModuleAndCount.Value;
                         if (ModuleAndCount.Key == 33400) { // typeID for 'Bastion Module I'
                             bHaveBastion = true;
                         }
                     }
 
-                    int nModulesRequired = 0;
+                    uint nModulesRequired = 0;
                     if (!m_Slots.TryGetValue(Slot, out nModulesRequired)) {
                         nModulesRequired = 0;
                     }
@@ -452,14 +452,14 @@ namespace EveFitScanUI
         private void CleanFit(int ShipTypeID)
         {
             SetShipTypeID(ShipTypeID);
-            m_Fit[SLOT.HIGH] = new Dictionary<int, int>();
-            m_Fit[SLOT.MEDIUM] = new Dictionary<int, int>();
-            m_Fit[SLOT.LOW] = new Dictionary<int, int>();
-            m_Fit[SLOT.RIG] = new Dictionary<int, int>();
-            m_Fit[SLOT.SUB_CORE] = new Dictionary<int, int>();
-            m_Fit[SLOT.SUB_DEFENSIVE] = new Dictionary<int, int>();
-            m_Fit[SLOT.SUB_OFFENSIVE] = new Dictionary<int, int>();
-            m_Fit[SLOT.SUB_PROPULSION] = new Dictionary<int, int>();
+            m_Fit[SLOT.HIGH] = new Dictionary<int, uint>();
+            m_Fit[SLOT.MEDIUM] = new Dictionary<int, uint>();
+            m_Fit[SLOT.LOW] = new Dictionary<int, uint>();
+            m_Fit[SLOT.RIG] = new Dictionary<int, uint>();
+            m_Fit[SLOT.SUB_CORE] = new Dictionary<int, uint>();
+            m_Fit[SLOT.SUB_DEFENSIVE] = new Dictionary<int, uint>();
+            m_Fit[SLOT.SUB_OFFENSIVE] = new Dictionary<int, uint>();
+            m_Fit[SLOT.SUB_PROPULSION] = new Dictionary<int, uint>();
         }
 
     }

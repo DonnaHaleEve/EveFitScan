@@ -51,15 +51,15 @@ namespace EveFitScanUI
             m_ShipName = Model.GetShipName(Model.ShipTypeID);
             AllItems.Add(m_ShipName, 1);
 
-            IReadOnlyDictionary<ShipModel.SLOT, Dictionary<int, int>> ShipFit = Model.Fit;
+            IReadOnlyDictionary<ShipModel.SLOT, Dictionary<int, uint>> ShipFit = Model.Fit;
 
             m_SubsystemModules.Clear();
             if (ShipFit.ContainsKey(ShipModel.SLOT.SUB_CORE)) {
-                foreach (KeyValuePair<int, int> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.SUB_CORE])
+                foreach (KeyValuePair<int, uint> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.SUB_CORE])
                 {
                     string ModuleName = Model.GetModuleName(ModuleTypeIDAndCount.Key);
                     AllItems.Add(ModuleName, 1);
-                    for (int i = 0; i < ModuleTypeIDAndCount.Value; ++i)
+                    for (uint i = 0; i < ModuleTypeIDAndCount.Value; ++i)
                     {
                         m_SubsystemModules.Add(ModuleName);
                     }
@@ -67,11 +67,11 @@ namespace EveFitScanUI
             }
             if (ShipFit.ContainsKey(ShipModel.SLOT.SUB_DEFENSIVE))
             {
-                foreach (KeyValuePair<int, int> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.SUB_DEFENSIVE])
+                foreach (KeyValuePair<int, uint> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.SUB_DEFENSIVE])
                 {
                     string ModuleName = Model.GetModuleName(ModuleTypeIDAndCount.Key);
                     AllItems.Add(ModuleName, 1);
-                    for (int i = 0; i < ModuleTypeIDAndCount.Value; ++i)
+                    for (uint i = 0; i < ModuleTypeIDAndCount.Value; ++i)
                     {
                         m_SubsystemModules.Add(ModuleName);
                     }
@@ -79,11 +79,11 @@ namespace EveFitScanUI
             }
             if (ShipFit.ContainsKey(ShipModel.SLOT.SUB_OFFENSIVE))
             {
-                foreach (KeyValuePair<int, int> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.SUB_OFFENSIVE])
+                foreach (KeyValuePair<int, uint> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.SUB_OFFENSIVE])
                 {
                     string ModuleName = Model.GetModuleName(ModuleTypeIDAndCount.Key);
                     AllItems.Add(ModuleName, 1);
-                    for (int i = 0; i < ModuleTypeIDAndCount.Value; ++i)
+                    for (uint i = 0; i < ModuleTypeIDAndCount.Value; ++i)
                     {
                         m_SubsystemModules.Add(ModuleName);
                     }
@@ -91,11 +91,11 @@ namespace EveFitScanUI
             }
             if (ShipFit.ContainsKey(ShipModel.SLOT.SUB_PROPULSION))
             {
-                foreach (KeyValuePair<int, int> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.SUB_PROPULSION])
+                foreach (KeyValuePair<int, uint> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.SUB_PROPULSION])
                 {
                     string ModuleName = Model.GetModuleName(ModuleTypeIDAndCount.Key);
                     AllItems.Add(ModuleName, 1);
-                    for (int i = 0; i < ModuleTypeIDAndCount.Value; ++i)
+                    for (uint i = 0; i < ModuleTypeIDAndCount.Value; ++i)
                     {
                         m_SubsystemModules.Add(ModuleName);
                     }
@@ -105,10 +105,10 @@ namespace EveFitScanUI
             m_HighPowerModules.Clear();
             if (ShipFit.ContainsKey(ShipModel.SLOT.HIGH))
             {
-                foreach (KeyValuePair<int, int> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.HIGH]) {
+                foreach (KeyValuePair<int, uint> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.HIGH]) {
                     string ModuleName = Model.GetModuleName(ModuleTypeIDAndCount.Key);
                     AllItems.Add(ModuleName, 1);
-                    for (int i = 0; i < ModuleTypeIDAndCount.Value; ++i)
+                    for (uint i = 0; i < ModuleTypeIDAndCount.Value; ++i)
                     {
                         m_HighPowerModules.Add(ModuleName);
                     }
@@ -118,11 +118,11 @@ namespace EveFitScanUI
             m_MediumPowerModules.Clear();
             if (ShipFit.ContainsKey(ShipModel.SLOT.MEDIUM))
             {
-                foreach (KeyValuePair<int, int> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.MEDIUM])
+                foreach (KeyValuePair<int, uint> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.MEDIUM])
                 {
                     string ModuleName = Model.GetModuleName(ModuleTypeIDAndCount.Key);
                     AllItems.Add(ModuleName, 1);
-                    for (int i = 0; i < ModuleTypeIDAndCount.Value; ++i)
+                    for (uint i = 0; i < ModuleTypeIDAndCount.Value; ++i)
                     {
                         m_MediumPowerModules.Add(ModuleName);
                     }
@@ -132,11 +132,11 @@ namespace EveFitScanUI
             m_LowPowerModules.Clear();
             if (ShipFit.ContainsKey(ShipModel.SLOT.LOW))
             {
-                foreach (KeyValuePair<int, int> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.LOW])
+                foreach (KeyValuePair<int, uint> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.LOW])
                 {
                     string ModuleName = Model.GetModuleName(ModuleTypeIDAndCount.Key);
                     AllItems.Add(ModuleName, 1);
-                    for (int i = 0; i < ModuleTypeIDAndCount.Value; ++i)
+                    for (uint i = 0; i < ModuleTypeIDAndCount.Value; ++i)
                     {
                         m_LowPowerModules.Add(ModuleName);
                     }
@@ -146,11 +146,11 @@ namespace EveFitScanUI
             m_Rigs.Clear();
             if (ShipFit.ContainsKey(ShipModel.SLOT.RIG))
             {
-                foreach (KeyValuePair<int, int> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.RIG])
+                foreach (KeyValuePair<int, uint> ModuleTypeIDAndCount in ShipFit[ShipModel.SLOT.RIG])
                 {
                     string ModuleName = Model.GetModuleName(ModuleTypeIDAndCount.Key);
                     AllItems.Add(ModuleName, 1);
-                    for (int i = 0; i < ModuleTypeIDAndCount.Value; ++i)
+                    for (uint i = 0; i < ModuleTypeIDAndCount.Value; ++i)
                     {
                         m_Rigs.Add(ModuleName);
                     }
@@ -170,9 +170,9 @@ namespace EveFitScanUI
         private void GenerateCODEToolURL() {
             m_CODEToolURL = "http://halaimacode.byethost8.com/fitscan.html#";
             m_CODEToolURL += Model.ShipTypeID.ToString() + ":";
-            foreach (KeyValuePair<ShipModel.SLOT, Dictionary<int, int>> kvp in Model.Fit)
+            foreach (KeyValuePair<ShipModel.SLOT, Dictionary<int, uint>> kvp in Model.Fit)
             {
-                foreach (KeyValuePair<int,int> Modules in kvp.Value) {
+                foreach (KeyValuePair<int,uint> Modules in kvp.Value) {
                     m_CODEToolURL += Modules.Key.ToString() + ';' + Modules.Value.ToString() + ':';
                 }
             }
