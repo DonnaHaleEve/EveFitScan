@@ -54,6 +54,10 @@ namespace EveFitScanUI
             if (!m_bInsideIndexChange) {
                 UpdateHistoryFit();
             }
+
+            if (ConfigHelper.Instance.ActivateOnFitUpdate && !this.TopMost) {
+                this.Activate();
+            }
         }
 
         private void HighlightFit() {

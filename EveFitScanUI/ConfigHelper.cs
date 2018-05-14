@@ -127,6 +127,16 @@ namespace EveFitScanUI
             }
         }
 
+        public bool ActivateOnFitUpdate {
+            get {
+                return Properties.Settings.Default.ActivateOnFitUpdate;
+            }
+            set {
+                Properties.Settings.Default.ActivateOnFitUpdate = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
         private void Load() {
             //TODO
         }

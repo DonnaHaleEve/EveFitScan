@@ -19,6 +19,7 @@ namespace EveFitScanUI
             this.m_AlwaysOnTop.Checked = ConfigHelper.Instance.AlwaysOnTop;
             this.m_GetPrices.Checked = ConfigHelper.Instance.GetPrices;
             this.m_Highlight.Checked = ConfigHelper.Instance.Highlight;
+            this.m_ActivateOnFitUpdate.Checked = ConfigHelper.Instance.ActivateOnFitUpdate;
         }
 
         private void m_ButtonOk_Click(object sender, EventArgs e) {
@@ -36,6 +37,10 @@ namespace EveFitScanUI
 
         private void m_Highlight_CheckedChanged(object sender, EventArgs e) {
             ConfigHelper.Instance.Highlight = m_Highlight.Checked;
+        }
+
+        private void m_ActivateOnFitUpdate_CheckedChanged(object sender, EventArgs e) {
+            ConfigHelper.Instance.ActivateOnFitUpdate = m_ActivateOnFitUpdate.Checked;
         }
 
     }
