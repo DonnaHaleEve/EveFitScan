@@ -3,6 +3,7 @@ SELECT
 FROM
     "invTypes"
 WHERE
-	"groupID" = 60 -- damage controls
+	"marketGroupID" = 605 -- small shield extenders
+	--"groupID" = 60 -- damage controls
 	--"groupID" = 515 -- bastion/siege/triage/industrial_core
 ;

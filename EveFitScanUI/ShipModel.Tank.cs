@@ -57,24 +57,37 @@ namespace EveFitScanUI
                         AllModuleIDs[ModuleAndCount.Key] = ModuleAndCount.Value;
                     }
                 }
+                bool isPolarized = false;
                 List<Tuple<ModuleDescription, uint>> AllModules = new List<Tuple<ModuleDescription, uint>>();
                 foreach (KeyValuePair<int,uint> kvp in AllModuleIDs) {
                     int Index = -1;
                     Ok = ModuleTypeIDToIndex.TryGetValue(kvp.Key, out Index);
                     Debug.Assert(Ok);
+                    isPolarized |= IsPolarized(ModuleDescriptions[Index]);
                     AllModules.Add(new Tuple<ModuleDescription, uint>(ModuleDescriptions[Index], kvp.Value));
                 }
 
-                m_Tank[LAYER.SHIELD] = GetLayerTank(SD.m_ShieldHP, SD.m_ShieldHPMultiplier, SD.m_ShieldResistEM, SD.m_ShieldResistThermal, SD.m_ShieldResistKinetic, SD.m_ShieldResistExplosive, LAYER.SHIELD, AllModules, SD.m_OverheatingBonus);
-                m_Tank[LAYER.ARMOR] = GetLayerTank(SD.m_ArmorHP, SD.m_ArmorHPMultiplier, SD.m_ArmorResistEM, SD.m_ArmorResistThermal, SD.m_ArmorResistKinetic, SD.m_ArmorResistExplosive, LAYER.ARMOR, AllModules, SD.m_OverheatingBonus);
-                m_Tank[LAYER.HULL] = GetLayerTank(SD.m_HullHP, SD.m_HullHPMultiplier, SD.m_HullResistEM, SD.m_HullResistThermal, SD.m_HullResistKinetic, SD.m_HullResistExplosive, LAYER.HULL, AllModules, SD.m_OverheatingBonus);
+                m_Tank[LAYER.SHIELD] = GetLayerTank(SD.m_ShieldHP, SD.m_ShieldHPMultiplier, SD.m_ShieldResistEM, SD.m_ShieldResistThermal, SD.m_ShieldResistKinetic, SD.m_ShieldResistExplosive, isPolarized, LAYER.SHIELD, AllModules, SD.m_OverheatingBonus);
+                m_Tank[LAYER.ARMOR] = GetLayerTank(SD.m_ArmorHP, SD.m_ArmorHPMultiplier, SD.m_ArmorResistEM, SD.m_ArmorResistThermal, SD.m_ArmorResistKinetic, SD.m_ArmorResistExplosive, isPolarized, LAYER.ARMOR, AllModules, SD.m_OverheatingBonus);
+                m_Tank[LAYER.HULL] = GetLayerTank(SD.m_HullHP, SD.m_HullHPMultiplier, SD.m_HullResistEM, SD.m_HullResistThermal, SD.m_HullResistKinetic, SD.m_HullResistExplosive, isPolarized, LAYER.HULL, AllModules, SD.m_OverheatingBonus);
             }
 
             EventTankChanged();
         }
 
+        private bool IsPolarized(ModuleDescription md) {
+            foreach (LAYER Layer in md.m_Effects.Keys) {
+                foreach (EFFECT Effect in md.m_Effects[Layer].Keys) {
+                    if (Effect == EFFECT.POLARIZED) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         private Tuple<float, Dictionary<RESIST, float>, Dictionary<RESIST, float>>
-            GetLayerTank(float BaseHP, float LayerMultiplier, float ResistEM, float ResistThermal, float ResistKinetic, float ResistExplosive, LAYER Layer, IReadOnlyCollection<Tuple<ModuleDescription, uint>> Modules, float ShipOverheatingBonus)
+            GetLayerTank(float BaseHP, float LayerMultiplier, float ResistEM, float ResistThermal, float ResistKinetic, float ResistExplosive, bool isPolarized, LAYER Layer, IReadOnlyCollection<Tuple<ModuleDescription, uint>> Modules, float ShipOverheatingBonus)
         {
             float FlatHPBonus = 0.0f;
             float HPMultiplier = LayerMultiplier;
@@ -124,41 +137,43 @@ namespace EveFitScanUI
                                 case EFFECT.THERMAL:
                                 case EFFECT.KINETIC:
                                 case EFFECT.EXPLOSIVE:
-                                    RESIST Resist = EffectToResist(Effect);
-                                    switch (Active) {
-                                        case ACTIVE.PASSIVE:
-                                            // passive effect
-                                            AddTo(ref ResistBonuses, Resist, false, EffectParams.Item2, EffectParams.Item1, Count);
-                                            AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, EffectParams.Item1, Count);
-                                            break;
-                                        case ACTIVE.ACTIVE:
-                                            // active effect
-                                            if (!PassiveTank) {
+                                    if (!isPolarized) {
+                                        RESIST Resist = EffectToResist(Effect);
+                                        switch (Active) {
+                                            case ACTIVE.PASSIVE:
+                                                // passive effect
                                                 AddTo(ref ResistBonuses, Resist, false, EffectParams.Item2, EffectParams.Item1, Count);
-                                                float OverloadBonus = ModuleAndCount.Item1.m_OverloadBonus;
-                                                if (OverloadBonus > 0.01f) {
-                                                    float OverloadedResist = EffectParams.Item1 * (1.0f + OverloadBonus * (1.0f + ShipOverheatingBonus + SubsystemOverheatingBonus));
-                                                    AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, OverloadedResist, Count);
+                                                AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, EffectParams.Item1, Count);
+                                                break;
+                                            case ACTIVE.ACTIVE:
+                                                // active effect
+                                                if (!PassiveTank) {
+                                                    AddTo(ref ResistBonuses, Resist, false, EffectParams.Item2, EffectParams.Item1, Count);
+                                                    float OverloadBonus = ModuleAndCount.Item1.m_OverloadBonus;
+                                                    if (OverloadBonus > 0.01f) {
+                                                        float OverloadedResist = EffectParams.Item1 * (1.0f + OverloadBonus * (1.0f + ShipOverheatingBonus + SubsystemOverheatingBonus));
+                                                        AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, OverloadedResist, Count);
+                                                    }
+                                                    else {
+                                                        AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, EffectParams.Item1, Count);
+                                                    }
                                                 }
-                                                else {
+                                                break;
+                                            case ACTIVE.ASSAULT_PASSIVE:
+                                                // bonus from passive ADC
+                                                if (PassiveTank || !AssaultDCEnabled) {
+                                                    AddTo(ref ResistBonuses, Resist, false, EffectParams.Item2, EffectParams.Item1, Count);
                                                     AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, EffectParams.Item1, Count);
                                                 }
-                                            }
-                                            break;
-                                        case ACTIVE.ASSAULT_PASSIVE:
-                                            // bonus from passive ADC
-                                            if (PassiveTank || !AssaultDCEnabled) {
-                                                AddTo(ref ResistBonuses, Resist, false, EffectParams.Item2, EffectParams.Item1, Count);
-                                                AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, EffectParams.Item1, Count);
-                                            }
-                                            break;
-                                        case ACTIVE.ASSAULT_ACTIVE:
-                                            // bonus from active ADC
-                                            if (!PassiveTank && AssaultDCEnabled) {
-                                                AddTo(ref ResistBonuses, Resist, false, EffectParams.Item2, EffectParams.Item1, Count);
-                                                AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, EffectParams.Item1, Count);
-                                            }
-                                            break;
+                                                break;
+                                            case ACTIVE.ASSAULT_ACTIVE:
+                                                // bonus from active ADC
+                                                if (!PassiveTank && AssaultDCEnabled) {
+                                                    AddTo(ref ResistBonuses, Resist, false, EffectParams.Item2, EffectParams.Item1, Count);
+                                                    AddTo(ref ResistBonuses, Resist, true, EffectParams.Item2, EffectParams.Item1, Count);
+                                                }
+                                                break;
+                                        }
                                     }
                                     break;
                             }
@@ -170,55 +185,65 @@ namespace EveFitScanUI
             float LayerHP = (BaseHP + FlatHPBonus) * HPMultiplier;
             LayerHP *= 1.25f; // Shield Management / Hull Upgrades / Mechanics
 
-            Dictionary<RESIST, Dictionary<bool, float>> Resonances = new Dictionary<RESIST, Dictionary<bool, float>>();
-            Resonances[RESIST.EM] = new Dictionary<bool, float>();
-            Resonances[RESIST.THERMAL] = new Dictionary<bool, float>();
-            Resonances[RESIST.KINETIC] = new Dictionary<bool, float>();
-            Resonances[RESIST.EXPLOSIVE] = new Dictionary<bool, float>();
-
-            foreach (RESIST Resist in ResistBonuses.Keys)
-            {
-                foreach (bool Hot in ResistBonuses[Resist].Keys)
-                {
-                    float ResonanceCombined = 1.0f;
-                    foreach (int StackGroup in ResistBonuses[Resist][Hot].Keys)
-                    {
-                        List<float> ResistsGroup = ResistBonuses[Resist][Hot][StackGroup];
-                        ResistsGroup.Sort(
-                            delegate(float a, float b)
-                            {
-                                if (a < b)
-                                    return 1;
-                                if (a > b)
-                                    return -1;
-                                return 0;
-                            }
-                        );
-
-                        float Resonance = 1.0f;
-                        for (int i = 0; i < ResistsGroup.Count; ++i)
-                        {
-                            float pc = PenaltyCoeff(i);
-                            Resonance *= (1.0f - ResistsGroup[i] * pc);
-                        }
-
-                        ResonanceCombined *= Resonance;
-                    }
-                    Resonances[Resist][Hot] = ResonanceCombined;
-                }
-            }
-
             Dictionary<RESIST, float> ResistsCold = new Dictionary<RESIST, float>();
-            ResistsCold[RESIST.EM] = 1.0f - (1.0f - ResistEM) * GetResonance(Resonances, RESIST.EM, false);
-            ResistsCold[RESIST.THERMAL] = 1.0f - (1.0f - ResistThermal) * GetResonance(Resonances, RESIST.THERMAL, false);
-            ResistsCold[RESIST.KINETIC] = 1.0f - (1.0f - ResistKinetic) * GetResonance(Resonances, RESIST.KINETIC, false);
-            ResistsCold[RESIST.EXPLOSIVE] = 1.0f - (1.0f - ResistExplosive) * GetResonance(Resonances, RESIST.EXPLOSIVE, false);
-
             Dictionary<RESIST, float> ResistsHot = new Dictionary<RESIST, float>();
-            ResistsHot[RESIST.EM] = 1.0f - (1.0f - ResistEM) * GetResonance(Resonances, RESIST.EM, true);
-            ResistsHot[RESIST.THERMAL] = 1.0f - (1.0f - ResistThermal) * GetResonance(Resonances, RESIST.THERMAL, true);
-            ResistsHot[RESIST.KINETIC] = 1.0f - (1.0f - ResistKinetic) * GetResonance(Resonances, RESIST.KINETIC, true);
-            ResistsHot[RESIST.EXPLOSIVE] = 1.0f - (1.0f - ResistExplosive) * GetResonance(Resonances, RESIST.EXPLOSIVE, true);
+
+            if (!isPolarized) {
+
+                Dictionary<RESIST, Dictionary<bool, float>> Resonances = new Dictionary<RESIST, Dictionary<bool, float>>();
+                Resonances[RESIST.EM] = new Dictionary<bool, float>();
+                Resonances[RESIST.THERMAL] = new Dictionary<bool, float>();
+                Resonances[RESIST.KINETIC] = new Dictionary<bool, float>();
+                Resonances[RESIST.EXPLOSIVE] = new Dictionary<bool, float>();
+
+                foreach (RESIST Resist in ResistBonuses.Keys) {
+                    foreach (bool Hot in ResistBonuses[Resist].Keys) {
+                        float ResonanceCombined = 1.0f;
+                        foreach (int StackGroup in ResistBonuses[Resist][Hot].Keys) {
+                            List<float> ResistsGroup = ResistBonuses[Resist][Hot][StackGroup];
+                            ResistsGroup.Sort(
+                                delegate(float a, float b) {
+                                    if (a < b)
+                                        return 1;
+                                    if (a > b)
+                                        return -1;
+                                    return 0;
+                                }
+                            );
+
+                            float Resonance = 1.0f;
+                            for (int i = 0; i < ResistsGroup.Count; ++i) {
+                                float pc = PenaltyCoeff(i);
+                                Resonance *= (1.0f - ResistsGroup[i] * pc);
+                            }
+
+                            ResonanceCombined *= Resonance;
+                        }
+                        Resonances[Resist][Hot] = ResonanceCombined;
+                    }
+                }
+
+                ResistsCold[RESIST.EM] = 1.0f - (1.0f - ResistEM) * GetResonance(Resonances, RESIST.EM, false);
+                ResistsCold[RESIST.THERMAL] = 1.0f - (1.0f - ResistThermal) * GetResonance(Resonances, RESIST.THERMAL, false);
+                ResistsCold[RESIST.KINETIC] = 1.0f - (1.0f - ResistKinetic) * GetResonance(Resonances, RESIST.KINETIC, false);
+                ResistsCold[RESIST.EXPLOSIVE] = 1.0f - (1.0f - ResistExplosive) * GetResonance(Resonances, RESIST.EXPLOSIVE, false);
+
+                ResistsHot[RESIST.EM] = 1.0f - (1.0f - ResistEM) * GetResonance(Resonances, RESIST.EM, true);
+                ResistsHot[RESIST.THERMAL] = 1.0f - (1.0f - ResistThermal) * GetResonance(Resonances, RESIST.THERMAL, true);
+                ResistsHot[RESIST.KINETIC] = 1.0f - (1.0f - ResistKinetic) * GetResonance(Resonances, RESIST.KINETIC, true);
+                ResistsHot[RESIST.EXPLOSIVE] = 1.0f - (1.0f - ResistExplosive) * GetResonance(Resonances, RESIST.EXPLOSIVE, true);
+            }
+            else {
+                ResistsCold[RESIST.EM] = 0.0f;
+                ResistsCold[RESIST.THERMAL] = 0.0f;
+                ResistsCold[RESIST.KINETIC] = 0.0f;
+                ResistsCold[RESIST.EXPLOSIVE] = 0.0f;
+
+                ResistsHot[RESIST.EM] = 0.0f;
+                ResistsHot[RESIST.THERMAL] = 0.0f;
+                ResistsHot[RESIST.KINETIC] = 0.0f;
+                ResistsHot[RESIST.EXPLOSIVE] = 0.0f;
+            }
 
             return new Tuple<float, Dictionary<RESIST, float>, Dictionary<RESIST, float>>(LayerHP, ResistsCold, ResistsHot);
         }

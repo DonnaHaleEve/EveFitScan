@@ -53,6 +53,8 @@ namespace DBConverter
             MODULE_ATTR_DB_HIGH_SLOTS = 1374, // on t3 subsystems
             MODULE_ATTR_DB_MEDIUM_SLOTS = 1375, // on t3 subsystems
             MODULE_ATTR_DB_LOW_SLOTS = 1376, // on t3 subsystems
+
+            MODULE_ATTR_DB_POLARIZED = 1978,
         };
     }
 }

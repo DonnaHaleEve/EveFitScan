@@ -21,6 +21,8 @@ namespace DBConverter
             }
         }
 
+        //================================================================================================================================================================================================================================
+
         private static IReadOnlyCollection<Tuple<string, int>> GetShips(NpgsqlConnection conn)
         {
             NpgsqlCommand cmd = new NpgsqlCommand("SELECT \"marketGroupID\" FROM \"invMarketGroups\" WHERE \"marketGroupName\" = \'Ships\' AND \"parentGroupID\" IS NULL", conn);
@@ -172,6 +174,8 @@ namespace DBConverter
             return shipTraits;
         }
 
+        //================================================================================================================================================================================================================================
+
         private static IReadOnlyCollection<Tuple<string, int, int, MODULE_SLOT>> GetModules(NpgsqlConnection conn)
         {
             List<Tuple<string, int, int, MODULE_SLOT>> modules = new List<Tuple<string, int, int, MODULE_SLOT>>();
@@ -276,6 +280,89 @@ namespace DBConverter
             }
 
             return moduleTraits;
+        }
+
+        private static float GetMaxAttributeValueForMarketGroup(string[] Group, MODULE_ATTRIBUTES_DB Attribute, NpgsqlConnection conn) {
+            int marketGroupID = GetMarketGroupID(Group, conn);
+            NpgsqlCommand cmd = new NpgsqlCommand(
+                String.Format("SELECT \"valueInt\", \"valueFloat\" FROM \"dgmTypeAttributes\" JOIN \"invTypes\" USING (\"typeID\") WHERE \"marketGroupID\" = {0} AND \"attributeID\" = {1} ORDER BY \"valueFloat\" DESC", marketGroupID, (int)Attribute),
+                conn
+            );
+            float value = 0.0f;
+            using (NpgsqlDataReader dr = cmd.ExecuteReader()) {
+                while (dr.Read()) {
+                    double ddd = 0.0;
+                    if (Double.TryParse(dr["valueFloat"].ToString(), out ddd)) {
+                        if (value < ((float)ddd)) {
+                            value = (float)ddd;
+                        }
+                    }
+                    else {
+                        int iii = Int32.Parse(dr["valueInt"].ToString());
+                        if (value < ((float)iii)) {
+                            value = (float)iii;
+                        }
+                    }
+                }
+            }
+            return value;
+        }
+
+        //================================================================================================================================================================================================================================
+
+        private static int GetTypeIDByName(string Name, NpgsqlConnection conn) {
+            NpgsqlCommand cmd = new NpgsqlCommand(String.Format("SELECT \"typeID\" FROM \"invTypes\" WHERE \"typeName\" = \'{0}'", Name), conn);
+            using (NpgsqlDataReader dr = cmd.ExecuteReader()) {
+                if (dr.Read()) {
+                    string typeID_str = dr["typeID"].ToString();
+                    int typeID = Int32.Parse(typeID_str);
+                    return typeID;
+                }
+            }
+            Debug.Assert(false);
+            return 0;
+        }
+
+        private static int GetMarketGroupID(string[] Group, NpgsqlConnection conn) {
+            Debug.Assert(Group.Length > 0);
+
+            int marketGroupID = 0;
+            using (NpgsqlCommandBuilder builder = new NpgsqlCommandBuilder()) {
+
+                NpgsqlCommand cmd = new NpgsqlCommand("SELECT \"marketGroupID\" FROM \"invMarketGroups\" WHERE \"marketGroupName\" = @mg AND \"parentGroupID\" IS NULL", conn);
+                cmd.Parameters.Add("mg", NpgsqlTypes.NpgsqlDbType.Varchar);
+                cmd.Prepare();
+
+                cmd.Parameters[0].Value = Group[0];
+                cmd.ExecuteNonQuery();
+
+                using (NpgsqlDataReader dr = cmd.ExecuteReader()) {
+                    dr.Read();
+                    marketGroupID = Int32.Parse(dr["marketGroupID"].ToString());
+                    Debug.Assert(marketGroupID > 0);
+                }
+
+                for (int i = 1; i < Group.Length; i++) {
+                    //NpgsqlCommand cmd2 = new NpgsqlCommand(String.Format("SELECT \"marketGroupID\" FROM \"invMarketGroups\" WHERE \"marketGroupName\" = \'{0}\' AND \"parentGroupID\" = {1}", Group[i], marketGroupID), conn);
+                    NpgsqlCommand cmd2 = new NpgsqlCommand(String.Format("SELECT \"marketGroupID\" FROM \"invMarketGroups\" WHERE \"marketGroupName\" LIKE @mg AND \"parentGroupID\" = @pg", Group[i], marketGroupID), conn);
+                    cmd2.Parameters.Add("mg", NpgsqlTypes.NpgsqlDbType.Varchar);
+                    cmd2.Parameters.Add("pg", NpgsqlTypes.NpgsqlDbType.Integer);
+                    cmd2.Prepare();
+
+                    cmd2.Parameters[0].Value = "%" + Group[i] + "%";
+                    cmd2.Parameters[1].Value = marketGroupID;
+                    cmd2.ExecuteNonQuery();
+
+                    using (NpgsqlDataReader dr = cmd2.ExecuteReader()) {
+                        dr.Read();
+                        int nextMarketGroupID = Int32.Parse(dr["marketGroupID"].ToString());
+                        Debug.Assert(nextMarketGroupID > 0);
+                        marketGroupID = nextMarketGroupID;
+                    }
+                }
+            }
+
+            return marketGroupID;
         }
     }
 }

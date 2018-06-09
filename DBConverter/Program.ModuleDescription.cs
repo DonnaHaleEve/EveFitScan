@@ -32,6 +32,12 @@ namespace DBConverter
             private float m_OverloadBonus;
             private int m_ShipTypeID;
 
+            public int TypeID {
+                get {
+                    return m_TypeID;
+                }
+            }
+
             public void Print(StreamWriter file)
             {
                 file.WriteLine("          m_ModuleDescriptions.Add((new ModuleDescription(\"{0}\",{1},{2},{3:f1}f,{4})){5});", Escape(m_Name), m_TypeID, GetSlotName(m_Slot, m_Name), m_OverloadBonus, m_ShipTypeID, StringifyAttributes());
@@ -57,6 +63,8 @@ namespace DBConverter
                 get {
                     if (m_AttributeToString == null) {
                         m_AttributeToString = new Dictionary<MODULE_ATTRIBUTES, string> {
+                            {MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_POLARIZED, "LAYER.NONE,EFFECT.POLARIZED"},
+
                             {MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_EM_RESIST, "LAYER.SHIELD,EFFECT.EM"},
                             {MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_THERMAL_RESIST,"LAYER.SHIELD,EFFECT.THERMAL"},
                             {MODULE_ATTRIBUTES.MODULE_ATTRIBUTE_SHIELD_KINETIC_RESIST,"LAYER.SHIELD,EFFECT.KINETIC"},
