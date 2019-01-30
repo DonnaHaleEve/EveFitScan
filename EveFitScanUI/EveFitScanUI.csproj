@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GankShips.cs" />
     <Compile Include="ConfigHelper.cs" />
     <Compile Include="FitScanProcessor.cs" />
     <Compile Include="FitScanProcessor.CurrentState.cs" />

@@ -30,6 +30,21 @@ namespace EveFitScanUI
             }
         }
 
+        private void m_checkBoxSTK_CheckedChanged(object sender, EventArgs e)
+        {
+            if(m_checkBoxSTK.Checked)
+            {
+                label5.Text = "Ships to Kill";
+            }
+            else
+            {
+                label5.Text = "------ HOT ------";
+            }
+
+            m_FitScanProcessor.SetSTK(m_checkBoxSTK.Checked);
+        }
+
+
         private void m_checkBoxADCActive_CheckedChanged(object sender, EventArgs e) {
             ConfigHelper.Instance.ADCActive = m_checkBoxADCActive.Checked;
             m_FitScanProcessor.SetADCActive(m_checkBoxADCActive.Checked);

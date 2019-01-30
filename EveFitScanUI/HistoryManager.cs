@@ -58,8 +58,6 @@ namespace EveFitScanUI
                 subsystemSlotCount,
                 subsystemModules
             );
-            int qq = 666;
-
 
             if (m_HistoryItems.Count == 0) {
                 m_HistoryItems.Add(item);
@@ -75,21 +73,18 @@ namespace EveFitScanUI
                     m_HistoryItems.Insert(0, item);
                 }
             }
-            int qqq = 666;
         }
 
         public void OnPriceChanged(float price) {
             if (m_HistoryItems.Count > 0) {
                 m_HistoryItems[0].Price = price;
             }
-            int qq = 666;
         }
 
         public void OnEHPChanged(float EHP) {
             if (m_HistoryItems.Count > 0) {
                 m_HistoryItems[0].EHP = EHP;
             }
-            int qq = 666;
         }
 
         private class HistoryItem {

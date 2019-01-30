@@ -96,6 +96,7 @@
             this.m_BackgroundWorkerUpdate = new System.ComponentModel.BackgroundWorker();
             this.m_checkBoxADCActive = new System.Windows.Forms.CheckBox();
             this.m_History = new System.Windows.Forms.ComboBox();
+            this.m_checkBoxSTK = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -783,12 +784,25 @@
             this.m_History.TabIndex = 60;
             this.m_History.SelectedIndexChanged += new System.EventHandler(this.m_History_SelectedIndexChanged);
             // 
+            // m_checkBoxSTK
+            // 
+            this.m_checkBoxSTK.AutoSize = true;
+            this.m_checkBoxSTK.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_checkBoxSTK.Location = new System.Drawing.Point(723, 48);
+            this.m_checkBoxSTK.Name = "m_checkBoxSTK";
+            this.m_checkBoxSTK.Size = new System.Drawing.Size(122, 24);
+            this.m_checkBoxSTK.TabIndex = 61;
+            this.m_checkBoxSTK.Text = "Ships to Kill";
+            this.m_checkBoxSTK.UseVisualStyleBackColor = true;
+            this.m_checkBoxSTK.CheckedChanged += new System.EventHandler(this.m_checkBoxSTK_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(964, 762);
+            this.Controls.Add(this.m_checkBoxSTK);
             this.Controls.Add(this.m_History);
             this.Controls.Add(this.m_checkBoxADCActive);
             this.Controls.Add(this.label18);
@@ -931,6 +945,7 @@
         private System.Windows.Forms.CheckBox m_checkBoxADCActive;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ComboBox m_History;
+        private System.Windows.Forms.CheckBox m_checkBoxSTK;
     }
 }
 

@@ -25,6 +25,11 @@ namespace EveFitScanUI
             Model.SetAssaultDCEnabled(bADCActive);
         }
 
+        public void SetSTK(bool bSTK)
+        {
+            Model.SetSTK(bSTK);
+        }
+
         public IReadOnlyCollection<string> SuggestNames(string Prefix) {
             if (Prefix.Length >= 3)
             {

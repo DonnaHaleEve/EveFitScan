@@ -202,6 +202,12 @@ namespace EveFitScanUI
             RecalculateTank();
         }
 
+        public void SetSTK(bool bSTK)
+        {
+            RecalculateTank();
+        }
+
+
         public void SetAssaultDCEnabled(bool bADC) {
             m_bAssaultDCEnabled = bADC;
             RecalculateTank();
