@@ -94,7 +94,38 @@ namespace EveFitScanUI.Properties {
                 this["PassiveTank"] = value;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool STK
+        {
+            get
+            {
+                return ((bool)(this["STK"]));
+            }
+            set
+            {
+                this["STK"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SysSecurity
+        {
+            get
+            {
+                return ((int)(this["SysSecurity"]));
+            }
+            set
+            {
+                this["SysSecurity"] = value; 
+            }
+        }
+
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
@@ -142,5 +173,275 @@ namespace EveFitScanUI.Properties {
                 this["ActivateOnFitUpdate"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DPS_Mjolnir
+        {
+            get
+            {
+                return ((int)(this["DPS_Mjolnir"]));
+            }
+            set
+            {
+                this["DPS_Mjolnir"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DPS_Nova        {
+            get
+            {
+                return ((int)(this["DPS_Nova"]));
+            }
+            set
+            {
+                this["DPS_Nova"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DPS_Antimatter
+        {
+            get
+            {
+                return ((int)(this["DPS_Antimatter"]));
+            }
+            set
+            {
+                this["DPS_Antimatter"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DPS_Void
+        {
+            get
+            {
+                return ((int)(this["DPS_Void"]));
+            }
+            set
+            {
+                this["DPS_Void"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DPS_Multifrequency
+        {
+            get
+            {
+                return ((int)(this["DPS_Multifrequency"]));
+            }
+            set
+            {
+                this["DPS_Multifrequency"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DPS_EMP
+        {
+            get
+            {
+                return ((int)(this["DPS_EMP"]));
+            }
+            set
+            {
+                this["DPS_EMP"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DPS_Fusion
+        {
+            get
+            {
+                return ((int)(this["DPS_Fusion"]));
+            }
+            set
+            {
+                this["DPS_Fusion"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DPS_Phased_Plasma
+        {
+            get
+            {
+                return ((int)(this["DPS_Phased_Plasma"]));
+            }
+            set
+            {
+                this["DPS_Phased_Plasma"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DPS_Hail
+        {
+            get
+            {
+                return ((int)(this["DPS_Hail"]));
+            }
+            set
+            {
+                this["DPS_Hail"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double RoF_Mjolnir
+        {
+            get
+            {
+                return ((double)(this["RoF_Mjolnir"]));
+            }
+            set
+            {
+                this["RoF_Mjolnir"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double RoF_Nova
+        {
+            get
+            {
+                return ((double)(this["RoF_Nova"]));
+            }
+            set
+            {
+                this["RoF_Nova"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double RoF_Antimatter
+        {
+            get
+            {
+                return ((double)(this["RoF_Antimatter"]));
+            }
+            set
+            {
+                this["RoF_Antimatter"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double RoF_Void
+        {
+            get
+            {
+                return ((double)(this["RoF_Void"]));
+            }
+            set
+            {
+                this["RoF_Void"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double RoF_Multifrequency
+        {
+            get
+            {
+                return ((double)(this["RoF_Multifrequency"]));
+            }
+            set
+            {
+                this["RoF_Multifrequency"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double RoF_EMP
+        {
+            get
+            {
+                return ((double)(this["RoF_EMP"]));
+            }
+            set
+            {
+                this["RoF_EMP"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double RoF_Fusion
+        {
+            get
+            {
+                return ((double)(this["RoF_Fusion"]));
+            }
+            set
+            {
+                this["RoF_Fusion"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double RoF_Phased_Plasma
+        {
+            get
+            {
+                return ((double)(this["RoF_Phased_Plasma"]));
+            }
+            set
+            {
+                this["RoF_Phased_Plasma"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double RoF_Hail
+        {
+            get
+            {
+                return ((double)(this["RoF_Hail"]));
+            }
+            set
+            {
+                this["RoF_Hail"] = value;
+            }
+        }
+
     }
 }

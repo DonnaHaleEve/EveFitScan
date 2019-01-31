@@ -30,20 +30,132 @@ namespace EveFitScanUI
             }
         }
 
+        private static int m_coldLeft = 528;
+        private static int m_coldLeftSTK = m_coldLeft - 55;
+        private static int m_hotLeft = 768;
+        private static int m_hotLeftSTK = m_hotLeft + 55;
+
         private void m_checkBoxSTK_CheckedChanged(object sender, EventArgs e)
         {
-            if(m_checkBoxSTK.Checked)
-            {
-                label5.Text = "Ships to Kill";
-            }
-            else
-            {
-                label5.Text = "------ HOT ------";
-            }
-
+            ConfigHelper.Instance.STK = m_checkBoxSTK.Checked;
+            m_FitScanProcessor.SetSTK(m_checkBoxSTK.Checked);
+            ConfigSTKDisplay();
             m_FitScanProcessor.SetSTK(m_checkBoxSTK.Checked);
         }
 
+        private void ConfigSTKDisplay()
+        {
+            if (m_checkBoxSTK.Checked)
+            {
+                this.label10.Text = "Multifreq.";
+                this.label13.Text = "Phased Pl.";
+
+                m_TextBoxArmorResistsHot.Text = "500";
+                m_TextBoxHullResistsHot.Text = "2.7";
+
+                m_TextBoxEHPAntimatterHot.Left = m_hotLeftSTK;
+                m_TextBoxEHPEMPHot.Left = m_hotLeftSTK;
+                m_TextBoxEHPFusionHot.Left = m_hotLeftSTK;
+                m_TextBoxEHPHailHot.Left = m_hotLeftSTK;
+                m_TextBoxEHPMjolnirHot.Left = m_hotLeftSTK;
+                m_TextBoxEHPMultifreqHot.Left = m_hotLeftSTK;
+                m_TextBoxEHPNovaHot.Left = m_hotLeftSTK;
+                m_TextBoxEHPPhasedPlasmaHot.Left = m_hotLeftSTK;
+                m_TextBoxEHPVoidHot.Left = m_hotLeftSTK;
+
+                m_TextBoxEHPAntimatterCold.Left = m_coldLeftSTK;
+                m_TextBoxEHPEMPCold.Left = m_coldLeftSTK;
+                m_TextBoxEHPFusionCold.Left = m_coldLeftSTK;
+                m_TextBoxEHPHailCold.Left = m_coldLeftSTK;
+                m_TextBoxEHPMjolnirCold.Left = m_coldLeftSTK;
+                m_TextBoxEHPMultifreqCold.Left = m_coldLeftSTK;
+                m_TextBoxEHPNovaCold.Left = m_coldLeftSTK;
+                m_TextBoxEHPPhasedPlasmaCold.Left = m_coldLeftSTK;
+                m_TextBoxEHPVoidCold.Left = m_coldLeftSTK;
+
+                m_comboBoxSysSecurity.Visible = true;
+                this.labelSysSecurity.Visible = true;
+                this.labelDPS.Visible = true;
+                this.labelRoF.Visible = true;
+                this.labelSTK.Visible = true;
+                m_textBox_DPS_Mjolnir.Visible = true;
+                m_textBox_DPS_Nova.Visible = true;
+                m_textBox_DPS_Antimatter.Visible = true;
+                m_textBox_DPS_Void.Visible = true;
+                m_textBox_DPS_EMP.Visible = true;
+                m_textBox_DPS_Fusion.Visible = true;
+                m_textBox_DPS_Phased_Plasma.Visible = true;
+                m_textBox_DPS_Hail.Visible = true;
+
+                m_textBox_RoF_Mjolnir.Visible = true;
+                m_textBox_RoF_Nova.Visible = true;
+                m_textBox_RoF_Antimatter.Visible = true;
+                m_textBox_RoF_Void.Visible = true;
+                m_textBox_RoF_EMP.Visible = true;
+                m_textBox_RoF_Fusion.Visible = true;
+                m_textBox_RoF_Phased_Plasma.Visible = true;
+                m_textBox_RoF_Hail.Visible = true;
+
+                m_TextBoxArmorResistsHot.Visible = false;
+                m_TextBoxHullResistsHot.Visible = false;
+                m_TextBoxShieldResistsHot.Visible = false;
+                this.label5.Visible = false;
+            }
+            else
+            {
+                this.label10.Text = "Multifrequency";
+                this.label13.Text = "Phased Plasma";
+
+                m_TextBoxEHPAntimatterHot.Left = m_hotLeft;
+                m_TextBoxEHPEMPHot.Left = m_hotLeft;
+                m_TextBoxEHPFusionHot.Left = m_hotLeft;
+                m_TextBoxEHPHailHot.Left = m_hotLeft;
+                m_TextBoxEHPMjolnirHot.Left = m_hotLeft;
+                m_TextBoxEHPMultifreqHot.Left = m_hotLeft;
+                m_TextBoxEHPNovaHot.Left = m_hotLeft;
+                m_TextBoxEHPPhasedPlasmaHot.Left = m_hotLeft;
+                m_TextBoxEHPVoidHot.Left = m_hotLeft;
+
+                m_TextBoxEHPAntimatterCold.Left = m_coldLeft;
+                m_TextBoxEHPEMPCold.Left = m_coldLeft;
+                m_TextBoxEHPFusionCold.Left = m_coldLeft;
+                m_TextBoxEHPHailCold.Left = m_coldLeft;
+                m_TextBoxEHPMjolnirCold.Left = m_coldLeft;
+                m_TextBoxEHPMultifreqCold.Left = m_coldLeft;
+                m_TextBoxEHPNovaCold.Left = m_coldLeft;
+                m_TextBoxEHPPhasedPlasmaCold.Left = m_coldLeft;
+                m_TextBoxEHPVoidCold.Left = m_coldLeft;
+
+                m_comboBoxSysSecurity.Visible = false;
+                this.labelSysSecurity.Visible = false;
+                this.labelDPS.Visible = false;
+                this.labelRoF.Visible = false;
+                this.labelSTK.Visible = false;
+                m_textBox_DPS_Mjolnir.Visible = false;
+                m_textBox_DPS_Nova.Visible = false;
+                m_textBox_DPS_Antimatter.Visible = false;
+                m_textBox_DPS_Void.Visible = false;
+                m_textBox_DPS_EMP.Visible = false;
+                m_textBox_DPS_Fusion.Visible = false;
+                m_textBox_DPS_Phased_Plasma.Visible = false;
+                m_textBox_DPS_Hail.Visible = false;
+
+                m_textBox_RoF_Mjolnir.Visible = false;
+                m_textBox_RoF_Nova.Visible = false;
+                m_textBox_RoF_Antimatter.Visible = false;
+                m_textBox_RoF_Void.Visible = false;
+                m_textBox_RoF_EMP.Visible = false;
+                m_textBox_RoF_Fusion.Visible = false;
+                m_textBox_RoF_Phased_Plasma.Visible = false;
+                m_textBox_RoF_Hail.Visible = false;
+
+                m_TextBoxArmorResistsHot.Visible = true;
+                m_TextBoxHullResistsHot.Visible = true;
+                m_TextBoxShieldResistsHot.Visible = true;
+                this.label5.Visible = true;
+            }
+
+        }
 
         private void m_checkBoxADCActive_CheckedChanged(object sender, EventArgs e) {
             ConfigHelper.Instance.ADCActive = m_checkBoxADCActive.Checked;
@@ -53,6 +165,13 @@ namespace EveFitScanUI
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void resetDPSRoFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_gankShips.ResetDpsRoF();
+            Load_DPS_RoF();
+            m_FitScanProcessor.SetSTK(true);
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -69,6 +188,8 @@ thread on the Goonfleet Forums or sent to me via Jabber.";
         private void licenseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string message = @"EveFitScan (C) 2017 Donna Hale <donna.hale.eve@gmail.com>
+
+Ships to Kill mod by Vulkyn (C) 2019.
 
 EVE Online and the EVE logo are the registered trademarks of CCP hf.
 All rights are reserved worldwide. All other trademarks are the

@@ -97,6 +97,32 @@ namespace EveFitScanUI
             }
         }
 
+        public bool STK
+        {
+            get
+            {
+                return Properties.Settings.Default.STK;
+            }
+            set
+            {
+                Properties.Settings.Default.STK = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public int SysSecurity
+        {
+            get
+            {
+                return Properties.Settings.Default.SysSecurity;
+            }
+            set
+            {
+                Properties.Settings.Default.SysSecurity = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
         public bool ADCActive {
             get {
                 return Properties.Settings.Default.ADCActive;
@@ -133,6 +159,240 @@ namespace EveFitScanUI
             }
             set {
                 Properties.Settings.Default.ActivateOnFitUpdate = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public int DPS_Mjolnir
+        {
+            get
+            {
+                return Properties.Settings.Default.DPS_Mjolnir;
+            }
+            set
+            {
+                Properties.Settings.Default.DPS_Mjolnir = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public int DPS_Nova
+        {
+            get
+            {
+                return Properties.Settings.Default.DPS_Nova;
+            }
+            set
+            {
+                Properties.Settings.Default.DPS_Nova = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public int DPS_Antimatter
+        {
+            get
+            {
+                return Properties.Settings.Default.DPS_Antimatter;
+            }
+            set
+            {
+                Properties.Settings.Default.DPS_Antimatter = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public int DPS_Void
+        {
+            get
+            {
+                return Properties.Settings.Default.DPS_Void;
+            }
+            set
+            {
+                Properties.Settings.Default.DPS_Void = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public int DPS_Multifrequency
+        {
+            get
+            {
+                return Properties.Settings.Default.DPS_Multifrequency;
+            }
+            set
+            {
+                Properties.Settings.Default.DPS_Multifrequency = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public int DPS_EMP
+        {
+            get
+            {
+                return Properties.Settings.Default.DPS_EMP;
+            }
+            set
+            {
+                Properties.Settings.Default.DPS_EMP = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public int DPS_Phased_Plasma
+        {
+            get
+            {
+                return Properties.Settings.Default.DPS_Phased_Plasma;
+            }
+            set
+            {
+                Properties.Settings.Default.DPS_Phased_Plasma = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public int DPS_Fusion
+        {
+            get
+            {
+                return Properties.Settings.Default.DPS_Fusion;
+            }
+            set
+            {
+                Properties.Settings.Default.DPS_Fusion = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public int DPS_Hail
+        {
+            get
+            {
+                return Properties.Settings.Default.DPS_Hail;
+            }
+            set
+            {
+                Properties.Settings.Default.DPS_Hail = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public double RoF_Mjolnir
+        {
+            get
+            {
+                return Properties.Settings.Default.RoF_Mjolnir;
+            }
+            set
+            {
+                Properties.Settings.Default.RoF_Mjolnir = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public double RoF_Nova
+        {
+            get
+            {
+                return Properties.Settings.Default.RoF_Nova;
+            }
+            set
+            {
+                Properties.Settings.Default.RoF_Nova = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public double RoF_Antimatter
+        {
+            get
+            {
+                return Properties.Settings.Default.RoF_Antimatter;
+            }
+            set
+            {
+                Properties.Settings.Default.RoF_Antimatter = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public double RoF_Void
+        {
+            get
+            {
+                return Properties.Settings.Default.RoF_Void;
+            }
+            set
+            {
+                Properties.Settings.Default.RoF_Void = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public double RoF_Multifrequency
+        {
+            get
+            {
+                return Properties.Settings.Default.RoF_Multifrequency;
+            }
+            set
+            {
+                Properties.Settings.Default.RoF_Multifrequency = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public double RoF_EMP
+        {
+            get
+            {
+                return Properties.Settings.Default.RoF_EMP;
+            }
+            set
+            {
+                Properties.Settings.Default.RoF_EMP = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public double RoF_Phased_Plasma
+        {
+            get
+            {
+                return Properties.Settings.Default.RoF_Phased_Plasma;
+            }
+            set
+            {
+                Properties.Settings.Default.RoF_Phased_Plasma = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public double RoF_Fusion
+        {
+            get
+            {
+                return Properties.Settings.Default.RoF_Fusion;
+            }
+            set
+            {
+                Properties.Settings.Default.RoF_Fusion = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public double RoF_Hail
+        {
+            get
+            {
+                return Properties.Settings.Default.RoF_Hail;
+            }
+            set
+            {
+                Properties.Settings.Default.RoF_Hail = value;
                 Properties.Settings.Default.Save();
             }
         }

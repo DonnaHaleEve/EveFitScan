@@ -135,6 +135,14 @@ namespace EveFitScanUI
             this.m_checkBoxPassive.Checked = ConfigHelper.Instance.PassiveTank;
             m_FitScanProcessor.SetPassive(ConfigHelper.Instance.PassiveTank);
 
+            this.m_comboBoxSysSecurity.SelectedIndex = ConfigHelper.Instance.SysSecurity;
+
+            this.m_checkBoxSTK.Checked = ConfigHelper.Instance.STK;
+            m_FitScanProcessor.SetSTK(ConfigHelper.Instance.STK);
+
+            Load_DPS_RoF();
+            ConfigSTKDisplay();
+
             m_BackgroundWorkerUpdate.RunWorkerAsync();
         }
 
@@ -144,6 +152,86 @@ namespace EveFitScanUI
             ConfigHelper.Instance.WindowPositionY = this.Location.Y;
 
             NativeMethods.ChangeClipboardChain(this.Handle, this.clipboardViewerNext);        // Removes our from the chain of clipboard viewers when the form closes.
+        }
+
+        private void m_ComboBoxSysSecurity_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ConfigHelper.Instance.SysSecurity = this.m_comboBoxSysSecurity.SelectedIndex;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void Dps_RoF_ValueChanged(object sender, EventArgs e)
+        {
+            Save_DPS_RoF();
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void Save_DPS_RoF()
+        {
+            int DPS = 0;
+            double RoF = 0.0;
+
+            if (Int32.TryParse(m_textBox_DPS_Mjolnir.Text, out DPS))
+                if (DPS != 0) ConfigHelper.Instance.DPS_Mjolnir = DPS;
+            if (Int32.TryParse(m_textBox_DPS_Nova.Text, out DPS))
+                if (DPS != 0) ConfigHelper.Instance.DPS_Nova = DPS;
+            if (Int32.TryParse(m_textBox_DPS_Antimatter.Text, out DPS))
+                if (DPS != 0) ConfigHelper.Instance.DPS_Antimatter = DPS;
+            if (Int32.TryParse(m_textBox_DPS_Void.Text, out DPS))
+                if (DPS != 0) ConfigHelper.Instance.DPS_Void = DPS;
+            if (Int32.TryParse(m_textBox_DPS_Multifrequency.Text, out DPS))
+                if (DPS != 0) ConfigHelper.Instance.DPS_Multifrequency = DPS;
+            if (Int32.TryParse(m_textBox_DPS_EMP.Text, out DPS))
+                if (DPS != 0) ConfigHelper.Instance.DPS_EMP = DPS;
+            if (Int32.TryParse(m_textBox_DPS_Fusion.Text, out DPS))
+                if (DPS != 0) ConfigHelper.Instance.DPS_Fusion = DPS;
+            if (Int32.TryParse(m_textBox_DPS_Phased_Plasma.Text, out DPS))
+                if (DPS != 0) ConfigHelper.Instance.DPS_Phased_Plasma = DPS;
+            if (Int32.TryParse(m_textBox_DPS_Hail.Text, out DPS))
+                if (DPS != 0) ConfigHelper.Instance.DPS_Hail = DPS;
+
+
+            if (Double.TryParse(m_textBox_RoF_Mjolnir.Text, out RoF))
+                if (RoF != 0.0) ConfigHelper.Instance.RoF_Mjolnir = RoF;
+            if (Double.TryParse(m_textBox_RoF_Nova.Text, out RoF))
+                if (RoF != 0.0) ConfigHelper.Instance.RoF_Nova = RoF;
+            if (Double.TryParse(m_textBox_RoF_Antimatter.Text, out RoF))
+                if (RoF != 0.0) ConfigHelper.Instance.RoF_Antimatter = RoF;
+            if (Double.TryParse(m_textBox_RoF_Void.Text, out RoF))
+                if (RoF != 0.0) ConfigHelper.Instance.RoF_Void = RoF;
+            if (Double.TryParse(m_textBox_RoF_Multifrequency.Text, out RoF))
+                if (RoF != 0.0) ConfigHelper.Instance.RoF_Multifrequency = RoF;
+            if (Double.TryParse(m_textBox_RoF_EMP.Text, out RoF))
+                if (RoF != 0.0) ConfigHelper.Instance.RoF_EMP = RoF;
+            if (Double.TryParse(m_textBox_RoF_Fusion.Text, out RoF))
+                if (RoF != 0.0) ConfigHelper.Instance.RoF_Fusion = RoF;
+            if (Double.TryParse(m_textBox_RoF_Phased_Plasma.Text, out RoF))
+                if (RoF != 0.0) ConfigHelper.Instance.RoF_Phased_Plasma = RoF;
+            if (Double.TryParse(m_textBox_RoF_Hail.Text, out RoF))
+                if (RoF != 0.0) ConfigHelper.Instance.RoF_Hail = RoF;
+        }
+
+        private void Load_DPS_RoF()
+        {
+            m_textBox_DPS_Mjolnir.Text = ConfigHelper.Instance.DPS_Mjolnir.ToString();
+            m_textBox_DPS_Nova.Text = ConfigHelper.Instance.DPS_Nova.ToString();
+            m_textBox_DPS_Antimatter.Text = ConfigHelper.Instance.DPS_Antimatter.ToString();
+            m_textBox_DPS_Void.Text = ConfigHelper.Instance.DPS_Void.ToString();
+            m_textBox_DPS_Multifrequency.Text = ConfigHelper.Instance.DPS_Multifrequency.ToString();
+            m_textBox_DPS_EMP.Text = ConfigHelper.Instance.DPS_EMP.ToString();
+            m_textBox_DPS_Fusion.Text = ConfigHelper.Instance.DPS_Fusion.ToString();
+            m_textBox_DPS_Phased_Plasma.Text = ConfigHelper.Instance.DPS_Phased_Plasma.ToString();
+            m_textBox_DPS_Hail.Text = ConfigHelper.Instance.DPS_Hail.ToString();
+
+            m_textBox_RoF_Mjolnir.Text = ConfigHelper.Instance.RoF_Mjolnir.ToString();
+            m_textBox_RoF_Nova.Text = ConfigHelper.Instance.RoF_Nova.ToString();
+            m_textBox_RoF_Antimatter.Text = ConfigHelper.Instance.RoF_Antimatter.ToString();
+            m_textBox_RoF_Void.Text = ConfigHelper.Instance.RoF_Void.ToString();
+            m_textBox_RoF_Multifrequency.Text = ConfigHelper.Instance.RoF_Multifrequency.ToString();
+            m_textBox_RoF_EMP.Text = ConfigHelper.Instance.RoF_EMP.ToString();
+            m_textBox_RoF_Fusion.Text = ConfigHelper.Instance.RoF_Fusion.ToString();
+            m_textBox_RoF_Phased_Plasma.Text = ConfigHelper.Instance.RoF_Phased_Plasma.ToString();
+            m_textBox_RoF_Hail.Text = ConfigHelper.Instance.RoF_Hail.ToString();
         }
     }
 }

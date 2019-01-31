@@ -94,6 +94,7 @@ namespace EveFitScanUI
 
             if (m_FitScanProcessor.PassiveTank)
             {
+
                 m_TextBoxShieldResistsHot.Clear();
                 m_TextBoxArmorResistsHot.Clear();
                 m_TextBoxHullResistsHot.Clear();
@@ -137,27 +138,16 @@ namespace EveFitScanUI
 
             if(m_checkBoxSTK.Checked)
             {
-                //!!! hack for testing ships to kill
-                String sysSec = "0.5";
-                int DPS = 500;
-                double RoF = 2.0;
-
-                float targetEHP = GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoVoid);
-
-                FormatEHP(m_TextBoxEHPMjolnirHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, DPS, RoF, Int32.Parse(m_TextBoxEHPMjolnirCold.Text, NumberStyles.AllowThousands))));
-                FormatEHP(m_TextBoxEHPNovaHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, DPS, RoF, Int32.Parse(m_TextBoxEHPNovaCold.Text, NumberStyles.AllowThousands))));
-                FormatEHP(m_TextBoxEHPAntimatterHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, DPS, RoF, Int32.Parse(m_TextBoxEHPAntimatterCold.Text, NumberStyles.AllowThousands))));
-                FormatEHP(m_TextBoxEHPVoidHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, DPS, RoF, Int32.Parse(m_TextBoxEHPVoidCold.Text, NumberStyles.AllowThousands))));
-                FormatEHP(m_TextBoxEHPMultifreqHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, DPS, RoF, Int32.Parse(m_TextBoxEHPMultifreqCold.Text, NumberStyles.AllowThousands))));
-                FormatEHP(m_TextBoxEHPEMPHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, DPS, RoF, Int32.Parse(m_TextBoxEHPEMPCold.Text, NumberStyles.AllowThousands))));
-                FormatEHP(m_TextBoxEHPFusionHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, DPS, RoF, Int32.Parse(m_TextBoxEHPFusionCold.Text, NumberStyles.AllowThousands))));
-                FormatEHP(m_TextBoxEHPPhasedPlasmaHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, DPS, RoF, Int32.Parse(m_TextBoxEHPPhasedPlasmaCold.Text, NumberStyles.AllowThousands))));
-                FormatEHP(m_TextBoxEHPHailHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, DPS, RoF, Int32.Parse(m_TextBoxEHPHailCold.Text, NumberStyles.AllowThousands))));
-
-                m_TextBoxShieldResistsHot.Text = "Space for sec status";
-                m_TextBoxArmorResistsHot.Text = "...";
-                m_TextBoxHullResistsHot.Text = "profit";
-
+                String sysSec = m_comboBoxSysSecurity.Text;
+                FormatEHP(m_TextBoxEHPMjolnirHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, ConfigHelper.Instance.DPS_Mjolnir, ConfigHelper.Instance.RoF_Mjolnir, Int32.Parse(m_TextBoxEHPMjolnirCold.Text, NumberStyles.AllowThousands))));
+                FormatEHP(m_TextBoxEHPNovaHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, ConfigHelper.Instance.DPS_Nova, ConfigHelper.Instance.RoF_Nova, Int32.Parse(m_TextBoxEHPNovaCold.Text, NumberStyles.AllowThousands))));
+                FormatEHP(m_TextBoxEHPAntimatterHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, ConfigHelper.Instance.DPS_Antimatter, ConfigHelper.Instance.RoF_Antimatter, Int32.Parse(m_TextBoxEHPAntimatterCold.Text, NumberStyles.AllowThousands))));
+                FormatEHP(m_TextBoxEHPVoidHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, ConfigHelper.Instance.DPS_Void, ConfigHelper.Instance.RoF_Void, Int32.Parse(m_TextBoxEHPVoidCold.Text, NumberStyles.AllowThousands))));
+                FormatEHP(m_TextBoxEHPMultifreqHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, ConfigHelper.Instance.DPS_Multifrequency, ConfigHelper.Instance.RoF_Multifrequency, Int32.Parse(m_TextBoxEHPMultifreqCold.Text, NumberStyles.AllowThousands))));
+                FormatEHP(m_TextBoxEHPEMPHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, ConfigHelper.Instance.DPS_EMP, ConfigHelper.Instance.RoF_EMP, Int32.Parse(m_TextBoxEHPEMPCold.Text, NumberStyles.AllowThousands))));
+                FormatEHP(m_TextBoxEHPFusionHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, ConfigHelper.Instance.DPS_Fusion, ConfigHelper.Instance.RoF_Fusion, Int32.Parse(m_TextBoxEHPFusionCold.Text, NumberStyles.AllowThousands))));
+                FormatEHP(m_TextBoxEHPPhasedPlasmaHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, ConfigHelper.Instance.DPS_Phased_Plasma, ConfigHelper.Instance.RoF_Phased_Plasma, Int32.Parse(m_TextBoxEHPPhasedPlasmaCold.Text, NumberStyles.AllowThousands))));
+                FormatEHP(m_TextBoxEHPHailHot, Int32.Parse(m_gankShips.NumShipToKill(sysSec, ConfigHelper.Instance.DPS_Hail, ConfigHelper.Instance.RoF_Hail, Int32.Parse(m_TextBoxEHPHailCold.Text, NumberStyles.AllowThousands))));
             }
 
             float EHP = GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoUniform);

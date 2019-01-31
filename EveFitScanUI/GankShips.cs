@@ -72,9 +72,57 @@ namespace EveFitScanUI
             return numShips;
         }
 
+        public void ResetDpsRoF()
+        {
+            ConfigHelper.Instance.DPS_Mjolnir = 0;
+            ConfigHelper.Instance.DPS_Nova = 0;
+            ConfigHelper.Instance.DPS_Antimatter = 0;
+            ConfigHelper.Instance.DPS_Void = 0;
+            ConfigHelper.Instance.DPS_Multifrequency = 0;
+            ConfigHelper.Instance.DPS_EMP = 0;
+            ConfigHelper.Instance.DPS_Fusion = 0;
+            ConfigHelper.Instance.DPS_Phased_Plasma = 0;
+            ConfigHelper.Instance.DPS_Hail = 0;
+
+            ConfigHelper.Instance.RoF_Mjolnir = 0.0;
+            ConfigHelper.Instance.RoF_Nova = 0.0;
+            ConfigHelper.Instance.RoF_Antimatter = 0.0;
+            ConfigHelper.Instance.RoF_Void = 0.0;
+            ConfigHelper.Instance.RoF_Multifrequency = 0.0;
+            ConfigHelper.Instance.RoF_EMP = 0.0;
+            ConfigHelper.Instance.RoF_Fusion = 0.0;
+            ConfigHelper.Instance.RoF_Phased_Plasma = 0.0;
+            ConfigHelper.Instance.RoF_Hail = 0.0;
+
+            RepairDpsRoF();
+        }
+
+        public void RepairDpsRoF()
+        {
+            if(ConfigHelper.Instance.DPS_Mjolnir == 0) ConfigHelper.Instance.DPS_Mjolnir = 775;
+            if (ConfigHelper.Instance.DPS_Nova == 0) ConfigHelper.Instance.DPS_Nova = 775;
+            if (ConfigHelper.Instance.DPS_Antimatter == 0) ConfigHelper.Instance.DPS_Antimatter = 350;
+            if (ConfigHelper.Instance.DPS_Void == 0) ConfigHelper.Instance.DPS_Void = 600;
+            if (ConfigHelper.Instance.DPS_Multifrequency == 0) ConfigHelper.Instance.DPS_Multifrequency = 300;
+            if (ConfigHelper.Instance.DPS_EMP == 0) ConfigHelper.Instance.DPS_EMP = 300;
+            if (ConfigHelper.Instance.DPS_Fusion == 0) ConfigHelper.Instance.DPS_Fusion = 300;
+            if (ConfigHelper.Instance.DPS_Phased_Plasma == 0) ConfigHelper.Instance.DPS_Phased_Plasma = 300;
+            if (ConfigHelper.Instance.DPS_Hail == 0) ConfigHelper.Instance.DPS_Hail = 400;
+
+            if(ConfigHelper.Instance.RoF_Mjolnir == 0.0) ConfigHelper.Instance.RoF_Mjolnir = 10.5;
+            if (ConfigHelper.Instance.RoF_Nova == 0.0) ConfigHelper.Instance.RoF_Nova = 10.4;
+            if (ConfigHelper.Instance.RoF_Antimatter == 0.0) ConfigHelper.Instance.RoF_Antimatter = 2.7;
+            if (ConfigHelper.Instance.RoF_Void == 0.0) ConfigHelper.Instance.RoF_Void = 2.9;
+            if (ConfigHelper.Instance.RoF_Multifrequency == 0.0) ConfigHelper.Instance.RoF_Multifrequency = 3.8;
+            if (ConfigHelper.Instance.RoF_EMP == 0.0) ConfigHelper.Instance.RoF_EMP = 3.5;
+            if (ConfigHelper.Instance.RoF_Fusion == 0.0) ConfigHelper.Instance.RoF_Fusion = 3.5;
+            if (ConfigHelper.Instance.RoF_Phased_Plasma == 0.0) ConfigHelper.Instance.RoF_Phased_Plasma = 3.5;
+            if (ConfigHelper.Instance.RoF_Hail == 0.0) ConfigHelper.Instance.RoF_Hail = 4.2;
+        }
+
         public GankShips()
         {
-
+            RepairDpsRoF();
         }
     }
 }

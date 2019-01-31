@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetDPSRoFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -97,6 +98,29 @@
             this.m_checkBoxADCActive = new System.Windows.Forms.CheckBox();
             this.m_History = new System.Windows.Forms.ComboBox();
             this.m_checkBoxSTK = new System.Windows.Forms.CheckBox();
+            this.m_comboBoxSysSecurity = new System.Windows.Forms.ComboBox();
+            this.labelSysSecurity = new System.Windows.Forms.Label();
+            this.labelDPS = new System.Windows.Forms.Label();
+            this.labelRoF = new System.Windows.Forms.Label();
+            this.labelSTK = new System.Windows.Forms.Label();
+            this.m_textBox_DPS_Mjolnir = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_RoF_Mjolnir = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_DPS_Nova = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_DPS_Antimatter = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_DPS_Void = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_DPS_Multifrequency = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_DPS_EMP = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_DPS_Fusion = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_DPS_Phased_Plasma = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_DPS_Hail = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_RoF_Nova = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_RoF_Antimatter = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_RoF_Void = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_RoF_Multifrequency = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_RoF_EMP = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_RoF_Fusion = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_RoF_Phased_Plasma = new System.Windows.Forms.RichTextBox();
+            this.m_textBox_RoF_Hail = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -115,15 +139,23 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.resetDPSRoFToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // resetDPSRoFToolStripMenuItem
+            // 
+            this.resetDPSRoFToolStripMenuItem.Name = "resetDPSRoFToolStripMenuItem";
+            this.resetDPSRoFToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.resetDPSRoFToolStripMenuItem.Text = "Reset DPS / RoF";
+            this.resetDPSRoFToolStripMenuItem.Click += new System.EventHandler(this.resetDPSRoFToolStripMenuItem_Click);
+            // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -360,7 +392,7 @@
             // m_TextBoxEHPMjolnirCold
             // 
             this.m_TextBoxEHPMjolnirCold.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPMjolnirCold.Location = new System.Drawing.Point(528, 248);
+            this.m_TextBoxEHPMjolnirCold.Location = new System.Drawing.Point(528, 303);
             this.m_TextBoxEHPMjolnirCold.Multiline = false;
             this.m_TextBoxEHPMjolnirCold.Name = "m_TextBoxEHPMjolnirCold";
             this.m_TextBoxEHPMjolnirCold.ReadOnly = true;
@@ -371,7 +403,7 @@
             // m_TextBoxEHPMjolnirHot
             // 
             this.m_TextBoxEHPMjolnirHot.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPMjolnirHot.Location = new System.Drawing.Point(768, 248);
+            this.m_TextBoxEHPMjolnirHot.Location = new System.Drawing.Point(768, 299);
             this.m_TextBoxEHPMjolnirHot.Multiline = false;
             this.m_TextBoxEHPMjolnirHot.Name = "m_TextBoxEHPMjolnirHot";
             this.m_TextBoxEHPMjolnirHot.ReadOnly = true;
@@ -383,7 +415,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label6.Location = new System.Drawing.Point(360, 248);
+            this.label6.Location = new System.Drawing.Point(360, 303);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(61, 20);
             this.label6.TabIndex = 23;
@@ -393,7 +425,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label7.Location = new System.Drawing.Point(360, 280);
+            this.label7.Location = new System.Drawing.Point(360, 335);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(49, 20);
             this.label7.TabIndex = 26;
@@ -402,7 +434,7 @@
             // m_TextBoxEHPNovaHot
             // 
             this.m_TextBoxEHPNovaHot.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPNovaHot.Location = new System.Drawing.Point(768, 280);
+            this.m_TextBoxEHPNovaHot.Location = new System.Drawing.Point(768, 335);
             this.m_TextBoxEHPNovaHot.Multiline = false;
             this.m_TextBoxEHPNovaHot.Name = "m_TextBoxEHPNovaHot";
             this.m_TextBoxEHPNovaHot.ReadOnly = true;
@@ -413,7 +445,7 @@
             // m_TextBoxEHPNovaCold
             // 
             this.m_TextBoxEHPNovaCold.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPNovaCold.Location = new System.Drawing.Point(528, 280);
+            this.m_TextBoxEHPNovaCold.Location = new System.Drawing.Point(528, 335);
             this.m_TextBoxEHPNovaCold.Multiline = false;
             this.m_TextBoxEHPNovaCold.Name = "m_TextBoxEHPNovaCold";
             this.m_TextBoxEHPNovaCold.ReadOnly = true;
@@ -425,7 +457,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label8.Location = new System.Drawing.Point(360, 320);
+            this.label8.Location = new System.Drawing.Point(360, 375);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(93, 20);
             this.label8.TabIndex = 29;
@@ -434,7 +466,7 @@
             // m_TextBoxEHPAntimatterHot
             // 
             this.m_TextBoxEHPAntimatterHot.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPAntimatterHot.Location = new System.Drawing.Point(768, 320);
+            this.m_TextBoxEHPAntimatterHot.Location = new System.Drawing.Point(768, 375);
             this.m_TextBoxEHPAntimatterHot.Multiline = false;
             this.m_TextBoxEHPAntimatterHot.Name = "m_TextBoxEHPAntimatterHot";
             this.m_TextBoxEHPAntimatterHot.ReadOnly = true;
@@ -445,7 +477,7 @@
             // m_TextBoxEHPAntimatterCold
             // 
             this.m_TextBoxEHPAntimatterCold.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPAntimatterCold.Location = new System.Drawing.Point(528, 320);
+            this.m_TextBoxEHPAntimatterCold.Location = new System.Drawing.Point(528, 375);
             this.m_TextBoxEHPAntimatterCold.Multiline = false;
             this.m_TextBoxEHPAntimatterCold.Name = "m_TextBoxEHPAntimatterCold";
             this.m_TextBoxEHPAntimatterCold.ReadOnly = true;
@@ -457,7 +489,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label9.Location = new System.Drawing.Point(360, 352);
+            this.label9.Location = new System.Drawing.Point(360, 407);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(45, 20);
             this.label9.TabIndex = 32;
@@ -466,7 +498,7 @@
             // m_TextBoxEHPVoidHot
             // 
             this.m_TextBoxEHPVoidHot.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPVoidHot.Location = new System.Drawing.Point(768, 352);
+            this.m_TextBoxEHPVoidHot.Location = new System.Drawing.Point(768, 407);
             this.m_TextBoxEHPVoidHot.Multiline = false;
             this.m_TextBoxEHPVoidHot.Name = "m_TextBoxEHPVoidHot";
             this.m_TextBoxEHPVoidHot.ReadOnly = true;
@@ -477,7 +509,7 @@
             // m_TextBoxEHPVoidCold
             // 
             this.m_TextBoxEHPVoidCold.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPVoidCold.Location = new System.Drawing.Point(528, 352);
+            this.m_TextBoxEHPVoidCold.Location = new System.Drawing.Point(528, 407);
             this.m_TextBoxEHPVoidCold.Multiline = false;
             this.m_TextBoxEHPVoidCold.Name = "m_TextBoxEHPVoidCold";
             this.m_TextBoxEHPVoidCold.ReadOnly = true;
@@ -489,7 +521,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label10.Location = new System.Drawing.Point(360, 392);
+            this.label10.Location = new System.Drawing.Point(360, 447);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(126, 20);
             this.label10.TabIndex = 35;
@@ -498,7 +530,7 @@
             // m_TextBoxEHPMultifreqHot
             // 
             this.m_TextBoxEHPMultifreqHot.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPMultifreqHot.Location = new System.Drawing.Point(768, 392);
+            this.m_TextBoxEHPMultifreqHot.Location = new System.Drawing.Point(768, 447);
             this.m_TextBoxEHPMultifreqHot.Multiline = false;
             this.m_TextBoxEHPMultifreqHot.Name = "m_TextBoxEHPMultifreqHot";
             this.m_TextBoxEHPMultifreqHot.ReadOnly = true;
@@ -509,7 +541,7 @@
             // m_TextBoxEHPMultifreqCold
             // 
             this.m_TextBoxEHPMultifreqCold.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPMultifreqCold.Location = new System.Drawing.Point(528, 392);
+            this.m_TextBoxEHPMultifreqCold.Location = new System.Drawing.Point(528, 447);
             this.m_TextBoxEHPMultifreqCold.Multiline = false;
             this.m_TextBoxEHPMultifreqCold.Name = "m_TextBoxEHPMultifreqCold";
             this.m_TextBoxEHPMultifreqCold.ReadOnly = true;
@@ -521,7 +553,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label11.Location = new System.Drawing.Point(360, 432);
+            this.label11.Location = new System.Drawing.Point(360, 487);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(46, 20);
             this.label11.TabIndex = 38;
@@ -530,7 +562,7 @@
             // m_TextBoxEHPEMPHot
             // 
             this.m_TextBoxEHPEMPHot.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPEMPHot.Location = new System.Drawing.Point(768, 432);
+            this.m_TextBoxEHPEMPHot.Location = new System.Drawing.Point(768, 487);
             this.m_TextBoxEHPEMPHot.Multiline = false;
             this.m_TextBoxEHPEMPHot.Name = "m_TextBoxEHPEMPHot";
             this.m_TextBoxEHPEMPHot.ReadOnly = true;
@@ -541,7 +573,7 @@
             // m_TextBoxEHPEMPCold
             // 
             this.m_TextBoxEHPEMPCold.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPEMPCold.Location = new System.Drawing.Point(528, 432);
+            this.m_TextBoxEHPEMPCold.Location = new System.Drawing.Point(528, 487);
             this.m_TextBoxEHPEMPCold.Multiline = false;
             this.m_TextBoxEHPEMPCold.Name = "m_TextBoxEHPEMPCold";
             this.m_TextBoxEHPEMPCold.ReadOnly = true;
@@ -553,7 +585,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label12.Location = new System.Drawing.Point(360, 464);
+            this.label12.Location = new System.Drawing.Point(360, 519);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(63, 20);
             this.label12.TabIndex = 41;
@@ -562,7 +594,7 @@
             // m_TextBoxEHPFusionHot
             // 
             this.m_TextBoxEHPFusionHot.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPFusionHot.Location = new System.Drawing.Point(768, 464);
+            this.m_TextBoxEHPFusionHot.Location = new System.Drawing.Point(768, 519);
             this.m_TextBoxEHPFusionHot.Multiline = false;
             this.m_TextBoxEHPFusionHot.Name = "m_TextBoxEHPFusionHot";
             this.m_TextBoxEHPFusionHot.ReadOnly = true;
@@ -573,7 +605,7 @@
             // m_TextBoxEHPFusionCold
             // 
             this.m_TextBoxEHPFusionCold.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPFusionCold.Location = new System.Drawing.Point(528, 464);
+            this.m_TextBoxEHPFusionCold.Location = new System.Drawing.Point(528, 519);
             this.m_TextBoxEHPFusionCold.Multiline = false;
             this.m_TextBoxEHPFusionCold.Name = "m_TextBoxEHPFusionCold";
             this.m_TextBoxEHPFusionCold.ReadOnly = true;
@@ -585,7 +617,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label13.Location = new System.Drawing.Point(360, 496);
+            this.label13.Location = new System.Drawing.Point(360, 551);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(132, 20);
             this.label13.TabIndex = 44;
@@ -594,7 +626,7 @@
             // m_TextBoxEHPPhasedPlasmaHot
             // 
             this.m_TextBoxEHPPhasedPlasmaHot.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPPhasedPlasmaHot.Location = new System.Drawing.Point(768, 496);
+            this.m_TextBoxEHPPhasedPlasmaHot.Location = new System.Drawing.Point(768, 551);
             this.m_TextBoxEHPPhasedPlasmaHot.Multiline = false;
             this.m_TextBoxEHPPhasedPlasmaHot.Name = "m_TextBoxEHPPhasedPlasmaHot";
             this.m_TextBoxEHPPhasedPlasmaHot.ReadOnly = true;
@@ -605,7 +637,7 @@
             // m_TextBoxEHPPhasedPlasmaCold
             // 
             this.m_TextBoxEHPPhasedPlasmaCold.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPPhasedPlasmaCold.Location = new System.Drawing.Point(528, 496);
+            this.m_TextBoxEHPPhasedPlasmaCold.Location = new System.Drawing.Point(528, 551);
             this.m_TextBoxEHPPhasedPlasmaCold.Multiline = false;
             this.m_TextBoxEHPPhasedPlasmaCold.Name = "m_TextBoxEHPPhasedPlasmaCold";
             this.m_TextBoxEHPPhasedPlasmaCold.ReadOnly = true;
@@ -617,7 +649,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label14.Location = new System.Drawing.Point(360, 528);
+            this.label14.Location = new System.Drawing.Point(360, 583);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(40, 20);
             this.label14.TabIndex = 47;
@@ -626,7 +658,7 @@
             // m_TextBoxEHPHailHot
             // 
             this.m_TextBoxEHPHailHot.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPHailHot.Location = new System.Drawing.Point(768, 528);
+            this.m_TextBoxEHPHailHot.Location = new System.Drawing.Point(768, 583);
             this.m_TextBoxEHPHailHot.Multiline = false;
             this.m_TextBoxEHPHailHot.Name = "m_TextBoxEHPHailHot";
             this.m_TextBoxEHPHailHot.ReadOnly = true;
@@ -637,7 +669,7 @@
             // m_TextBoxEHPHailCold
             // 
             this.m_TextBoxEHPHailCold.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_TextBoxEHPHailCold.Location = new System.Drawing.Point(528, 528);
+            this.m_TextBoxEHPHailCold.Location = new System.Drawing.Point(528, 583);
             this.m_TextBoxEHPHailCold.Multiline = false;
             this.m_TextBoxEHPHailCold.Name = "m_TextBoxEHPHailCold";
             this.m_TextBoxEHPHailCold.ReadOnly = true;
@@ -659,7 +691,7 @@
             // 
             this.m_checkBoxPassive.AutoSize = true;
             this.m_checkBoxPassive.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_checkBoxPassive.Location = new System.Drawing.Point(528, 576);
+            this.m_checkBoxPassive.Location = new System.Drawing.Point(365, 631);
             this.m_checkBoxPassive.Name = "m_checkBoxPassive";
             this.m_checkBoxPassive.Size = new System.Drawing.Size(89, 24);
             this.m_checkBoxPassive.TabIndex = 49;
@@ -765,7 +797,7 @@
             // 
             this.m_checkBoxADCActive.AutoSize = true;
             this.m_checkBoxADCActive.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.m_checkBoxADCActive.Location = new System.Drawing.Point(528, 624);
+            this.m_checkBoxADCActive.Location = new System.Drawing.Point(365, 679);
             this.m_checkBoxADCActive.Name = "m_checkBoxADCActive";
             this.m_checkBoxADCActive.Size = new System.Drawing.Size(210, 24);
             this.m_checkBoxADCActive.TabIndex = 59;
@@ -796,12 +828,300 @@
             this.m_checkBoxSTK.UseVisualStyleBackColor = true;
             this.m_checkBoxSTK.CheckedChanged += new System.EventHandler(this.m_checkBoxSTK_CheckedChanged);
             // 
+            // m_comboBoxSysSecurity
+            // 
+            this.m_comboBoxSysSecurity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_comboBoxSysSecurity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_comboBoxSysSecurity.FormattingEnabled = true;
+            this.m_comboBoxSysSecurity.Items.AddRange(new object[] {
+            "0.5",
+            "0.5p",
+            "0.6",
+            "0.6p",
+            "0.7",
+            "0.7p",
+            "0.8",
+            "0.8p",
+            "0.9",
+            "0.9p",
+            "1.0",
+            "1.0p",
+            "Jita",
+            "Jitap"});
+            this.m_comboBoxSysSecurity.Location = new System.Drawing.Point(847, 162);
+            this.m_comboBoxSysSecurity.Name = "m_comboBoxSysSecurity";
+            this.m_comboBoxSysSecurity.Size = new System.Drawing.Size(105, 28);
+            this.m_comboBoxSysSecurity.TabIndex = 62;
+            this.m_comboBoxSysSecurity.SelectedIndexChanged += new System.EventHandler(this.m_ComboBoxSysSecurity_SelectedIndexChanged);
+            // 
+            // labelSysSecurity
+            // 
+            this.labelSysSecurity.AutoSize = true;
+            this.labelSysSecurity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelSysSecurity.Location = new System.Drawing.Point(719, 165);
+            this.labelSysSecurity.Name = "labelSysSecurity";
+            this.labelSysSecurity.Size = new System.Drawing.Size(108, 20);
+            this.labelSysSecurity.TabIndex = 63;
+            this.labelSysSecurity.Text = "Sys Security";
+            // 
+            // labelDPS
+            // 
+            this.labelDPS.AutoSize = true;
+            this.labelDPS.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelDPS.Location = new System.Drawing.Point(640, 247);
+            this.labelDPS.Name = "labelDPS";
+            this.labelDPS.Size = new System.Drawing.Size(45, 20);
+            this.labelDPS.TabIndex = 64;
+            this.labelDPS.Text = "DPS";
+            // 
+            // labelRoF
+            // 
+            this.labelRoF.AutoSize = true;
+            this.labelRoF.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelRoF.Location = new System.Drawing.Point(731, 248);
+            this.labelRoF.Name = "labelRoF";
+            this.labelRoF.Size = new System.Drawing.Size(43, 20);
+            this.labelRoF.TabIndex = 65;
+            this.labelRoF.Text = "RoF";
+            // 
+            // labelSTK
+            // 
+            this.labelSTK.AutoSize = true;
+            this.labelSTK.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelSTK.Location = new System.Drawing.Point(849, 247);
+            this.labelSTK.Name = "labelSTK";
+            this.labelSTK.Size = new System.Drawing.Size(103, 20);
+            this.labelSTK.TabIndex = 66;
+            this.labelSTK.Text = "Ships to Kill";
+            // 
+            // m_textBox_DPS_Mjolnir
+            // 
+            this.m_textBox_DPS_Mjolnir.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_DPS_Mjolnir.Location = new System.Drawing.Point(627, 303);
+            this.m_textBox_DPS_Mjolnir.Multiline = false;
+            this.m_textBox_DPS_Mjolnir.Name = "m_textBox_DPS_Mjolnir";
+            this.m_textBox_DPS_Mjolnir.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_DPS_Mjolnir.TabIndex = 67;
+            this.m_textBox_DPS_Mjolnir.Text = "";
+            this.m_textBox_DPS_Mjolnir.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
+            // m_textBox_RoF_Mjolnir
+            // 
+            this.m_textBox_RoF_Mjolnir.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_RoF_Mjolnir.Location = new System.Drawing.Point(720, 299);
+            this.m_textBox_RoF_Mjolnir.Multiline = false;
+            this.m_textBox_RoF_Mjolnir.Name = "m_textBox_RoF_Mjolnir";
+            this.m_textBox_RoF_Mjolnir.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_RoF_Mjolnir.TabIndex = 68;
+            this.m_textBox_RoF_Mjolnir.Text = "";
+            this.m_textBox_RoF_Mjolnir.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
+            // m_textBox_DPS_Nova
+            // 
+            this.m_textBox_DPS_Nova.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_DPS_Nova.Location = new System.Drawing.Point(627, 335);
+            this.m_textBox_DPS_Nova.Multiline = false;
+            this.m_textBox_DPS_Nova.Name = "m_textBox_DPS_Nova";
+            this.m_textBox_DPS_Nova.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_DPS_Nova.TabIndex = 69;
+            this.m_textBox_DPS_Nova.Text = "";
+            this.m_textBox_DPS_Nova.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+
+            // 
+            // m_textBox_DPS_Antimatter
+            // 
+            this.m_textBox_DPS_Antimatter.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_DPS_Antimatter.Location = new System.Drawing.Point(627, 375);
+            this.m_textBox_DPS_Antimatter.Multiline = false;
+            this.m_textBox_DPS_Antimatter.Name = "m_textBox_DPS_Antimatter";
+            this.m_textBox_DPS_Antimatter.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_DPS_Antimatter.TabIndex = 70;
+            this.m_textBox_DPS_Antimatter.Text = "";
+            this.m_textBox_DPS_Antimatter.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
+            // m_textBox_DPS_Void
+            // 
+            this.m_textBox_DPS_Void.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_DPS_Void.Location = new System.Drawing.Point(627, 407);
+            this.m_textBox_DPS_Void.Multiline = false;
+            this.m_textBox_DPS_Void.Name = "m_textBox_DPS_Void";
+            this.m_textBox_DPS_Void.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_DPS_Void.TabIndex = 71;
+            this.m_textBox_DPS_Void.Text = "";
+            this.m_textBox_DPS_Void.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
+            // m_textBox_DPS_Multifrequency
+            // 
+            this.m_textBox_DPS_Multifrequency.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_DPS_Multifrequency.Location = new System.Drawing.Point(627, 447);
+            this.m_textBox_DPS_Multifrequency.Multiline = false;
+            this.m_textBox_DPS_Multifrequency.Name = "m_textBox_DPS_Multifrequency";
+            this.m_textBox_DPS_Multifrequency.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_DPS_Multifrequency.TabIndex = 72;
+            this.m_textBox_DPS_Multifrequency.Text = "";
+            this.m_textBox_DPS_Multifrequency.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
+            // m_textBox_DPS_EMP
+            // 
+            this.m_textBox_DPS_EMP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_DPS_EMP.Location = new System.Drawing.Point(627, 487);
+            this.m_textBox_DPS_EMP.Multiline = false;
+            this.m_textBox_DPS_EMP.Name = "m_textBox_DPS_EMP";
+            this.m_textBox_DPS_EMP.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_DPS_EMP.TabIndex = 73;
+            this.m_textBox_DPS_EMP.Text = "";
+            this.m_textBox_DPS_EMP.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
+            // m_textBox_DPS_Fusion
+            // 
+            this.m_textBox_DPS_Fusion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_DPS_Fusion.Location = new System.Drawing.Point(627, 519);
+            this.m_textBox_DPS_Fusion.Multiline = false;
+            this.m_textBox_DPS_Fusion.Name = "m_textBox_DPS_Fusion";
+            this.m_textBox_DPS_Fusion.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_DPS_Fusion.TabIndex = 74;
+            this.m_textBox_DPS_Fusion.Text = "";
+            this.m_textBox_DPS_Fusion.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
+            // m_textBox_DPS_Phased_Plasma
+            // 
+            this.m_textBox_DPS_Phased_Plasma.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_DPS_Phased_Plasma.Location = new System.Drawing.Point(627, 551);
+            this.m_textBox_DPS_Phased_Plasma.Multiline = false;
+            this.m_textBox_DPS_Phased_Plasma.Name = "m_textBox_DPS_Phased_Plasma";
+            this.m_textBox_DPS_Phased_Plasma.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_DPS_Phased_Plasma.TabIndex = 75;
+            this.m_textBox_DPS_Phased_Plasma.Text = "";
+            this.m_textBox_DPS_Phased_Plasma.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
+            // m_textBox_DPS_Hail
+            // 
+            this.m_textBox_DPS_Hail.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_DPS_Hail.Location = new System.Drawing.Point(627, 584);
+            this.m_textBox_DPS_Hail.Multiline = false;
+            this.m_textBox_DPS_Hail.Name = "m_textBox_DPS_Hail";
+            this.m_textBox_DPS_Hail.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_DPS_Hail.TabIndex = 76;
+            this.m_textBox_DPS_Hail.Text = "";
+            this.m_textBox_DPS_Hail.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
+            // m_textBox_RoF_Nova
+            // 
+            this.m_textBox_RoF_Nova.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_RoF_Nova.Location = new System.Drawing.Point(720, 335);
+            this.m_textBox_RoF_Nova.Multiline = false;
+            this.m_textBox_RoF_Nova.Name = "m_textBox_RoF_Nova";
+            this.m_textBox_RoF_Nova.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_RoF_Nova.TabIndex = 77;
+            this.m_textBox_RoF_Nova.Text = "";
+            this.m_textBox_RoF_Nova.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
+            // m_textBox_RoF_Antimatter
+            // 
+            this.m_textBox_RoF_Antimatter.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_RoF_Antimatter.Location = new System.Drawing.Point(720, 375);
+            this.m_textBox_RoF_Antimatter.Multiline = false;
+            this.m_textBox_RoF_Antimatter.Name = "m_textBox_RoF_Antimatter";
+            this.m_textBox_RoF_Antimatter.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_RoF_Antimatter.TabIndex = 78;
+            this.m_textBox_RoF_Antimatter.Text = "";
+            this.m_textBox_RoF_Antimatter.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
+            // m_textBox_RoF_Void
+            // 
+            this.m_textBox_RoF_Void.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_RoF_Void.Location = new System.Drawing.Point(720, 408);
+            this.m_textBox_RoF_Void.Multiline = false;
+            this.m_textBox_RoF_Void.Name = "m_textBox_RoF_Void";
+            this.m_textBox_RoF_Void.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_RoF_Void.TabIndex = 79;
+            this.m_textBox_RoF_Void.Text = "";
+            this.m_textBox_RoF_Void.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
+            // m_textBox_RoF_Multifrequency
+            // 
+            this.m_textBox_RoF_Multifrequency.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_RoF_Multifrequency.Location = new System.Drawing.Point(720, 445);
+            this.m_textBox_RoF_Multifrequency.Multiline = false;
+            this.m_textBox_RoF_Multifrequency.Name = "m_textBox_RoF_Multifrequency";
+            this.m_textBox_RoF_Multifrequency.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_RoF_Multifrequency.TabIndex = 80;
+            this.m_textBox_RoF_Multifrequency.Text = "";
+            this.m_textBox_RoF_Multifrequency.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
+            // m_textBox_RoF_EMP
+            // 
+            this.m_textBox_RoF_EMP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_RoF_EMP.Location = new System.Drawing.Point(720, 487);
+            this.m_textBox_RoF_EMP.Multiline = false;
+            this.m_textBox_RoF_EMP.Name = "m_textBox_RoF_EMP";
+            this.m_textBox_RoF_EMP.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_RoF_EMP.TabIndex = 81;
+            this.m_textBox_RoF_EMP.Text = "";
+            this.m_textBox_RoF_EMP.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
+            // m_textBox_RoF_Fusion
+            // 
+            this.m_textBox_RoF_Fusion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_RoF_Fusion.Location = new System.Drawing.Point(720, 519);
+            this.m_textBox_RoF_Fusion.Multiline = false;
+            this.m_textBox_RoF_Fusion.Name = "m_textBox_RoF_Fusion";
+            this.m_textBox_RoF_Fusion.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_RoF_Fusion.TabIndex = 82;
+            this.m_textBox_RoF_Fusion.Text = "";
+            this.m_textBox_RoF_Fusion.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
+            // m_textBox_RoF_Phased_Plasma
+            // 
+            this.m_textBox_RoF_Phased_Plasma.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_RoF_Phased_Plasma.Location = new System.Drawing.Point(720, 551);
+            this.m_textBox_RoF_Phased_Plasma.Multiline = false;
+            this.m_textBox_RoF_Phased_Plasma.Name = "m_textBox_RoF_Phased_Plasma";
+            this.m_textBox_RoF_Phased_Plasma.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_RoF_Phased_Plasma.TabIndex = 83;
+            this.m_textBox_RoF_Phased_Plasma.Text = "";
+            this.m_textBox_RoF_Phased_Plasma.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
+            // m_textBox_RoF_Hail
+            // 
+            this.m_textBox_RoF_Hail.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_textBox_RoF_Hail.Location = new System.Drawing.Point(720, 583);
+            this.m_textBox_RoF_Hail.Multiline = false;
+            this.m_textBox_RoF_Hail.Name = "m_textBox_RoF_Hail";
+            this.m_textBox_RoF_Hail.Size = new System.Drawing.Size(77, 24);
+            this.m_textBox_RoF_Hail.TabIndex = 84;
+            this.m_textBox_RoF_Hail.Text = "";
+            this.m_textBox_RoF_Hail.TextChanged += new System.EventHandler(this.Dps_RoF_ValueChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(964, 762);
+            this.Controls.Add(this.m_textBox_RoF_Hail);
+            this.Controls.Add(this.m_textBox_RoF_Phased_Plasma);
+            this.Controls.Add(this.m_textBox_RoF_Fusion);
+            this.Controls.Add(this.m_textBox_RoF_EMP);
+            this.Controls.Add(this.m_textBox_RoF_Multifrequency);
+            this.Controls.Add(this.m_textBox_RoF_Void);
+            this.Controls.Add(this.m_textBox_RoF_Antimatter);
+            this.Controls.Add(this.m_textBox_RoF_Nova);
+            this.Controls.Add(this.m_textBox_DPS_Hail);
+            this.Controls.Add(this.m_textBox_DPS_Phased_Plasma);
+            this.Controls.Add(this.m_textBox_DPS_Fusion);
+            this.Controls.Add(this.m_textBox_DPS_EMP);
+            this.Controls.Add(this.m_textBox_DPS_Multifrequency);
+            this.Controls.Add(this.m_textBox_DPS_Void);
+            this.Controls.Add(this.m_textBox_DPS_Antimatter);
+            this.Controls.Add(this.m_textBox_DPS_Nova);
+            this.Controls.Add(this.m_textBox_RoF_Mjolnir);
+            this.Controls.Add(this.m_textBox_DPS_Mjolnir);
+            this.Controls.Add(this.labelSTK);
+            this.Controls.Add(this.labelRoF);
+            this.Controls.Add(this.labelDPS);
+            this.Controls.Add(this.labelSysSecurity);
+            this.Controls.Add(this.m_comboBoxSysSecurity);
             this.Controls.Add(this.m_checkBoxSTK);
             this.Controls.Add(this.m_History);
             this.Controls.Add(this.m_checkBoxADCActive);
@@ -946,6 +1266,30 @@
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ComboBox m_History;
         private System.Windows.Forms.CheckBox m_checkBoxSTK;
+        private System.Windows.Forms.ComboBox m_comboBoxSysSecurity;
+        private System.Windows.Forms.Label labelSysSecurity;
+        private System.Windows.Forms.Label labelDPS;
+        private System.Windows.Forms.Label labelRoF;
+        private System.Windows.Forms.Label labelSTK;
+        private System.Windows.Forms.ToolStripMenuItem resetDPSRoFToolStripMenuItem;
+        private System.Windows.Forms.RichTextBox m_textBox_DPS_Mjolnir;
+        private System.Windows.Forms.RichTextBox m_textBox_RoF_Mjolnir;
+        private System.Windows.Forms.RichTextBox m_textBox_DPS_Nova;
+        private System.Windows.Forms.RichTextBox m_textBox_DPS_Antimatter;
+        private System.Windows.Forms.RichTextBox m_textBox_DPS_Void;
+        private System.Windows.Forms.RichTextBox m_textBox_DPS_Multifrequency;
+        private System.Windows.Forms.RichTextBox m_textBox_DPS_EMP;
+        private System.Windows.Forms.RichTextBox m_textBox_DPS_Fusion;
+        private System.Windows.Forms.RichTextBox m_textBox_DPS_Phased_Plasma;
+        private System.Windows.Forms.RichTextBox m_textBox_DPS_Hail;
+        private System.Windows.Forms.RichTextBox m_textBox_RoF_Nova;
+        private System.Windows.Forms.RichTextBox m_textBox_RoF_Antimatter;
+        private System.Windows.Forms.RichTextBox m_textBox_RoF_Void;
+        private System.Windows.Forms.RichTextBox m_textBox_RoF_Multifrequency;
+        private System.Windows.Forms.RichTextBox m_textBox_RoF_EMP;
+        private System.Windows.Forms.RichTextBox m_textBox_RoF_Fusion;
+        private System.Windows.Forms.RichTextBox m_textBox_RoF_Phased_Plasma;
+        private System.Windows.Forms.RichTextBox m_textBox_RoF_Hail;
     }
 }
 
