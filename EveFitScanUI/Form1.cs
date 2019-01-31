@@ -140,6 +140,7 @@ namespace EveFitScanUI
             this.m_checkBoxSTK.Checked = ConfigHelper.Instance.STK;
             m_FitScanProcessor.SetSTK(ConfigHelper.Instance.STK);
 
+            LoadPassiveColdHot();
             Load_DPS_RoF();
             ConfigSTKDisplay();
 
@@ -160,55 +161,158 @@ namespace EveFitScanUI
             m_FitScanProcessor.SetSTK(true);
         }
 
-        private void Dps_RoF_ValueChanged(object sender, EventArgs e)
+        private void LoadPassiveColdHot()
         {
-            Save_DPS_RoF();
+            if (ConfigHelper.Instance.PassiveColdHot == "Passive")
+                m_radioPassive.Checked = true;
+            else if (ConfigHelper.Instance.PassiveColdHot == "Hot")
+                m_radioHot.Checked = true;
+            else
+                m_radioCold.Checked = true;
+        }
+
+        private void m_textBox_DPS_Mjolnir_ValueChanged(object sender, EventArgs e)
+        {
+            int DPS = 0;
+            if (Int32.TryParse(m_textBox_DPS_Mjolnir.Text, out DPS))
+                if (DPS != 0) ConfigHelper.Instance.DPS_Nova = DPS;
             m_FitScanProcessor.SetSTK(true);
         }
 
-        private void Save_DPS_RoF()
+        private void m_textBox_DPS_Nova_ValueChanged(object sender, EventArgs e)
         {
             int DPS = 0;
-            double RoF = 0.0;
-
-            if (Int32.TryParse(m_textBox_DPS_Mjolnir.Text, out DPS))
-                if (DPS != 0) ConfigHelper.Instance.DPS_Mjolnir = DPS;
             if (Int32.TryParse(m_textBox_DPS_Nova.Text, out DPS))
                 if (DPS != 0) ConfigHelper.Instance.DPS_Nova = DPS;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void m_textBox_DPS_Antimatter_ValueChanged(object sender, EventArgs e)
+        {
+            int DPS = 0;
             if (Int32.TryParse(m_textBox_DPS_Antimatter.Text, out DPS))
                 if (DPS != 0) ConfigHelper.Instance.DPS_Antimatter = DPS;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void m_textBox_DPS_Void_ValueChanged(object sender, EventArgs e)
+        {
+            int DPS = 0;
             if (Int32.TryParse(m_textBox_DPS_Void.Text, out DPS))
                 if (DPS != 0) ConfigHelper.Instance.DPS_Void = DPS;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void m_textBox_DPS_Multifrequency_ValueChanged(object sender, EventArgs e)
+        {
+            int DPS = 0;
             if (Int32.TryParse(m_textBox_DPS_Multifrequency.Text, out DPS))
                 if (DPS != 0) ConfigHelper.Instance.DPS_Multifrequency = DPS;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void m_textBox_DPS_EMP_ValueChanged(object sender, EventArgs e)
+        {
+            int DPS = 0;
             if (Int32.TryParse(m_textBox_DPS_EMP.Text, out DPS))
                 if (DPS != 0) ConfigHelper.Instance.DPS_EMP = DPS;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void m_textBox_DPS_Fusion_ValueChanged(object sender, EventArgs e)
+        {
+            int DPS = 0;
             if (Int32.TryParse(m_textBox_DPS_Fusion.Text, out DPS))
                 if (DPS != 0) ConfigHelper.Instance.DPS_Fusion = DPS;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void m_textBox_DPS_Phased_Plasma_ValueChanged(object sender, EventArgs e)
+        {
+            int DPS = 0;
             if (Int32.TryParse(m_textBox_DPS_Phased_Plasma.Text, out DPS))
                 if (DPS != 0) ConfigHelper.Instance.DPS_Phased_Plasma = DPS;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void m_textBox_DPS_Hail_ValueChanged(object sender, EventArgs e)
+        {
+            int DPS = 0;
             if (Int32.TryParse(m_textBox_DPS_Hail.Text, out DPS))
                 if (DPS != 0) ConfigHelper.Instance.DPS_Hail = DPS;
+            m_FitScanProcessor.SetSTK(true);
+        }
 
-
+        private void m_textBox_RoF_Mjolnir_ValueChanged(object sender, EventArgs e)
+        {
+            double RoF = 0;
             if (Double.TryParse(m_textBox_RoF_Mjolnir.Text, out RoF))
-                if (RoF != 0.0) ConfigHelper.Instance.RoF_Mjolnir = RoF;
+                if (RoF != 0) ConfigHelper.Instance.RoF_Mjolnir = RoF;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void m_textBox_RoF_Nova_ValueChanged(object sender, EventArgs e)
+        {
+            double RoF = 0;
             if (Double.TryParse(m_textBox_RoF_Nova.Text, out RoF))
-                if (RoF != 0.0) ConfigHelper.Instance.RoF_Nova = RoF;
+                if (RoF != 0) ConfigHelper.Instance.RoF_Nova = RoF;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void m_textBox_RoF_Antimatter_ValueChanged(object sender, EventArgs e)
+        {
+            double RoF = 0;
             if (Double.TryParse(m_textBox_RoF_Antimatter.Text, out RoF))
-                if (RoF != 0.0) ConfigHelper.Instance.RoF_Antimatter = RoF;
+                if (RoF != 0) ConfigHelper.Instance.RoF_Antimatter = RoF;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void m_textBox_RoF_Void_ValueChanged(object sender, EventArgs e)
+        {
+            double RoF = 0;
             if (Double.TryParse(m_textBox_RoF_Void.Text, out RoF))
-                if (RoF != 0.0) ConfigHelper.Instance.RoF_Void = RoF;
+                if (RoF != 0) ConfigHelper.Instance.RoF_Void = RoF;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void m_textBox_RoF_Multifrequency_ValueChanged(object sender, EventArgs e)
+        {
+            double RoF = 0;
             if (Double.TryParse(m_textBox_RoF_Multifrequency.Text, out RoF))
-                if (RoF != 0.0) ConfigHelper.Instance.RoF_Multifrequency = RoF;
+                if (RoF != 0) ConfigHelper.Instance.RoF_Multifrequency = RoF;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void m_textBox_RoF_EMP_ValueChanged(object sender, EventArgs e)
+        {
+            double RoF = 0;
             if (Double.TryParse(m_textBox_RoF_EMP.Text, out RoF))
-                if (RoF != 0.0) ConfigHelper.Instance.RoF_EMP = RoF;
+                if (RoF != 0) ConfigHelper.Instance.RoF_EMP = RoF;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void m_textBox_RoF_Fusion_ValueChanged(object sender, EventArgs e)
+        {
+            double RoF = 0;
             if (Double.TryParse(m_textBox_RoF_Fusion.Text, out RoF))
-                if (RoF != 0.0) ConfigHelper.Instance.RoF_Fusion = RoF;
+                if (RoF != 0) ConfigHelper.Instance.RoF_Fusion = RoF;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void m_textBox_RoF_Phased_Plasma_ValueChanged(object sender, EventArgs e)
+        {
+            double RoF = 0;
             if (Double.TryParse(m_textBox_RoF_Phased_Plasma.Text, out RoF))
-                if (RoF != 0.0) ConfigHelper.Instance.RoF_Phased_Plasma = RoF;
+                if (RoF != 0) ConfigHelper.Instance.RoF_Phased_Plasma = RoF;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void m_textBox_RoF_Hail_ValueChanged(object sender, EventArgs e)
+        {
+            double RoF = 0;
             if (Double.TryParse(m_textBox_RoF_Hail.Text, out RoF))
-                if (RoF != 0.0) ConfigHelper.Instance.RoF_Hail = RoF;
+                if (RoF != 0) ConfigHelper.Instance.RoF_Hail = RoF;
+            m_FitScanProcessor.SetSTK(true);
         }
 
         private void Load_DPS_RoF()
@@ -233,5 +337,24 @@ namespace EveFitScanUI
             m_textBox_RoF_Phased_Plasma.Text = ConfigHelper.Instance.RoF_Phased_Plasma.ToString();
             m_textBox_RoF_Hail.Text = ConfigHelper.Instance.RoF_Hail.ToString();
         }
+
+        private void m_radioPassive_CheckedChanged(object sender, EventArgs e)
+        {
+            if (m_radioPassive.Checked)
+            {
+                ConfigHelper.Instance.PassiveColdHot = "Passive";
+                m_FitScanProcessor.SetPassive(true);
+            }
+            else if (m_radioHot.Checked)
+            {
+                ConfigHelper.Instance.PassiveColdHot = "Hot";
+                m_FitScanProcessor.SetPassive(false);
+            }
+            else
+            {
+                ConfigHelper.Instance.PassiveColdHot = "Cold";
+                m_FitScanProcessor.SetPassive(false);
+            }
+}
     }
 }

@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+
 namespace EveFitScanUI.Properties {
     
     
@@ -443,5 +445,19 @@ namespace EveFitScanUI.Properties {
             }
         }
 
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Cold")]
+        public String PassiveColdHot
+        {
+            get
+            {
+                return ((String)(this["PassiveColdHot"]));
+            }
+            set
+            {
+                this["PassiveColdHot"] = value;
+            }
+        }
     }
 }

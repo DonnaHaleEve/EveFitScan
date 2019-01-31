@@ -397,6 +397,19 @@ namespace EveFitScanUI
             }
         }
 
+        public String PassiveColdHot
+        {
+            get
+            {
+                return Properties.Settings.Default.PassiveColdHot;
+            }
+            set
+            {
+                Properties.Settings.Default.PassiveColdHot = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
         private void Load() {
             //TODO
         }

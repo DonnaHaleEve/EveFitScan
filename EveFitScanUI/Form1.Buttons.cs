@@ -50,9 +50,6 @@ namespace EveFitScanUI
                 this.label10.Text = "Multifreq.";
                 this.label13.Text = "Phased Pl.";
 
-                m_TextBoxArmorResistsHot.Text = "500";
-                m_TextBoxHullResistsHot.Text = "2.7";
-
                 m_TextBoxEHPAntimatterHot.Left = m_hotLeftSTK;
                 m_TextBoxEHPEMPHot.Left = m_hotLeftSTK;
                 m_TextBoxEHPFusionHot.Left = m_hotLeftSTK;
@@ -82,6 +79,7 @@ namespace EveFitScanUI
                 m_textBox_DPS_Nova.Visible = true;
                 m_textBox_DPS_Antimatter.Visible = true;
                 m_textBox_DPS_Void.Visible = true;
+                m_textBox_DPS_Multifrequency.Visible = true;
                 m_textBox_DPS_EMP.Visible = true;
                 m_textBox_DPS_Fusion.Visible = true;
                 m_textBox_DPS_Phased_Plasma.Visible = true;
@@ -91,15 +89,22 @@ namespace EveFitScanUI
                 m_textBox_RoF_Nova.Visible = true;
                 m_textBox_RoF_Antimatter.Visible = true;
                 m_textBox_RoF_Void.Visible = true;
+                m_textBox_RoF_Multifrequency.Visible = true;
                 m_textBox_RoF_EMP.Visible = true;
                 m_textBox_RoF_Fusion.Visible = true;
                 m_textBox_RoF_Phased_Plasma.Visible = true;
                 m_textBox_RoF_Hail.Visible = true;
 
+                m_checkBoxPassive.Visible = false;
+                m_radioCold.Visible = true;
+                m_radioHot.Visible = true;
+                m_radioPassive.Visible = true;
+
                 m_TextBoxArmorResistsHot.Visible = false;
                 m_TextBoxHullResistsHot.Visible = false;
                 m_TextBoxShieldResistsHot.Visible = false;
                 this.label5.Visible = false;
+                this.label4.Visible = false;
             }
             else
             {
@@ -135,6 +140,7 @@ namespace EveFitScanUI
                 m_textBox_DPS_Nova.Visible = false;
                 m_textBox_DPS_Antimatter.Visible = false;
                 m_textBox_DPS_Void.Visible = false;
+                m_textBox_DPS_Multifrequency.Visible = false;
                 m_textBox_DPS_EMP.Visible = false;
                 m_textBox_DPS_Fusion.Visible = false;
                 m_textBox_DPS_Phased_Plasma.Visible = false;
@@ -144,15 +150,23 @@ namespace EveFitScanUI
                 m_textBox_RoF_Nova.Visible = false;
                 m_textBox_RoF_Antimatter.Visible = false;
                 m_textBox_RoF_Void.Visible = false;
+                m_textBox_RoF_Multifrequency.Visible = false;
                 m_textBox_RoF_EMP.Visible = false;
                 m_textBox_RoF_Fusion.Visible = false;
                 m_textBox_RoF_Phased_Plasma.Visible = false;
                 m_textBox_RoF_Hail.Visible = false;
 
+                m_checkBoxPassive.Visible = true;
+                m_radioCold.Visible = false;
+                m_radioHot.Visible = false;
+                m_radioPassive.Visible = false;
+
                 m_TextBoxArmorResistsHot.Visible = true;
                 m_TextBoxHullResistsHot.Visible = true;
                 m_TextBoxShieldResistsHot.Visible = true;
+
                 this.label5.Visible = true;
+                this.label4.Visible = true;
             }
 
         }
@@ -174,10 +188,18 @@ namespace EveFitScanUI
             m_FitScanProcessor.SetSTK(true);
         }
 
+        private void resetDPSRoFcanFlyThenAll4ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_gankShips.ResetDpsRoFScrub();
+            Load_DPS_RoF();
+            m_FitScanProcessor.SetSTK(true);
+        }
+
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string message = "EveFitScan Version " + System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString() + @"
 2017 Donna Hale <donna.hale.eve@gmail.com>
+Ships to Kill mod (c) 2019 Vulkyn
 
 Comments/Suggestions/Complaints can be posted in the appropriate 
 thread on the Goonfleet Forums or sent to me via Jabber.";
