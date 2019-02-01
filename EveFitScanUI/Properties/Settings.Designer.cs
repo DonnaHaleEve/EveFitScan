@@ -238,6 +238,21 @@ namespace EveFitScanUI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DPS_VoidL
+        {
+            get
+            {
+                return ((int)(this["DPS_VoidL"]));
+            }
+            set
+            {
+                this["DPS_VoidL"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int DPS_Multifrequency
         {
             get
@@ -367,6 +382,21 @@ namespace EveFitScanUI.Properties {
             set
             {
                 this["RoF_Void"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double RoF_VoidL
+        {
+            get
+            {
+                return ((double)(this["RoF_VoidL"]));
+            }
+            set
+            {
+                this["RoF_VoidL"] = value;
             }
         }
 

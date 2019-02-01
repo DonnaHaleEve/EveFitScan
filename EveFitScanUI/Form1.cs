@@ -158,6 +158,7 @@ namespace EveFitScanUI
         private void m_ComboBoxSysSecurity_SelectedIndexChanged(object sender, EventArgs e)
         {
             ConfigHelper.Instance.SysSecurity = this.m_comboBoxSysSecurity.SelectedIndex;
+            this.labelSeconds.Text = m_gankShips.GetSeconds(this.m_comboBoxSysSecurity.Text);
             m_FitScanProcessor.SetSTK(true);
         }
 
@@ -175,7 +176,7 @@ namespace EveFitScanUI
         {
             int DPS = 0;
             if (Int32.TryParse(m_textBox_DPS_Mjolnir.Text, out DPS))
-                if (DPS != 0) ConfigHelper.Instance.DPS_Nova = DPS;
+                if (DPS != 0) ConfigHelper.Instance.DPS_Mjolnir = DPS;
             m_FitScanProcessor.SetSTK(true);
         }
 
@@ -200,6 +201,14 @@ namespace EveFitScanUI
             int DPS = 0;
             if (Int32.TryParse(m_textBox_DPS_Void.Text, out DPS))
                 if (DPS != 0) ConfigHelper.Instance.DPS_Void = DPS;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
+        private void m_textBox_DPS_VoidL_ValueChanged(object sender, EventArgs e)
+        {
+            int DPS = 0;
+            if (Int32.TryParse(m_textBox_DPS_VoidL.Text, out DPS))
+                if (DPS != 0) ConfigHelper.Instance.DPS_VoidL = DPS;
             m_FitScanProcessor.SetSTK(true);
         }
 
@@ -275,6 +284,14 @@ namespace EveFitScanUI
             m_FitScanProcessor.SetSTK(true);
         }
 
+        private void m_textBox_RoF_VoidL_ValueChanged(object sender, EventArgs e)
+        {
+            double RoF = 0;
+            if (Double.TryParse(m_textBox_RoF_VoidL.Text, out RoF))
+                if (RoF != 0) ConfigHelper.Instance.RoF_VoidL = RoF;
+            m_FitScanProcessor.SetSTK(true);
+        }
+
         private void m_textBox_RoF_Multifrequency_ValueChanged(object sender, EventArgs e)
         {
             double RoF = 0;
@@ -321,6 +338,7 @@ namespace EveFitScanUI
             m_textBox_DPS_Nova.Text = ConfigHelper.Instance.DPS_Nova.ToString();
             m_textBox_DPS_Antimatter.Text = ConfigHelper.Instance.DPS_Antimatter.ToString();
             m_textBox_DPS_Void.Text = ConfigHelper.Instance.DPS_Void.ToString();
+            m_textBox_DPS_VoidL.Text = ConfigHelper.Instance.DPS_VoidL.ToString();
             m_textBox_DPS_Multifrequency.Text = ConfigHelper.Instance.DPS_Multifrequency.ToString();
             m_textBox_DPS_EMP.Text = ConfigHelper.Instance.DPS_EMP.ToString();
             m_textBox_DPS_Fusion.Text = ConfigHelper.Instance.DPS_Fusion.ToString();
@@ -331,6 +349,7 @@ namespace EveFitScanUI
             m_textBox_RoF_Nova.Text = ConfigHelper.Instance.RoF_Nova.ToString();
             m_textBox_RoF_Antimatter.Text = ConfigHelper.Instance.RoF_Antimatter.ToString();
             m_textBox_RoF_Void.Text = ConfigHelper.Instance.RoF_Void.ToString();
+            m_textBox_RoF_VoidL.Text = ConfigHelper.Instance.RoF_VoidL.ToString();
             m_textBox_RoF_Multifrequency.Text = ConfigHelper.Instance.RoF_Multifrequency.ToString();
             m_textBox_RoF_EMP.Text = ConfigHelper.Instance.RoF_EMP.ToString();
             m_textBox_RoF_Fusion.Text = ConfigHelper.Instance.RoF_Fusion.ToString();
@@ -344,17 +363,20 @@ namespace EveFitScanUI
             {
                 ConfigHelper.Instance.PassiveColdHot = "Passive";
                 m_FitScanProcessor.SetPassive(true);
+                m_checkBoxADCActive.Enabled = false;
             }
             else if (m_radioHot.Checked)
             {
                 ConfigHelper.Instance.PassiveColdHot = "Hot";
                 m_FitScanProcessor.SetPassive(false);
+                m_checkBoxADCActive.Enabled = true;
             }
             else
             {
                 ConfigHelper.Instance.PassiveColdHot = "Cold";
                 m_FitScanProcessor.SetPassive(false);
+                m_checkBoxADCActive.Enabled = true;
             }
-}
+        }
     }
 }

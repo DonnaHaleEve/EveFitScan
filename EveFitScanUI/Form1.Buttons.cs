@@ -33,14 +33,13 @@ namespace EveFitScanUI
         private static int m_coldLeft = 528;
         private static int m_coldLeftSTK = m_coldLeft - 55;
         private static int m_hotLeft = 768;
-        private static int m_hotLeftSTK = m_hotLeft + 55;
+        private static int m_hotLeftSTK = m_hotLeft - 140;
 
         private void m_checkBoxSTK_CheckedChanged(object sender, EventArgs e)
         {
             ConfigHelper.Instance.STK = m_checkBoxSTK.Checked;
             m_FitScanProcessor.SetSTK(m_checkBoxSTK.Checked);
             ConfigSTKDisplay();
-            m_FitScanProcessor.SetSTK(m_checkBoxSTK.Checked);
         }
 
         private void ConfigSTKDisplay()
@@ -59,6 +58,8 @@ namespace EveFitScanUI
                 m_TextBoxEHPNovaHot.Left = m_hotLeftSTK;
                 m_TextBoxEHPPhasedPlasmaHot.Left = m_hotLeftSTK;
                 m_TextBoxEHPVoidHot.Left = m_hotLeftSTK;
+                m_TextBoxEHPVoidLHot.Left = m_hotLeftSTK;
+                m_TextBoxEHPVoidLHot.Visible = true;
 
                 m_TextBoxEHPAntimatterCold.Left = m_coldLeftSTK;
                 m_TextBoxEHPEMPCold.Left = m_coldLeftSTK;
@@ -69,16 +70,22 @@ namespace EveFitScanUI
                 m_TextBoxEHPNovaCold.Left = m_coldLeftSTK;
                 m_TextBoxEHPPhasedPlasmaCold.Left = m_coldLeftSTK;
                 m_TextBoxEHPVoidCold.Left = m_coldLeftSTK;
+                m_TextBoxEHPVoidLCold.Left = m_coldLeftSTK;
+                m_TextBoxEHPVoidLCold.Visible = true;
 
                 m_comboBoxSysSecurity.Visible = true;
                 this.labelSysSecurity.Visible = true;
                 this.labelDPS.Visible = true;
                 this.labelRoF.Visible = true;
                 this.labelSTK.Visible = true;
+                this.label19.Visible = true;
+                this.panel4.Visible = true;
+
                 m_textBox_DPS_Mjolnir.Visible = true;
                 m_textBox_DPS_Nova.Visible = true;
                 m_textBox_DPS_Antimatter.Visible = true;
                 m_textBox_DPS_Void.Visible = true;
+                m_textBox_DPS_VoidL.Visible = true;
                 m_textBox_DPS_Multifrequency.Visible = true;
                 m_textBox_DPS_EMP.Visible = true;
                 m_textBox_DPS_Fusion.Visible = true;
@@ -89,6 +96,7 @@ namespace EveFitScanUI
                 m_textBox_RoF_Nova.Visible = true;
                 m_textBox_RoF_Antimatter.Visible = true;
                 m_textBox_RoF_Void.Visible = true;
+                m_textBox_RoF_VoidL.Visible = true;
                 m_textBox_RoF_Multifrequency.Visible = true;
                 m_textBox_RoF_EMP.Visible = true;
                 m_textBox_RoF_Fusion.Visible = true;
@@ -105,6 +113,11 @@ namespace EveFitScanUI
                 m_TextBoxShieldResistsHot.Visible = false;
                 this.label5.Visible = false;
                 this.label4.Visible = false;
+
+                if (m_FitScanProcessor.PassiveTank == true)
+                    m_radioPassive.Checked = true;
+                else if (m_radioPassive.Checked == true)
+                    m_radioCold.Checked = true;
             }
             else
             {
@@ -120,6 +133,8 @@ namespace EveFitScanUI
                 m_TextBoxEHPNovaHot.Left = m_hotLeft;
                 m_TextBoxEHPPhasedPlasmaHot.Left = m_hotLeft;
                 m_TextBoxEHPVoidHot.Left = m_hotLeft;
+                m_TextBoxEHPVoidLHot.Left = m_hotLeft;
+                m_TextBoxEHPVoidLHot.Visible = false;
 
                 m_TextBoxEHPAntimatterCold.Left = m_coldLeft;
                 m_TextBoxEHPEMPCold.Left = m_coldLeft;
@@ -130,16 +145,22 @@ namespace EveFitScanUI
                 m_TextBoxEHPNovaCold.Left = m_coldLeft;
                 m_TextBoxEHPPhasedPlasmaCold.Left = m_coldLeft;
                 m_TextBoxEHPVoidCold.Left = m_coldLeft;
+                m_TextBoxEHPVoidLCold.Left = m_coldLeft;
+                m_TextBoxEHPVoidLCold.Visible = false;
 
                 m_comboBoxSysSecurity.Visible = false;
                 this.labelSysSecurity.Visible = false;
                 this.labelDPS.Visible = false;
                 this.labelRoF.Visible = false;
                 this.labelSTK.Visible = false;
+                this.label19.Visible = false;
+                this.panel4.Visible = false;
+
                 m_textBox_DPS_Mjolnir.Visible = false;
                 m_textBox_DPS_Nova.Visible = false;
                 m_textBox_DPS_Antimatter.Visible = false;
                 m_textBox_DPS_Void.Visible = false;
+                m_textBox_DPS_VoidL.Visible = false;
                 m_textBox_DPS_Multifrequency.Visible = false;
                 m_textBox_DPS_EMP.Visible = false;
                 m_textBox_DPS_Fusion.Visible = false;
@@ -150,6 +171,7 @@ namespace EveFitScanUI
                 m_textBox_RoF_Nova.Visible = false;
                 m_textBox_RoF_Antimatter.Visible = false;
                 m_textBox_RoF_Void.Visible = false;
+                m_textBox_RoF_VoidL.Visible = false;
                 m_textBox_RoF_Multifrequency.Visible = false;
                 m_textBox_RoF_EMP.Visible = false;
                 m_textBox_RoF_Fusion.Visible = false;
@@ -167,6 +189,9 @@ namespace EveFitScanUI
 
                 this.label5.Visible = true;
                 this.label4.Visible = true;
+
+                m_checkBoxPassive.Checked = m_FitScanProcessor.PassiveTank;
+
             }
 
         }

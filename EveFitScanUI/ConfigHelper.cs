@@ -215,6 +215,19 @@ namespace EveFitScanUI
             }
         }
 
+        public int DPS_VoidL
+        {
+            get
+            {
+                return Properties.Settings.Default.DPS_VoidL;
+            }
+            set
+            {
+                Properties.Settings.Default.DPS_VoidL = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
         public int DPS_Multifrequency
         {
             get
@@ -328,6 +341,19 @@ namespace EveFitScanUI
             set
             {
                 Properties.Settings.Default.RoF_Void = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public double RoF_VoidL
+        {
+            get
+            {
+                return Properties.Settings.Default.RoF_VoidL;
+            }
+            set
+            {
+                Properties.Settings.Default.RoF_VoidL = value;
                 Properties.Settings.Default.Save();
             }
         }

@@ -54,6 +54,11 @@ namespace EveFitScanUI
             return numShips;
         }
 
+        public String GetSeconds(String sysSecStatus)
+        {
+            return ConcordResponseTimes[sysSecStatus] + "s";
+        }
+
         private int NumShipToKillRoF(String sysSecStatus, int DPS, double RoF, double targetEHP)
         {
             double numSecondsToShoot = (double)ConcordResponseTimes[sysSecStatus] - 0.5; // what code tool does -- should avoid dodgy "volley = 10s, 10s condord" which should be a single volley
@@ -78,6 +83,7 @@ namespace EveFitScanUI
             ConfigHelper.Instance.DPS_Nova = 691;
             ConfigHelper.Instance.DPS_Antimatter = 422;
             ConfigHelper.Instance.DPS_Void = 643;
+            ConfigHelper.Instance.DPS_VoidL = 1543;
             ConfigHelper.Instance.DPS_Multifrequency = 293;
             ConfigHelper.Instance.DPS_EMP = 464;
             ConfigHelper.Instance.DPS_Fusion = 464;
@@ -88,6 +94,7 @@ namespace EveFitScanUI
             ConfigHelper.Instance.RoF_Nova = 5.94;
             ConfigHelper.Instance.RoF_Antimatter = 1.97;
             ConfigHelper.Instance.RoF_Void = 1.6;
+            ConfigHelper.Instance.RoF_VoidL = 4.16;
             ConfigHelper.Instance.RoF_Multifrequency = 2.5;
             ConfigHelper.Instance.RoF_EMP = 2.07;
             ConfigHelper.Instance.RoF_Fusion = 2.07;
@@ -97,20 +104,22 @@ namespace EveFitScanUI
 
         public void RepairDpsRoF()
         {
-            if (ConfigHelper.Instance.DPS_Mjolnir == 0) ConfigHelper.Instance.DPS_Mjolnir = 527;
-            if (ConfigHelper.Instance.DPS_Nova == 0) ConfigHelper.Instance.DPS_Nova = 527;
+            if (ConfigHelper.Instance.DPS_Mjolnir == 0) ConfigHelper.Instance.DPS_Mjolnir = 574;
+            if (ConfigHelper.Instance.DPS_Nova == 0) ConfigHelper.Instance.DPS_Nova = 574;
             if (ConfigHelper.Instance.DPS_Antimatter == 0) ConfigHelper.Instance.DPS_Antimatter = 383;
-            if (ConfigHelper.Instance.DPS_Void == 0) ConfigHelper.Instance.DPS_Void = 562;
+            if (ConfigHelper.Instance.DPS_Void == 0) ConfigHelper.Instance.DPS_Void = 573;
+            if (ConfigHelper.Instance.DPS_VoidL == 0) ConfigHelper.Instance.DPS_VoidL = 1324;
             if (ConfigHelper.Instance.DPS_Multifrequency == 0) ConfigHelper.Instance.DPS_Multifrequency = 255;
             if (ConfigHelper.Instance.DPS_EMP == 0) ConfigHelper.Instance.DPS_EMP = 352;
             if (ConfigHelper.Instance.DPS_Fusion == 0) ConfigHelper.Instance.DPS_Fusion = 352;
             if (ConfigHelper.Instance.DPS_Phased_Plasma == 0) ConfigHelper.Instance.DPS_Phased_Plasma = 352;
             if (ConfigHelper.Instance.DPS_Hail == 0) ConfigHelper.Instance.DPS_Hail = 393;
 
-            if (ConfigHelper.Instance.RoF_Mjolnir == 0.0) ConfigHelper.Instance.RoF_Mjolnir = 6.99;
-            if (ConfigHelper.Instance.RoF_Nova == 0.0) ConfigHelper.Instance.RoF_Nova = 6.99;
+            if (ConfigHelper.Instance.RoF_Mjolnir == 0.0) ConfigHelper.Instance.RoF_Mjolnir = 6.42;
+            if (ConfigHelper.Instance.RoF_Nova == 0.0) ConfigHelper.Instance.RoF_Nova = 6.42;
             if (ConfigHelper.Instance.RoF_Antimatter == 0.0) ConfigHelper.Instance.RoF_Antimatter = 2.11;
-            if (ConfigHelper.Instance.RoF_Void == 0.0) ConfigHelper.Instance.RoF_Void = 1.71;
+            if (ConfigHelper.Instance.RoF_Void == 0.0) ConfigHelper.Instance.RoF_Void = 1.72;
+            if (ConfigHelper.Instance.RoF_VoidL == 0.0) ConfigHelper.Instance.RoF_VoidL = 4.37;
             if (ConfigHelper.Instance.RoF_Multifrequency == 0.0) ConfigHelper.Instance.RoF_Multifrequency = 2.68;
             if (ConfigHelper.Instance.RoF_EMP == 0.0) ConfigHelper.Instance.RoF_EMP = 2.22;
             if (ConfigHelper.Instance.RoF_Fusion == 0.0) ConfigHelper.Instance.RoF_Fusion = 2.22;
@@ -124,6 +133,7 @@ namespace EveFitScanUI
             ConfigHelper.Instance.DPS_Nova = 0;
             ConfigHelper.Instance.DPS_Antimatter = 0;
             ConfigHelper.Instance.DPS_Void = 0;
+            ConfigHelper.Instance.DPS_VoidL = 0;
             ConfigHelper.Instance.DPS_Multifrequency = 0;
             ConfigHelper.Instance.DPS_EMP = 0;
             ConfigHelper.Instance.DPS_Fusion = 0;
@@ -134,6 +144,7 @@ namespace EveFitScanUI
             ConfigHelper.Instance.RoF_Nova = 0.0;
             ConfigHelper.Instance.RoF_Antimatter = 0.0;
             ConfigHelper.Instance.RoF_Void = 0.0;
+            ConfigHelper.Instance.RoF_VoidL = 0.0;
             ConfigHelper.Instance.RoF_Multifrequency = 0.0;
             ConfigHelper.Instance.RoF_EMP = 0.0;
             ConfigHelper.Instance.RoF_Fusion = 0.0;
