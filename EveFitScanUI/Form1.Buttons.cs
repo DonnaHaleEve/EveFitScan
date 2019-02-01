@@ -80,6 +80,7 @@ namespace EveFitScanUI
                 this.labelSTK.Visible = true;
                 this.label19.Visible = true;
                 this.panel4.Visible = true;
+                this.labelSeconds.Visible = true;
 
                 m_textBox_DPS_Mjolnir.Visible = true;
                 m_textBox_DPS_Nova.Visible = true;
@@ -155,6 +156,7 @@ namespace EveFitScanUI
                 this.labelSTK.Visible = false;
                 this.label19.Visible = false;
                 this.panel4.Visible = false;
+                this.labelSeconds.Visible = false;
 
                 m_textBox_DPS_Mjolnir.Visible = false;
                 m_textBox_DPS_Nova.Visible = false;

@@ -86,7 +86,11 @@ namespace EveFitScanUI
 
         private void OnShipTankChangedSTK()
         {
-            if(m_radioHot.Checked)
+            m_TextBoxShieldHP.Text = String.Format("{0}", m_FitScanProcessor.ShieldHP);
+            m_TextBoxArmorHP.Text = String.Format("{0}", m_FitScanProcessor.ArmorHP);
+            m_TextBoxHullHP.Text = String.Format("{0}", m_FitScanProcessor.HullHP);
+
+            if (m_radioHot.Checked)
             {
                 FormatResists(m_TextBoxShieldResistsCold, m_FitScanProcessor.ShieldResistsHeated);
                 FormatResists(m_TextBoxArmorResistsCold, m_FitScanProcessor.ArmorResistsHeated);
