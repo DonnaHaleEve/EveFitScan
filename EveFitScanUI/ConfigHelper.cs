@@ -163,6 +163,32 @@ namespace EveFitScanUI
             }
         }
 
+        public int Manual_EHP
+        {
+            get
+            {
+                return Properties.Settings.Default.Manual_EHP;
+            }
+            set
+            {
+                Properties.Settings.Default.Manual_EHP = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public bool Is_Manual_EHP
+        {
+            get
+            {
+                return Properties.Settings.Default.Is_Manual_EHP;
+            }
+            set
+            {
+                Properties.Settings.Default.Is_Manual_EHP = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
         public int DPS_Mjolnir
         {
             get

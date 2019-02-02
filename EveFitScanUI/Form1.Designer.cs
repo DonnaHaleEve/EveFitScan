@@ -1,4 +1,6 @@
-﻿namespace EveFitScanUI
+﻿using System.Windows.Forms;
+
+namespace EveFitScanUI
 {
     partial class Form1
     {
@@ -28,6 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -135,6 +138,12 @@
             this.m_TextBoxEHPVoidLCold = new System.Windows.Forms.RichTextBox();
             this.panel4 = new System.Windows.Forms.Panel();
             this.labelSeconds = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.labelBR = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.m_checkBoxManualEHP = new System.Windows.Forms.CheckBox();
+            this.m_richTextBoxManualEHP = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -444,6 +453,7 @@
             this.label6.Size = new System.Drawing.Size(61, 20);
             this.label6.TabIndex = 23;
             this.label6.Text = "Mjolnir";
+            this.toolTip1.SetToolTip(this.label6, "Purifier");
             // 
             // label7
             // 
@@ -455,6 +465,7 @@
             this.label7.Size = new System.Drawing.Size(49, 20);
             this.label7.TabIndex = 26;
             this.label7.Text = "Nova";
+            this.toolTip1.SetToolTip(this.label7, "Hound");
             // 
             // m_TextBoxEHPNovaHot
             // 
@@ -488,6 +499,7 @@
             this.label8.Size = new System.Drawing.Size(93, 20);
             this.label8.TabIndex = 29;
             this.label8.Text = "Antimatter";
+            this.toolTip1.SetToolTip(this.label8, "T1 Cat");
             // 
             // m_TextBoxEHPAntimatterHot
             // 
@@ -521,6 +533,7 @@
             this.label9.Size = new System.Drawing.Size(45, 20);
             this.label9.TabIndex = 32;
             this.label9.Text = "Void";
+            this.toolTip1.SetToolTip(this.label9, "T2 Cat");
             // 
             // m_TextBoxEHPVoidHot
             // 
@@ -554,6 +567,7 @@
             this.label10.Size = new System.Drawing.Size(126, 20);
             this.label10.TabIndex = 35;
             this.label10.Text = "Multifrequency";
+            this.toolTip1.SetToolTip(this.label10, "Coercer");
             // 
             // m_TextBoxEHPMultifreqHot
             // 
@@ -587,6 +601,7 @@
             this.label11.Size = new System.Drawing.Size(46, 20);
             this.label11.TabIndex = 38;
             this.label11.Text = "EMP";
+            this.toolTip1.SetToolTip(this.label11, "Autocannon Thrasher");
             // 
             // m_TextBoxEHPEMPHot
             // 
@@ -620,6 +635,7 @@
             this.label12.Size = new System.Drawing.Size(63, 20);
             this.label12.TabIndex = 41;
             this.label12.Text = "Fusion";
+            this.toolTip1.SetToolTip(this.label12, "Autocannon Thrasher");
             // 
             // m_TextBoxEHPFusionHot
             // 
@@ -653,6 +669,7 @@
             this.label13.Size = new System.Drawing.Size(132, 20);
             this.label13.TabIndex = 44;
             this.label13.Text = "Phased Plasma";
+            this.toolTip1.SetToolTip(this.label13, "Autocannon Thrasher");
             // 
             // m_TextBoxEHPPhasedPlasmaHot
             // 
@@ -686,6 +703,7 @@
             this.label14.Size = new System.Drawing.Size(40, 20);
             this.label14.TabIndex = 47;
             this.label14.Text = "Hail";
+            this.toolTip1.SetToolTip(this.label14, "Autocannon Thrasher");
             // 
             // m_TextBoxEHPHailHot
             // 
@@ -1219,6 +1237,7 @@
             this.label19.Size = new System.Drawing.Size(60, 20);
             this.label19.TabIndex = 94;
             this.label19.Text = "Void L";
+            this.toolTip1.SetToolTip(this.label19, "Talos (no drones)");
             // 
             // m_TextBoxEHPVoidLHot
             // 
@@ -1260,12 +1279,75 @@
             this.labelSeconds.TabIndex = 97;
             this.labelSeconds.Text = "Seconds";
             // 
+            // labelBR
+            // 
+            this.labelBR.AutoSize = true;
+            this.labelBR.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelBR.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.labelBR.Location = new System.Drawing.Point(13, 640);
+            this.labelBR.Name = "labelBR";
+            this.labelBR.Size = new System.Drawing.Size(29, 16);
+            this.labelBR.TabIndex = 98;
+            this.labelBR.Text = "BR";
+            this.labelBR.Visible = false;
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button1.Location = new System.Drawing.Point(475, 63);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(68, 29);
+            this.button1.TabIndex = 99;
+            this.button1.Text = "3 Exp";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button2.Location = new System.Drawing.Point(559, 63);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(68, 29);
+            this.button2.TabIndex = 100;
+            this.button2.Text = "3 Bulk";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // m_checkBoxManualEHP
+            // 
+            this.m_checkBoxManualEHP.AutoSize = true;
+            this.m_checkBoxManualEHP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_checkBoxManualEHP.Location = new System.Drawing.Point(350, 222);
+            this.m_checkBoxManualEHP.Name = "m_checkBoxManualEHP";
+            this.m_checkBoxManualEHP.Size = new System.Drawing.Size(127, 24);
+            this.m_checkBoxManualEHP.TabIndex = 101;
+            this.m_checkBoxManualEHP.Text = "Manual EHP";
+            this.m_checkBoxManualEHP.UseVisualStyleBackColor = true;
+            this.m_checkBoxManualEHP.CheckedChanged += new System.EventHandler(this.m_checkBoxManualEHP_CheckedChanged);
+            // 
+            // m_richTextBoxManualEHP
+            // 
+            this.m_richTextBoxManualEHP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.m_richTextBoxManualEHP.Location = new System.Drawing.Point(472, 221);
+            this.m_richTextBoxManualEHP.Multiline = false;
+            this.m_richTextBoxManualEHP.Name = "m_richTextBoxManualEHP";
+            this.m_richTextBoxManualEHP.Size = new System.Drawing.Size(120, 24);
+            this.m_richTextBoxManualEHP.TabIndex = 102;
+            this.m_richTextBoxManualEHP.Text = "";
+            this.m_richTextBoxManualEHP.SelectionAlignment = HorizontalAlignment.Right;
+            this.m_richTextBoxManualEHP.TextChanged += new System.EventHandler(this.m_richTextBoxManualEHP_TextChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(968, 772);
+            this.Controls.Add(this.m_richTextBoxManualEHP);
+            this.Controls.Add(this.m_checkBoxManualEHP);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.labelBR);
             this.Controls.Add(this.labelSeconds);
             this.Controls.Add(this.m_textBox_RoF_VoidL);
             this.Controls.Add(this.m_textBox_DPS_VoidL);
@@ -1484,6 +1566,12 @@
         private System.Windows.Forms.RichTextBox m_TextBoxEHPVoidLCold;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label labelSeconds;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Label labelBR;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.CheckBox m_checkBoxManualEHP;
+        private System.Windows.Forms.RichTextBox m_richTextBoxManualEHP;
     }
 }
 

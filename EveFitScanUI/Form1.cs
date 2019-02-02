@@ -170,6 +170,15 @@ namespace EveFitScanUI
                 m_radioHot.Checked = true;
             else
                 m_radioCold.Checked = true;
+
+            m_checkBoxManualEHP.Checked = ConfigHelper.Instance.Is_Manual_EHP;
+            m_richTextBoxManualEHP.Enabled = m_checkBoxManualEHP.Checked;
+            m_richTextBoxManualEHP.Text = ConfigHelper.Instance.Manual_EHP.ToString();
+            m_radioCold.Enabled = !m_checkBoxManualEHP.Checked;
+            m_radioHot.Enabled = !m_checkBoxManualEHP.Checked;
+            m_radioPassive.Enabled = !m_checkBoxManualEHP.Checked;
+            if (m_checkBoxManualEHP.Checked)
+                m_checkBoxADCActive.Enabled = false;
         }
 
         private void m_textBox_DPS_Mjolnir_ValueChanged(object sender, EventArgs e)
@@ -377,6 +386,45 @@ namespace EveFitScanUI
                 m_FitScanProcessor.SetPassive(false);
                 m_checkBoxADCActive.Enabled = true;
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Clipboard.Clear();
+            Clipboard.SetDataObject(@"Expanded Cargohold II
+Expanded Cargohold II
+Expanded Cargohold II");
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Clipboard.Clear();
+            Clipboard.SetDataObject(@"Reinforced Bulkheads II
+Reinforced Bulkheads II
+Reinforced Bulkheads II");
+        }
+
+        private void m_checkBoxManualEHP_CheckedChanged(object sender, EventArgs e)
+        {
+            m_richTextBoxManualEHP.Enabled = m_checkBoxManualEHP.Checked;
+            ConfigHelper.Instance.Is_Manual_EHP = m_checkBoxManualEHP.Checked;
+            m_radioCold.Enabled = !m_checkBoxManualEHP.Checked;
+            m_radioHot.Enabled = !m_checkBoxManualEHP.Checked;
+            m_radioPassive.Enabled = !m_checkBoxManualEHP.Checked;
+            if (m_checkBoxManualEHP.Checked)
+                m_checkBoxADCActive.Enabled = false;
+            else
+                m_checkBoxADCActive.Enabled = !m_radioPassive.Checked;
+
+            OnShipTankChangedSTK();
+        }
+
+        private void m_richTextBoxManualEHP_TextChanged(object sender, EventArgs e)
+        {
+            int EHP;
+            if(Int32.TryParse(m_richTextBoxManualEHP.Text, out EHP))
+                if (EHP > 0) ConfigHelper.Instance.Manual_EHP = EHP;
+            OnShipTankChangedSTK();
         }
     }
 }

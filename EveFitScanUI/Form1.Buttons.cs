@@ -109,6 +109,9 @@ namespace EveFitScanUI
                 m_radioHot.Visible = true;
                 m_radioPassive.Visible = true;
 
+                m_checkBoxManualEHP.Visible = true;
+                m_richTextBoxManualEHP.Visible = true;
+
                 m_TextBoxArmorResistsHot.Visible = false;
                 m_TextBoxHullResistsHot.Visible = false;
                 m_TextBoxShieldResistsHot.Visible = false;
@@ -184,6 +187,9 @@ namespace EveFitScanUI
                 m_radioCold.Visible = false;
                 m_radioHot.Visible = false;
                 m_radioPassive.Visible = false;
+
+                m_checkBoxManualEHP.Visible = false;
+                m_richTextBoxManualEHP.Visible = false;
 
                 m_TextBoxArmorResistsHot.Visible = true;
                 m_TextBoxHullResistsHot.Visible = true;

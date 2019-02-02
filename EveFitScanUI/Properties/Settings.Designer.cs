@@ -178,6 +178,36 @@ namespace EveFitScanUI.Properties {
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10000")]
+        public int Manual_EHP
+        {
+            get
+            {
+                return ((int)(this["Manual_EHP"]));
+            }
+            set
+            {
+                this["Manual_EHP"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("false")]
+        public bool Is_Manual_EHP
+        {
+            get
+            {
+                return ((bool)(this["Is_Manual_EHP"]));
+            }
+            set
+            {
+                this["Is_Manual_EHP"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int DPS_Mjolnir
         {

@@ -86,41 +86,65 @@ namespace EveFitScanUI
 
         private void OnShipTankChangedSTK()
         {
-            m_TextBoxShieldHP.Text = String.Format("{0}", m_FitScanProcessor.ShieldHP);
-            m_TextBoxArmorHP.Text = String.Format("{0}", m_FitScanProcessor.ArmorHP);
-            m_TextBoxHullHP.Text = String.Format("{0}", m_FitScanProcessor.HullHP);
-
-            if (m_radioHot.Checked)
+            if (m_checkBoxManualEHP.Checked)
             {
-                FormatResists(m_TextBoxShieldResistsCold, m_FitScanProcessor.ShieldResistsHeated);
-                FormatResists(m_TextBoxArmorResistsCold, m_FitScanProcessor.ArmorResistsHeated);
-                FormatResists(m_TextBoxHullResistsCold, m_FitScanProcessor.HullResistsHeated);
-                FormatEHP(m_TextBoxEHPMjolnirCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoMjolnir));
-                FormatEHP(m_TextBoxEHPNovaCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoNova));
-                FormatEHP(m_TextBoxEHPAntimatterCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoAntimatter));
-                FormatEHP(m_TextBoxEHPVoidCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoVoid));
-                FormatEHP(m_TextBoxEHPVoidLCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoVoid));
-                FormatEHP(m_TextBoxEHPMultifreqCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoMultifreq));
-                FormatEHP(m_TextBoxEHPEMPCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoEMP));
-                FormatEHP(m_TextBoxEHPFusionCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoFusion));
-                FormatEHP(m_TextBoxEHPPhasedPlasmaCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoPhasedPlasma));
-                FormatEHP(m_TextBoxEHPHailCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoHail));
+                m_TextBoxShieldHP.Text = "";
+                m_TextBoxArmorHP.Text = "";
+                m_TextBoxHullHP.Text = "";
+
+                m_TextBoxShieldResistsCold.Text = "";
+                m_TextBoxArmorResistsCold.Text = "";
+                m_TextBoxHullResistsCold.Text = "";
+
+                FormatEHP(m_TextBoxEHPMjolnirCold, (float)ConfigHelper.Instance.Manual_EHP);
+                FormatEHP(m_TextBoxEHPNovaCold, (float)ConfigHelper.Instance.Manual_EHP);
+                FormatEHP(m_TextBoxEHPAntimatterCold, (float)ConfigHelper.Instance.Manual_EHP);
+                FormatEHP(m_TextBoxEHPVoidCold, (float)ConfigHelper.Instance.Manual_EHP);
+                FormatEHP(m_TextBoxEHPVoidLCold, (float)ConfigHelper.Instance.Manual_EHP);
+                FormatEHP(m_TextBoxEHPMultifreqCold, (float)ConfigHelper.Instance.Manual_EHP);
+                FormatEHP(m_TextBoxEHPEMPCold, (float)ConfigHelper.Instance.Manual_EHP);
+                FormatEHP(m_TextBoxEHPFusionCold, (float)ConfigHelper.Instance.Manual_EHP);
+                FormatEHP(m_TextBoxEHPPhasedPlasmaCold, (float)ConfigHelper.Instance.Manual_EHP);
+                FormatEHP(m_TextBoxEHPHailCold, (float)ConfigHelper.Instance.Manual_EHP);
             }
             else
             {
-                FormatResists(m_TextBoxShieldResistsCold, m_FitScanProcessor.ShieldResists);
-                FormatResists(m_TextBoxArmorResistsCold, m_FitScanProcessor.ArmorResists);
-                FormatResists(m_TextBoxHullResistsCold, m_FitScanProcessor.HullResists);
-                FormatEHP(m_TextBoxEHPMjolnirCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoMjolnir));
-                FormatEHP(m_TextBoxEHPNovaCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoNova));
-                FormatEHP(m_TextBoxEHPAntimatterCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoAntimatter));
-                FormatEHP(m_TextBoxEHPVoidCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoVoid));
-                FormatEHP(m_TextBoxEHPVoidLCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoVoid));
-                FormatEHP(m_TextBoxEHPMultifreqCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoMultifreq));
-                FormatEHP(m_TextBoxEHPEMPCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoEMP));
-                FormatEHP(m_TextBoxEHPFusionCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoFusion));
-                FormatEHP(m_TextBoxEHPPhasedPlasmaCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoPhasedPlasma));
-                FormatEHP(m_TextBoxEHPHailCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoHail));
+                m_TextBoxShieldHP.Text = String.Format("{0}", m_FitScanProcessor.ShieldHP);
+                m_TextBoxArmorHP.Text = String.Format("{0}", m_FitScanProcessor.ArmorHP);
+                m_TextBoxHullHP.Text = String.Format("{0}", m_FitScanProcessor.HullHP);
+
+                if (m_radioHot.Checked)
+                {
+                    FormatResists(m_TextBoxShieldResistsCold, m_FitScanProcessor.ShieldResistsHeated);
+                    FormatResists(m_TextBoxArmorResistsCold, m_FitScanProcessor.ArmorResistsHeated);
+                    FormatResists(m_TextBoxHullResistsCold, m_FitScanProcessor.HullResistsHeated);
+                    FormatEHP(m_TextBoxEHPMjolnirCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoMjolnir));
+                    FormatEHP(m_TextBoxEHPNovaCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoNova));
+                    FormatEHP(m_TextBoxEHPAntimatterCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoAntimatter));
+                    FormatEHP(m_TextBoxEHPVoidCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoVoid));
+                    FormatEHP(m_TextBoxEHPVoidLCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoVoid));
+                    FormatEHP(m_TextBoxEHPMultifreqCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoMultifreq));
+                    FormatEHP(m_TextBoxEHPEMPCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoEMP));
+                    FormatEHP(m_TextBoxEHPFusionCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoFusion));
+                    FormatEHP(m_TextBoxEHPPhasedPlasmaCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoPhasedPlasma));
+                    FormatEHP(m_TextBoxEHPHailCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResistsHeated, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResistsHeated, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResistsHeated, AmmoHail));
+                }
+                else
+                {
+                    FormatResists(m_TextBoxShieldResistsCold, m_FitScanProcessor.ShieldResists);
+                    FormatResists(m_TextBoxArmorResistsCold, m_FitScanProcessor.ArmorResists);
+                    FormatResists(m_TextBoxHullResistsCold, m_FitScanProcessor.HullResists);
+                    FormatEHP(m_TextBoxEHPMjolnirCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoMjolnir));
+                    FormatEHP(m_TextBoxEHPNovaCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoNova));
+                    FormatEHP(m_TextBoxEHPAntimatterCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoAntimatter));
+                    FormatEHP(m_TextBoxEHPVoidCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoVoid));
+                    FormatEHP(m_TextBoxEHPVoidLCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoVoid));
+                    FormatEHP(m_TextBoxEHPMultifreqCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoMultifreq));
+                    FormatEHP(m_TextBoxEHPEMPCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoEMP));
+                    FormatEHP(m_TextBoxEHPFusionCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoFusion));
+                    FormatEHP(m_TextBoxEHPPhasedPlasmaCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoPhasedPlasma));
+                    FormatEHP(m_TextBoxEHPHailCold, GetEHP(m_FitScanProcessor.ShieldHP, m_FitScanProcessor.ShieldResists, m_FitScanProcessor.ArmorHP, m_FitScanProcessor.ArmorResists, m_FitScanProcessor.HullHP, m_FitScanProcessor.HullResists, AmmoHail));
+                }
             }
 
             String sysSec = m_comboBoxSysSecurity.Text;
