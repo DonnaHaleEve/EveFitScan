@@ -25,6 +25,9 @@ namespace EveFitScanUI
 
         private bool ListOfModulesSimple(string Data, ref List<int> ModuleTypeIDs)
         {
+            if (Data == null) //avoids issues with clipboard just having URL in it
+                return false;
+
             char[] Separators = {'\r', '\n'};
             string[] Lines = Data.Split(Separators, StringSplitOptions.RemoveEmptyEntries);
             if (Lines.Length < 1)
@@ -46,6 +49,9 @@ namespace EveFitScanUI
 
         private bool EFTBlock(string Data, ref int ShipTypeID, ref List<int> ModuleTypeIDs)
         {
+            if (Data == null) // avoids issues with clipboard just having URL in it
+                return false;
+
             char[] Separators = { '\r', '\n' };
             string[] Lines = Data.Split(Separators, StringSplitOptions.RemoveEmptyEntries);
             if (Lines.Length < 1)
@@ -114,6 +120,9 @@ namespace EveFitScanUI
 
         private bool CODEFitScanURL(string Data, ref int ShipTypeID, ref List<int> ModuleTypeIDs)
         {
+            if (Data == null) //avoid issues when clipboard just has a URL in it causing a crash
+                return false;
+
             Data = Data.Trim();
 
             bool Success = false;
