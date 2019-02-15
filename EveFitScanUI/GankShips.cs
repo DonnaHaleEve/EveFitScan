@@ -18,7 +18,7 @@ namespace EveFitScanUI
                 {
                     m_ConcordResponseTimes = new Dictionary<string, int>();
                     m_ConcordResponseTimes.Add("Jita", 4);
-                    m_ConcordResponseTimes.Add("Jitap", 4);
+                    m_ConcordResponseTimes.Add("Jitap", 10);
                     m_ConcordResponseTimes.Add("1.0", 6);
                     m_ConcordResponseTimes.Add("1.0p", 12);
                     m_ConcordResponseTimes.Add("0.9", 6);
