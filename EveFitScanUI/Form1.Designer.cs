@@ -173,21 +173,21 @@ namespace EveFitScanUI
             // resetDPSRoFcanFlyThenAll4ToolStripMenuItem
             // 
             this.resetDPSRoFcanFlyThenAll4ToolStripMenuItem.Name = "resetDPSRoFcanFlyThenAll4ToolStripMenuItem";
-            this.resetDPSRoFcanFlyThenAll4ToolStripMenuItem.Size = new System.Drawing.Size(370, 22);
-            this.resetDPSRoFcanFlyThenAll4ToolStripMenuItem.Text = "Reset DPS / RoF (default - can fly, lvl4 support, lvl3 spec)";
+            this.resetDPSRoFcanFlyThenAll4ToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
+            this.resetDPSRoFcanFlyThenAll4ToolStripMenuItem.Text = "Reset DPS / RoF (lvl4 support, lvl3 spec)";
             this.resetDPSRoFcanFlyThenAll4ToolStripMenuItem.Click += new System.EventHandler(this.resetDPSRoFcanFlyThenAll4ToolStripMenuItem_Click);
             // 
             // resetDPSRoFToolStripMenuItem
             // 
             this.resetDPSRoFToolStripMenuItem.Name = "resetDPSRoFToolStripMenuItem";
-            this.resetDPSRoFToolStripMenuItem.Size = new System.Drawing.Size(370, 22);
+            this.resetDPSRoFToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
             this.resetDPSRoFToolStripMenuItem.Text = "Reset DPS / RoF (all 5~~~)";
             this.resetDPSRoFToolStripMenuItem.Click += new System.EventHandler(this.resetDPSRoFToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(370, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -1334,7 +1334,6 @@ namespace EveFitScanUI
             this.m_richTextBoxManualEHP.Size = new System.Drawing.Size(120, 24);
             this.m_richTextBoxManualEHP.TabIndex = 102;
             this.m_richTextBoxManualEHP.Text = "";
-            this.m_richTextBoxManualEHP.SelectionAlignment = HorizontalAlignment.Right;
             this.m_richTextBoxManualEHP.TextChanged += new System.EventHandler(this.m_richTextBoxManualEHP_TextChanged);
             // 
             // Form1

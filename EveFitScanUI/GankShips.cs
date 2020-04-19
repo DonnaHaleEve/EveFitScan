@@ -79,52 +79,68 @@ namespace EveFitScanUI
 
         public void ResetDpsRoF()
         {
-            ConfigHelper.Instance.DPS_Mjolnir = 691;
-            ConfigHelper.Instance.DPS_Nova = 691;
-            ConfigHelper.Instance.DPS_Antimatter = 422;
-            ConfigHelper.Instance.DPS_Void = 643;
-            ConfigHelper.Instance.DPS_VoidL = 1543;
-            ConfigHelper.Instance.DPS_Multifrequency = 293;
-            ConfigHelper.Instance.DPS_EMP = 464;
-            ConfigHelper.Instance.DPS_Fusion = 464;
-            ConfigHelper.Instance.DPS_Phased_Plasma = 464;
-            ConfigHelper.Instance.DPS_Hail = 518;
+            ConfigHelper.Instance.DPS_Mjolnir = 1019;
+            ConfigHelper.Instance.RoF_Mjolnir = 6.26;
 
-            ConfigHelper.Instance.RoF_Mjolnir = 5.94;
-            ConfigHelper.Instance.RoF_Nova = 5.94;
-            ConfigHelper.Instance.RoF_Antimatter = 1.97;
-            ConfigHelper.Instance.RoF_Void = 1.6;
+            ConfigHelper.Instance.DPS_Nova = 1019;
+            ConfigHelper.Instance.RoF_Nova = 6.26;
+
+            ConfigHelper.Instance.DPS_Antimatter = 448;
+            ConfigHelper.Instance.RoF_Antimatter = 1.91;
+
+            ConfigHelper.Instance.DPS_Void = 818;
+            ConfigHelper.Instance.RoF_Void = 1.87;
+
+            ConfigHelper.Instance.DPS_VoidL = 1773;
             ConfigHelper.Instance.RoF_VoidL = 4.16;
-            ConfigHelper.Instance.RoF_Multifrequency = 2.5;
-            ConfigHelper.Instance.RoF_EMP = 2.07;
-            ConfigHelper.Instance.RoF_Fusion = 2.07;
-            ConfigHelper.Instance.RoF_Phased_Plasma = 2.07;
+
+            ConfigHelper.Instance.DPS_Multifrequency = 312;
+            ConfigHelper.Instance.RoF_Multifrequency = 2.4;
+
+            ConfigHelper.Instance.DPS_EMP = 387;
+            ConfigHelper.Instance.RoF_EMP = 2.11;
+
+            ConfigHelper.Instance.DPS_Fusion = 387;
+            ConfigHelper.Instance.RoF_Fusion = 2.11;
+
+            ConfigHelper.Instance.DPS_Phased_Plasma = 387;
+            ConfigHelper.Instance.RoF_Phased_Plasma = 2.11;
+
+            ConfigHelper.Instance.DPS_Hail = 596;
             ConfigHelper.Instance.RoF_Hail = 2.07;
         }
 
         public void RepairDpsRoF()
         {
-            if (ConfigHelper.Instance.DPS_Mjolnir == 0) ConfigHelper.Instance.DPS_Mjolnir = 574;
-            if (ConfigHelper.Instance.DPS_Nova == 0) ConfigHelper.Instance.DPS_Nova = 574;
-            if (ConfigHelper.Instance.DPS_Antimatter == 0) ConfigHelper.Instance.DPS_Antimatter = 383;
-            if (ConfigHelper.Instance.DPS_Void == 0) ConfigHelper.Instance.DPS_Void = 573;
-            if (ConfigHelper.Instance.DPS_VoidL == 0) ConfigHelper.Instance.DPS_VoidL = 1324;
-            if (ConfigHelper.Instance.DPS_Multifrequency == 0) ConfigHelper.Instance.DPS_Multifrequency = 255;
-            if (ConfigHelper.Instance.DPS_EMP == 0) ConfigHelper.Instance.DPS_EMP = 352;
-            if (ConfigHelper.Instance.DPS_Fusion == 0) ConfigHelper.Instance.DPS_Fusion = 352;
-            if (ConfigHelper.Instance.DPS_Phased_Plasma == 0) ConfigHelper.Instance.DPS_Phased_Plasma = 352;
-            if (ConfigHelper.Instance.DPS_Hail == 0) ConfigHelper.Instance.DPS_Hail = 393;
+            if (ConfigHelper.Instance.DPS_Mjolnir == 0) ConfigHelper.Instance.DPS_Mjolnir = 846;
+            if (ConfigHelper.Instance.RoF_Mjolnir == 0.0) ConfigHelper.Instance.RoF_Mjolnir = 6.77;
 
-            if (ConfigHelper.Instance.RoF_Mjolnir == 0.0) ConfigHelper.Instance.RoF_Mjolnir = 6.42;
-            if (ConfigHelper.Instance.RoF_Nova == 0.0) ConfigHelper.Instance.RoF_Nova = 6.42;
-            if (ConfigHelper.Instance.RoF_Antimatter == 0.0) ConfigHelper.Instance.RoF_Antimatter = 2.11;
-            if (ConfigHelper.Instance.RoF_Void == 0.0) ConfigHelper.Instance.RoF_Void = 1.72;
+            if (ConfigHelper.Instance.DPS_Nova == 0) ConfigHelper.Instance.DPS_Nova = 846;
+            if (ConfigHelper.Instance.RoF_Nova == 0.0) ConfigHelper.Instance.RoF_Nova = 6.77;
+
+            if (ConfigHelper.Instance.DPS_Antimatter == 0) ConfigHelper.Instance.DPS_Antimatter = 390;
+            if (ConfigHelper.Instance.RoF_Antimatter == 0.0) ConfigHelper.Instance.RoF_Antimatter = 2.05;
+
+            if (ConfigHelper.Instance.DPS_Void == 0) ConfigHelper.Instance.DPS_Void = 731;
+            if (ConfigHelper.Instance.RoF_Void == 0.0) ConfigHelper.Instance.RoF_Void = 1.96;
+
+            if (ConfigHelper.Instance.DPS_VoidL == 0) ConfigHelper.Instance.DPS_VoidL = 1521;
             if (ConfigHelper.Instance.RoF_VoidL == 0.0) ConfigHelper.Instance.RoF_VoidL = 4.37;
-            if (ConfigHelper.Instance.RoF_Multifrequency == 0.0) ConfigHelper.Instance.RoF_Multifrequency = 2.68;
-            if (ConfigHelper.Instance.RoF_EMP == 0.0) ConfigHelper.Instance.RoF_EMP = 2.22;
-            if (ConfigHelper.Instance.RoF_Fusion == 0.0) ConfigHelper.Instance.RoF_Fusion = 2.22;
-            if (ConfigHelper.Instance.RoF_Phased_Plasma == 0.0) ConfigHelper.Instance.RoF_Phased_Plasma = 2.22;
-            if (ConfigHelper.Instance.RoF_Hail == 0.0) ConfigHelper.Instance.RoF_Hail = 2.22;
+
+            if (ConfigHelper.Instance.DPS_Multifrequency == 0) ConfigHelper.Instance.DPS_Multifrequency = 272;
+            if (ConfigHelper.Instance.RoF_Multifrequency == 0.0) ConfigHelper.Instance.RoF_Multifrequency = 2.58;
+
+            if (ConfigHelper.Instance.DPS_EMP == 0) ConfigHelper.Instance.DPS_EMP = 331;
+            if (ConfigHelper.Instance.RoF_EMP == 0.0) ConfigHelper.Instance.RoF_EMP = 2.21;
+
+            if (ConfigHelper.Instance.DPS_Fusion == 0) ConfigHelper.Instance.DPS_Fusion = 331;
+            if (ConfigHelper.Instance.RoF_Fusion == 0.0) ConfigHelper.Instance.RoF_Fusion = 2.21;
+
+            if (ConfigHelper.Instance.DPS_Phased_Plasma == 0) ConfigHelper.Instance.DPS_Phased_Plasma = 331;
+            if (ConfigHelper.Instance.RoF_Phased_Plasma == 0.0) ConfigHelper.Instance.RoF_Phased_Plasma = 2.21;
+
+            if (ConfigHelper.Instance.DPS_Hail == 0) ConfigHelper.Instance.DPS_Hail = 511;
+            if (ConfigHelper.Instance.RoF_Hail == 0.0) ConfigHelper.Instance.RoF_Hail = 2.17;
         }
 
         public void ResetDpsRoFScrub()
